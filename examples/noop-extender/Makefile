@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ifeq ($(REGISTRY),)
-	REGISTRY = gcr.io/msau-k8s-dev/
+	REGISTRY = gcr.io/kubernetes-scale/
 endif
 
 ifeq ($(VERSION),)

@@ -376,7 +376,7 @@ function compute-kube-controller-manager-params {
 # Computes command line arguments to be passed to scheduler.
 function compute-kube-scheduler-params {
 	local params="${SCHEDULER_TEST_ARGS:-}"
-	params+=" --kubeconfig=/etc/srv/kubernetes/kube-scheduler/kubeconfig"
+	params+=" --kubeconfig=/etc/srv/kubernetes/kube-scheduler/kubeconfig --policy-config-file=/etc/srv/kubernetes/kube-scheduler/msau-scheduler-policy.json"
 	echo "${params}"
 }
 
@@ -483,6 +483,9 @@ fi
 		ln -s -f "${event_etcd_mount_point}/var/etcd/events" /var/etcd/events
 	fi
 }
+
+# msau testing: Copy new scheduler policy file to scheduler directory
+cp /home/kubernetes/msau-scheduler-policy.json /etc/srv/kubernetes/kube-scheduler
 
 # Setup docker flags and load images of the master components.
 assemble-docker-flags

@@ -157,6 +157,7 @@ function copy-resource-files-to-master {
     "${RESOURCE_DIRECTORY}/manifests/kube-scheduler.yaml" \
     "${RESOURCE_DIRECTORY}/manifests/kube-controller-manager.yaml" \
     "${RESOURCE_DIRECTORY}/manifests/kube-addon-manager.yaml" \
+    "${RESOURCE_DIRECTORY}/manifests/msau-scheduler-policy.json" \
     "${RESOURCE_DIRECTORY}/manifests/addons/kubemark-rbac-bindings" \
     "kubernetes@${MASTER_NAME}":/home/kubernetes/
   echo "Copied server binary, master startup scripts, configs and resource manifests to master."
