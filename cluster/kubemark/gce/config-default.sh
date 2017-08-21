@@ -22,12 +22,12 @@
 source "${KUBE_ROOT}/cluster/gce/config-common.sh"
 
 GCLOUD=gcloud
-ZONE=us-east1-a
+ZONE=us-central1-a
 REGION=${ZONE%-*}
 # KUBEMARK_NUM_NODES overrides NUM_NODES if set
 NUM_NODES=500
 # KUBEMARK_MASTER_SIZE overrides MASTER_SIZE if set
-MASTER_SIZE=n1-standard-4
+MASTER_SIZE=n1-standard-16
 MASTER_DISK_TYPE=pd-ssd
 MASTER_DISK_SIZE=100GB
 MASTER_ROOT_DISK_SIZE=100GB
