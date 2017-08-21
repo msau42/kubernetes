@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: msau-noop-extender
+spec:
+  selector:
+    kube-system: msau-noop-extender
+  ports:
+  - protocol: TCP
+    port: 8123
