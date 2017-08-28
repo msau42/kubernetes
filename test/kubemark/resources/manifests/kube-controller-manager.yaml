@@ -41,7 +41,7 @@ spec:
       mountPath: /usr/share/ca-certificates
       readOnly: true
   - name: test-noop-extender
-    image: gcr.io/kubernetes-scale/test-noop-extender:latest
+    image: gcr.io/msau-k8s-dev/test-noop-extender:latest
     imagePullPolicy: Always
     command:
     - /bin/sh
