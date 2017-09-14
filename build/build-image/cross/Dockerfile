@@ -15,7 +15,7 @@
 # This file creates a standard build environment for building cross
 # platform go binary for the architecture kubernetes cares about.
 
-FROM golang:1.11.5
+FROM goboring/golang:1.11.5b4
 
 ENV GOARM 7
 ENV KUBE_DYNAMIC_CROSSPLATFORMS \
@@ -39,6 +39,7 @@ RUN for platform in ${KUBE_CROSSPLATFORMS}; do GOOS=${platform%/*} GOARCH=${plat
 # Install g++, then download and install protoc for generating protobuf output
 RUN apt-get update \
   && apt-get install -y rsync jq apt-utils file patch unzip \
+     glibc-source \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Use dynamic cgo linking for architectures other than amd64 for the server platforms

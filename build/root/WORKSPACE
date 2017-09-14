@@ -48,8 +48,33 @@ load("@io_bazel_rules_docker//docker:docker.bzl", "docker_pull", "docker_reposit
 
 go_rules_dependencies()
 
-go_register_toolchains(
-    go_version = "1.11.5",
+GOBORING_VERSION = "go1.11.5b4"
+
+go_download_sdk(
+    name = "go_sdk",
+    sdks = {
+        "linux_amd64": (
+            GOBORING_VERSION + ".linux-amd64.tar.gz",
+            "9b5b2972b452da9ba6bba65bab18fb9e8fbda31b5c489275710e5429d76f568c",
+        ),
+    },
+    urls = ["https://storage.googleapis.com/go-boringcrypto/{}"],
+)
+
+http_file(
+    name = "go_src",
+    downloaded_file_path = GOBORING_VERSION + ".src.tar.gz",
+    sha256 = "1c5801e2af25c9299d9fd94c64f9ec11fd35777c45d5d0f398c0a9884b1cfbbf",
+    urls = ["https://storage.googleapis.com/go-boringcrypto/" + GOBORING_VERSION + ".src.tar.gz"],
+)
+
+go_register_toolchains()
+
+# Install this dependency by running apt-get install glibc-source
+new_local_repository(
+    name = "glibc_src",
+    build_file = "third_party/glibc.BUILD",
+    path = "/usr/src/glibc",
 )
 
 docker_repositories()
@@ -93,11 +118,11 @@ docker_pull(
 )
 
 docker_pull(
-    name = "official_busybox",
-    digest = "sha256:cb63aa0641a885f54de20f61d152187419e8f6b159ed11a251a09d115fdff9bd",
+    name = "official_busybox_glibc",
+    digest = "sha256:e4872cd0f6e1701ffb45ee83896433558308e8a9102e522440616aaceffae361",
     registry = "index.docker.io",
     repository = "library/busybox",
-    tag = "latest",  # ignored, but kept here for documentation
+    tag = "glibc",  # ignored, but kept here for documentation
 )
 
 load("//build:workspace_mirror.bzl", "export_urls")

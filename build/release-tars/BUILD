@@ -16,39 +16,32 @@ filegroup(
     tags = ["automanaged"],
 )
 
-config_setting(
-    name = "package_src",
-    values = {
-        "define": "PACKAGE_SRC=true",
-    },
+pkg_tar(
+    name = "_kubernetes-srcs",
+    srcs = ["//:all-srcs"],
+    package_dir = "kubernetes",
+    strip_prefix = "//",
+    tags = ["no-cache"],
     visibility = ["//visibility:private"],
 )
 
-genrule(
-    name = "kubernetes-src-readme",
-    outs = ["README-src.txt"],
-    cmd = """
-echo For build efficiency, the src was not included in this release.>$@
-echo The full source code can be viewed at >>$@
-echo -n https://github.com/kubernetes/kubernetes/tree/ >>$@
-grep ^STABLE_BUILD_GIT_COMMIT bazel-out/stable-status.txt | cut -d' ' -f2 >>$@
-""",
-    stamp = 1,
+pkg_tar(
+    name = "_glibc-srcs",
+    srcs = ["@glibc_src//:srcs"],
+    package_dir = "glibc",
+    tags = ["no-cache"],
+    visibility = ["//visibility:private"],
 )
 
 pkg_tar(
     name = "kubernetes-src",
-    srcs = select({
-        ":package_src": ["//:all-srcs"],
-        "//conditions:default": ["README-src.txt"],
-    }),
     extension = "tar.gz",
-    package_dir = "kubernetes",
-    strip_prefix = select({
-        ":package_src": "//",
-        "//conditions:default": ".",
-    }),
     tags = ["no-cache"],
+    deps = [
+        ":_glibc-srcs",
+        ":_kubernetes-srcs",
+        "@go_src//file",
+    ],
 )
 
 # FIXME: this should be configurable/auto-detected
@@ -59,7 +52,7 @@ filegroup(
     name = "license-targets",
     srcs = [
         ":kubernetes-src.tar.gz",
-        "//:Godeps/LICENSES",
+        "//:LICENSES",
     ],
     visibility = ["//visibility:private"],
 )
@@ -188,7 +181,7 @@ pkg_tar(
 pkg_tar(
     name = "kubernetes",
     srcs = [
-        "//:Godeps/LICENSES",
+        "//:LICENSES",
         "//:README.md",
         "//:version",
         "//cluster:all-srcs",
