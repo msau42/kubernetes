@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dummy-scheduler-extender
+spec:
+      containers:
+      - name: extender
+        image: "gcr.io/msau-k8s-dev/dummy-extender:latest"
+        imagePullPolicy: Always

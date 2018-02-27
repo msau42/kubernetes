@@ -1,0 +1,939 @@
+Kubemark master name: msau-test-kubemark-master
+Project: kubernetes-scale
+Zone: us-central1-a
+Trying to find master named 'msau-test-kubemark-master'
+Looking for address 'msau-test-kubemark-master-ip'
+Using master: msau-test-kubemark-master (external IP: 35.202.5.213)
+Setting up for KUBERNETES_PROVIDER="kubemark".
+Project: kubernetes-scale
+Zone: us-central1-a
+Trying to find master named 'msau-test-kubemark-master'
+Looking for address 'msau-test-kubemark-master-ip'
+Using master: msau-test-kubemark-master (external IP: 35.202.5.213)
+2017/08/22 16:16:02 proto: duplicate proto type registered: google.protobuf.Any
+2017/08/22 16:16:02 proto: duplicate proto type registered: google.protobuf.Duration
+2017/08/22 16:16:02 proto: duplicate proto type registered: google.protobuf.Timestamp
+Aug 22 16:16:02.754: INFO: Overriding default scale value of zero to 1
+Aug 22 16:16:02.754: INFO: Overriding default milliseconds value of zero to 5000
+I0822 16:16:02.871638   84406 e2e.go:363] Starting e2e run "dda22121-878f-11e7-9974-480fcf4a51ea" on Ginkgo node 1
+Running Suite: Kubernetes e2e suite
+===================================
+Random Seed: [1m1503443762[0m - Will randomize all specs
+Will run [1m1[0m of [1m675[0m specs
+
+Aug 22 16:16:02.898: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 22 16:16:02.903: INFO: Waiting up to 4h0m0s for all (but 0) nodes to be schedulable
+Aug 22 16:16:03.193: INFO: Waiting up to 10m0s for all pods (need at least 0) in namespace 'kube-system' to be running and ready
+Aug 22 16:16:03.312: INFO: 0 / 0 pods in namespace 'kube-system' are running and ready (0 seconds elapsed)
+Aug 22 16:16:03.312: INFO: expected 0 pod replicas in namespace 'kube-system', 0 are Running and Ready.
+Aug 22 16:16:03.352: INFO: Waiting for pods to enter Success, but no pods in "kube-system" match label map[name:e2e-image-puller]
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m
+[90m------------------------------[0m
+[0m[sig-scalability] Density[0m 
+  [1m[Feature:Performance] should allow starting 30 pods per node using { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons[0m
+  [37m/usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:774[0m
+[BeforeEach] [sig-scalability] Density
+  /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/framework/framework.go:139
+[1mSTEP[0m: Creating a kubernetes client
+Aug 22 16:16:03.355: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+[1mSTEP[0m: Building a namespace api object
+Aug 22 16:16:03.403: INFO: Skipping waiting for service account
+[BeforeEach] [sig-scalability] Density
+  /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:394
+Aug 22 16:16:03.446: INFO: Waiting for terminating namespaces to be deleted...
+Aug 22 16:16:03.486: INFO: Resetting latency metrics in apiserver...
+Aug 22 16:16:03.525: INFO: Listing nodes for easy debugging:
+
+Aug 22 16:16:03.525: INFO: Name: hollow-node-245ns, clusterIP: 10.244.5.15, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-25b2l, clusterIP: 10.244.2.21, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-2ld5v, clusterIP: 10.244.4.15, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-5qtq8, clusterIP: 10.244.5.12, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-6dkzs, clusterIP: 10.244.3.19, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-6v287, clusterIP: 10.244.1.19, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-7788x, clusterIP: 10.244.2.16, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-9b4zs, clusterIP: 10.244.1.15, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-9jk5x, clusterIP: 10.244.3.15, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-b644c, clusterIP: 10.244.3.20, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-bh79b, clusterIP: 10.244.2.19, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-c6652, clusterIP: 10.244.5.16, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-cfgsr, clusterIP: 10.244.5.19, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-crkpb, clusterIP: 10.244.4.13, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-f44wp, clusterIP: 10.244.6.13, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-fc5b5, clusterIP: 10.244.2.18, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-fnxzd, clusterIP: 10.244.5.14, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-gdbqq, clusterIP: 10.244.3.18, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-gxhs7, clusterIP: 10.244.5.17, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-hkx7z, clusterIP: 10.244.1.13, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-hmcrk, clusterIP: 10.244.4.17, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-ht5dt, clusterIP: 10.244.4.11, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-jdh9z, clusterIP: 10.244.6.15, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-k8gj7, clusterIP: 10.244.1.14, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-kvlwf, clusterIP: 10.244.4.18, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-ldk76, clusterIP: 10.244.4.16, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-ln5k6, clusterIP: 10.244.4.12, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-nmtgk, clusterIP: 10.244.3.13, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-npm7t, clusterIP: 10.244.1.17, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-p48fg, clusterIP: 10.244.3.14, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-prsqk, clusterIP: 10.244.6.14, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-ptkp5, clusterIP: 10.244.2.15, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-rjddc, clusterIP: 10.244.6.18, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-s86mm, clusterIP: 10.244.6.16, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-sd96z, clusterIP: 10.244.4.14, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-srrbn, clusterIP: 10.244.2.20, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-tdfl2, clusterIP: 10.244.3.16, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-tnn7d, clusterIP: 10.244.2.17, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-tvm5t, clusterIP: 10.244.1.18, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-vd2jq, clusterIP: 10.244.3.17, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-vjsdd, clusterIP: 10.244.6.12, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-vzwzd, clusterIP: 10.244.3.21, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-w8fpk, clusterIP: 10.244.5.20, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-wd7p5, clusterIP: 10.244.2.14, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-wqwbq, clusterIP: 10.244.5.18, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-xpqt8, clusterIP: 10.244.6.17, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-z669h, clusterIP: 10.244.6.19, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-z968x, clusterIP: 10.244.5.13, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-zh752, clusterIP: 10.244.4.19, externalIP: 
+Aug 22 16:16:03.525: INFO: Name: hollow-node-zlv79, clusterIP: 10.244.1.16, externalIP: 
+[It] [Feature:Performance] should allow starting 30 pods per node using { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons
+  /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:774
+Aug 22 16:16:03.568: INFO: Setting resource constraings for provider: kubemark
+Aug 22 16:16:03.608: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 22 16:16:03.650: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 22 16:16:03.654: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 22 16:16:03.836: INFO: Created replication controller with name: density1500-0-de20fa44-878f-11e7-9974-480fcf4a51ea, namespace: e2e-tests-density-30-1-nvcrc, replica count: 1500
+I0822 16:16:03.836610   84406 runners.go:177] Created replication controller with name: density1500-0-de20fa44-878f-11e7-9974-480fcf4a51ea, namespace: e2e-tests-density-30-1-nvcrc, replica count: 1500
+Aug 22 16:16:13.661: INFO: Density Pods: 227 out of 1500 created, 201 running, 26 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:16:23.661: INFO: Density Pods: 427 out of 1500 created, 404 running, 23 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:16:33.661: INFO: Density Pods: 624 out of 1500 created, 595 running, 29 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:16:43.662: INFO: Density Pods: 824 out of 1500 created, 796 running, 28 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:16:53.662: INFO: Density Pods: 1016 out of 1500 created, 997 running, 19 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:17:03.662: INFO: Density Pods: 1216 out of 1500 created, 1188 running, 28 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:17:13.662: INFO: Density Pods: 1416 out of 1500 created, 1388 running, 28 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:17:23.662: INFO: Density Pods: 1500 out of 1500 created, 1500 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:17:23.845: INFO: E2E startup time for 1500 pods: 1m20.184891238s
+Aug 22 16:17:23.845: INFO: Throughput (pods/s) during cluster saturation phase: 18.75
+[1mSTEP[0m: Printing Pod to Node allocation data
+Aug 22 16:17:23.847: INFO: Density Pods: 1500 out of 1500 created, 1500 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 22 16:17:24.143: INFO: hollow-node-245ns: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-25b2l: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-2ld5v: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-5qtq8: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-6dkzs: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-6v287: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-7788x: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-9b4zs: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-9jk5x: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-b644c: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-bh79b: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-c6652: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-cfgsr: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-crkpb: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-f44wp: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-fc5b5: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-fnxzd: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-gdbqq: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-gxhs7: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-hkx7z: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-hmcrk: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-ht5dt: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-jdh9z: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-k8gj7: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-kvlwf: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-ldk76: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-ln5k6: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-nmtgk: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-npm7t: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-p48fg: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-prsqk: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-ptkp5: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-rjddc: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-s86mm: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-sd96z: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-srrbn: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-tdfl2: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-tnn7d: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-tvm5t: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-vd2jq: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-vjsdd: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-vzwzd: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-w8fpk: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-wd7p5: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-wqwbq: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-xpqt8: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-z669h: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-z968x: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-zh752: 30 pause pods, system pods: []
+Aug 22 16:17:24.143: INFO: hollow-node-zlv79: 30 pause pods, system pods: []
+[1mSTEP[0m: Scheduling additional Pods to measure startup latencies
+Aug 22 16:17:29.261: INFO: Found pod 'density-latency-pod-1' running
+Aug 22 16:17:29.499: INFO: Found pod 'density-latency-pod-2' running
+Aug 22 16:17:29.737: INFO: Found pod 'density-latency-pod-3' running
+Aug 22 16:17:29.976: INFO: Found pod 'density-latency-pod-4' running
+Aug 22 16:17:30.215: INFO: Found pod 'density-latency-pod-5' running
+Aug 22 16:17:30.453: INFO: Found pod 'density-latency-pod-6' running
+Aug 22 16:17:30.691: INFO: Found pod 'density-latency-pod-7' running
+Aug 22 16:17:30.932: INFO: Found pod 'density-latency-pod-8' running
+Aug 22 16:17:31.169: INFO: Found pod 'density-latency-pod-9' running
+Aug 22 16:17:31.406: INFO: Found pod 'density-latency-pod-10' running
+Aug 22 16:17:31.645: INFO: Found pod 'density-latency-pod-11' running
+Aug 22 16:17:31.884: INFO: Found pod 'density-latency-pod-12' running
+Aug 22 16:17:32.122: INFO: Found pod 'density-latency-pod-13' running
+Aug 22 16:17:32.360: INFO: Found pod 'density-latency-pod-14' running
+Aug 22 16:17:32.600: INFO: Found pod 'density-latency-pod-15' running
+Aug 22 16:17:32.838: INFO: Found pod 'density-latency-pod-16' running
+Aug 22 16:17:33.076: INFO: Found pod 'density-latency-pod-17' running
+Aug 22 16:17:33.313: INFO: Found pod 'density-latency-pod-18' running
+Aug 22 16:17:33.552: INFO: Found pod 'density-latency-pod-19' running
+Aug 22 16:17:33.791: INFO: Found pod 'density-latency-pod-20' running
+Aug 22 16:17:34.158: INFO: Found pod 'density-latency-pod-21' running
+Aug 22 16:17:34.396: INFO: Found pod 'density-latency-pod-22' running
+Aug 22 16:17:34.636: INFO: Found pod 'density-latency-pod-23' running
+Aug 22 16:17:34.872: INFO: Found pod 'density-latency-pod-24' running
+Aug 22 16:17:35.114: INFO: Found pod 'density-latency-pod-25' running
+Aug 22 16:17:35.349: INFO: Found pod 'density-latency-pod-26' running
+Aug 22 16:17:35.587: INFO: Found pod 'density-latency-pod-27' running
+Aug 22 16:17:35.827: INFO: Found pod 'density-latency-pod-28' running
+Aug 22 16:17:36.066: INFO: Found pod 'density-latency-pod-29' running
+Aug 22 16:17:36.303: INFO: Found pod 'density-latency-pod-30' running
+Aug 22 16:17:36.542: INFO: Found pod 'density-latency-pod-31' running
+Aug 22 16:17:36.780: INFO: Found pod 'density-latency-pod-32' running
+Aug 22 16:17:37.019: INFO: Found pod 'density-latency-pod-33' running
+Aug 22 16:17:37.259: INFO: Found pod 'density-latency-pod-34' running
+Aug 22 16:17:37.497: INFO: Found pod 'density-latency-pod-35' running
+Aug 22 16:17:37.735: INFO: Found pod 'density-latency-pod-36' running
+Aug 22 16:17:37.973: INFO: Found pod 'density-latency-pod-37' running
+Aug 22 16:17:38.213: INFO: Found pod 'density-latency-pod-38' running
+Aug 22 16:17:38.452: INFO: Found pod 'density-latency-pod-39' running
+Aug 22 16:17:38.689: INFO: Found pod 'density-latency-pod-40' running
+Aug 22 16:17:38.928: INFO: Found pod 'density-latency-pod-41' running
+Aug 22 16:17:39.167: INFO: Found pod 'density-latency-pod-42' running
+Aug 22 16:17:39.405: INFO: Found pod 'density-latency-pod-43' running
+Aug 22 16:17:39.643: INFO: Found pod 'density-latency-pod-44' running
+Aug 22 16:17:39.881: INFO: Found pod 'density-latency-pod-45' running
+Aug 22 16:17:40.119: INFO: Found pod 'density-latency-pod-46' running
+Aug 22 16:17:40.358: INFO: Found pod 'density-latency-pod-47' running
+Aug 22 16:17:40.597: INFO: Found pod 'density-latency-pod-48' running
+Aug 22 16:17:40.835: INFO: Found pod 'density-latency-pod-49' running
+Aug 22 16:17:41.074: INFO: Found pod 'density-latency-pod-50' running
+[1mSTEP[0m: Waiting for all Pods begin observed by the watch...
+Aug 22 16:17:41.273: INFO: 10% worst schedule latencies: [{density-latency-pod-2-4l76v hollow-node-srrbn 0s} {density-latency-pod-16-bkdzz hollow-node-ht5dt 0s} {density-latency-pod-17-cbkll hollow-node-vjsdd 0s} {density-latency-pod-41-8rj9z hollow-node-xpqt8 0s} {density-latency-pod-15-qklp9 hollow-node-wd7p5 0s}]
+Aug 22 16:17:41.273: INFO: perc50: 0s, perc90: 0s, perc99: 0s
+Aug 22 16:17:41.273: INFO: 10% worst run-after-schedule latencies: [{density-latency-pod-2-4l76v hollow-node-srrbn 1s} {density-latency-pod-18-2qhr6 hollow-node-2ld5v 1s} {density-latency-pod-17-cbkll hollow-node-vjsdd 1s} {density-latency-pod-44-mtx6l hollow-node-245ns 1s} {density-latency-pod-15-qklp9 hollow-node-wd7p5 1s}]
+Aug 22 16:17:41.273: INFO: perc50: 1s, perc90: 1s, perc99: 1s
+Aug 22 16:17:41.273: INFO: 10% worst watch latencies: [{density-latency-pod-44-mtx6l hollow-node-245ns 1.928351556s} {density-latency-pod-45-vwdqs hollow-node-fc5b5 2.040910583s} {density-latency-pod-4-499mb hollow-node-25b2l 2.051132728s} {density-latency-pod-23-gtrrb hollow-node-f44wp 2.126396328s} {density-latency-pod-36-hjmnj hollow-node-fnxzd 2.199708023s}]
+Aug 22 16:17:41.273: INFO: perc50: 1.169172769s, perc90: 1.7647553s, perc99: 2.199708023s
+Aug 22 16:17:41.273: INFO: 10% worst scheduled-to-end total latencies: [{density-latency-pod-7-44jtv hollow-node-ln5k6 2.559635229s} {density-latency-pod-14-v9ql8 hollow-node-bh79b 2.656162147s} {density-latency-pod-47-ngbmf hollow-node-vzwzd 2.732063067s} {density-latency-pod-43-f4sz4 hollow-node-gdbqq 2.7647553s} {density-latency-pod-44-mtx6l hollow-node-245ns 2.928351556s}]
+Aug 22 16:17:41.273: INFO: perc50: 1.848246364s, perc90: 2.497034904s, perc99: 2.928351556s
+Aug 22 16:17:41.273: INFO: 10% worst e2e total latencies: [{density-latency-pod-7-44jtv hollow-node-ln5k6 2.559635229s} {density-latency-pod-14-v9ql8 hollow-node-bh79b 2.656162147s} {density-latency-pod-47-ngbmf hollow-node-vzwzd 2.732063067s} {density-latency-pod-43-f4sz4 hollow-node-gdbqq 2.7647553s} {density-latency-pod-44-mtx6l hollow-node-245ns 2.928351556s}]
+Aug 22 16:17:41.273: INFO: perc50: 1.848246364s, perc90: 2.497034904s, perc99: 2.928351556s
+Aug 22 16:17:41.273: INFO: Approx throughput: 1024.4671592975908 pods/min
+[1mSTEP[0m: Removing additional replication controllers
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-1 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-2 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-3 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-5 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-6 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-10 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-12 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-4 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-11 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-8 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-13 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-14 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-16 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-15 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-21 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-22 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-25 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-24 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-17 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-18 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-9 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-19 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-7 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-20 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-23 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:41.454: INFO: Deleting { ReplicationController} density-latency-pod-1 took: 41.601598ms
+Aug 22 16:17:41.455: INFO: Deleting { ReplicationController} density-latency-pod-13 took: 41.961306ms
+Aug 22 16:17:41.455: INFO: Deleting { ReplicationController} density-latency-pod-14 took: 42.125822ms
+Aug 22 16:17:41.455: INFO: Deleting { ReplicationController} density-latency-pod-16 took: 42.138922ms
+Aug 22 16:17:41.456: INFO: Deleting { ReplicationController} density-latency-pod-23 took: 41.214762ms
+Aug 22 16:17:41.456: INFO: Deleting { ReplicationController} density-latency-pod-2 took: 42.961652ms
+Aug 22 16:17:41.457: INFO: Deleting { ReplicationController} density-latency-pod-12 took: 43.068435ms
+Aug 22 16:17:41.458: INFO: Deleting { ReplicationController} density-latency-pod-19 took: 42.482081ms
+Aug 22 16:17:41.458: INFO: Deleting { ReplicationController} density-latency-pod-25 took: 43.013042ms
+Aug 22 16:17:41.458: INFO: Deleting { ReplicationController} density-latency-pod-24 took: 42.998262ms
+Aug 22 16:17:41.458: INFO: Deleting { ReplicationController} density-latency-pod-11 took: 44.063779ms
+Aug 22 16:17:41.459: INFO: Deleting { ReplicationController} density-latency-pod-18 took: 42.811348ms
+Aug 22 16:17:41.459: INFO: Deleting { ReplicationController} density-latency-pod-21 took: 44.55039ms
+Aug 22 16:17:41.459: INFO: Deleting { ReplicationController} density-latency-pod-6 took: 44.468613ms
+Aug 22 16:17:41.459: INFO: Deleting { ReplicationController} density-latency-pod-20 took: 44.937202ms
+Aug 22 16:17:41.459: INFO: Deleting { ReplicationController} density-latency-pod-4 took: 44.677687ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-8 took: 44.592998ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-15 took: 44.076788ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-5 took: 43.598726ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-9 took: 43.73715ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-17 took: 43.94838ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-3 took: 44.234249ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-22 took: 44.83503ms
+Aug 22 16:17:41.460: INFO: Deleting { ReplicationController} density-latency-pod-7 took: 43.964247ms
+Aug 22 16:17:41.461: INFO: Deleting { ReplicationController} density-latency-pod-10 took: 44.182984ms
+Aug 22 16:17:41.554: INFO: Terminating { ReplicationController} density-latency-pod-1 pods took: 100.252635ms
+Aug 22 16:17:41.556: INFO: Terminating { ReplicationController} density-latency-pod-14 pods took: 100.159134ms
+Aug 22 16:17:41.556: INFO: Terminating { ReplicationController} density-latency-pod-23 pods took: 100.107732ms
+Aug 22 16:17:41.556: INFO: Terminating { ReplicationController} density-latency-pod-13 pods took: 100.214994ms
+Aug 22 16:17:41.556: INFO: Terminating { ReplicationController} density-latency-pod-16 pods took: 100.180966ms
+Aug 22 16:17:41.556: INFO: Terminating { ReplicationController} density-latency-pod-2 pods took: 100.168281ms
+Aug 22 16:17:41.558: INFO: Terminating { ReplicationController} density-latency-pod-19 pods took: 100.197668ms
+Aug 22 16:17:41.558: INFO: Terminating { ReplicationController} density-latency-pod-25 pods took: 100.144389ms
+Aug 22 16:17:41.559: INFO: Terminating { ReplicationController} density-latency-pod-11 pods took: 100.154813ms
+Aug 22 16:17:41.559: INFO: Terminating { ReplicationController} density-latency-pod-24 pods took: 100.171712ms
+Aug 22 16:17:41.559: INFO: Terminating { ReplicationController} density-latency-pod-18 pods took: 100.196086ms
+Aug 22 16:17:41.559: INFO: Terminating { ReplicationController} density-latency-pod-21 pods took: 100.129607ms
+Aug 22 16:17:41.560: INFO: Terminating { ReplicationController} density-latency-pod-22 pods took: 100.054418ms
+Aug 22 16:17:41.658: INFO: Terminating { ReplicationController} density-latency-pod-12 pods took: 200.166568ms
+Aug 22 16:17:41.660: INFO: Terminating { ReplicationController} density-latency-pod-9 pods took: 200.14727ms
+Aug 22 16:17:41.760: INFO: Terminating { ReplicationController} density-latency-pod-3 pods took: 300.127572ms
+Aug 22 16:17:41.860: INFO: Terminating { ReplicationController} density-latency-pod-6 pods took: 400.196362ms
+Aug 22 16:17:41.860: INFO: Terminating { ReplicationController} density-latency-pod-4 pods took: 400.198216ms
+Aug 22 16:17:41.960: INFO: Terminating { ReplicationController} density-latency-pod-8 pods took: 500.108338ms
+Aug 22 16:17:42.060: INFO: Terminating { ReplicationController} density-latency-pod-20 pods took: 600.208965ms
+Aug 22 16:17:42.260: INFO: Terminating { ReplicationController} density-latency-pod-5 pods took: 800.078705ms
+Aug 22 16:17:42.260: INFO: Terminating { ReplicationController} density-latency-pod-17 pods took: 800.147785ms
+Aug 22 16:17:42.360: INFO: Terminating { ReplicationController} density-latency-pod-15 pods took: 900.116841ms
+Aug 22 16:17:42.361: INFO: Terminating { ReplicationController} density-latency-pod-10 pods took: 900.143575ms
+Aug 22 16:17:42.460: INFO: Terminating { ReplicationController} density-latency-pod-7 pods took: 1.000096595s
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-26 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-27 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.042: INFO: Deleting { ReplicationController} density-latency-pod-26 took: 43.714221ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-28 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.140: INFO: Deleting { ReplicationController} density-latency-pod-27 took: 40.849531ms
+Aug 22 16:17:43.142: INFO: Terminating { ReplicationController} density-latency-pod-26 pods took: 100.181471ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-29 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-30 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-31 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.240: INFO: Terminating { ReplicationController} density-latency-pod-27 pods took: 100.211473ms
+Aug 22 16:17:43.242: INFO: Deleting { ReplicationController} density-latency-pod-28 took: 42.390297ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-32 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-33 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-34 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.337: INFO: Deleting { ReplicationController} density-latency-pod-29 took: 40.42135ms
+Aug 22 16:17:43.339: INFO: Deleting { ReplicationController} density-latency-pod-30 took: 41.579028ms
+Aug 22 16:17:43.340: INFO: Deleting { ReplicationController} density-latency-pod-31 took: 40.604774ms
+Aug 22 16:17:43.342: INFO: Terminating { ReplicationController} density-latency-pod-28 pods took: 100.224423ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-35 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-36 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.435: INFO: Deleting { ReplicationController} density-latency-pod-32 took: 40.530715ms
+Aug 22 16:17:43.437: INFO: Deleting { ReplicationController} density-latency-pod-33 took: 40.185108ms
+Aug 22 16:17:43.438: INFO: Terminating { ReplicationController} density-latency-pod-29 pods took: 100.16224ms
+Aug 22 16:17:43.439: INFO: Terminating { ReplicationController} density-latency-pod-30 pods took: 100.179814ms
+Aug 22 16:17:43.439: INFO: Deleting { ReplicationController} density-latency-pod-34 took: 40.772225ms
+Aug 22 16:17:43.440: INFO: Terminating { ReplicationController} density-latency-pod-31 pods took: 100.161205ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-37 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-38 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.536: INFO: Terminating { ReplicationController} density-latency-pod-32 pods took: 100.194495ms
+Aug 22 16:17:43.538: INFO: Terminating { ReplicationController} density-latency-pod-33 pods took: 100.208179ms
+Aug 22 16:17:43.539: INFO: Deleting { ReplicationController} density-latency-pod-36 took: 40.227601ms
+Aug 22 16:17:43.540: INFO: Terminating { ReplicationController} density-latency-pod-34 pods took: 100.16089ms
+Aug 22 16:17:43.541: INFO: Deleting { ReplicationController} density-latency-pod-35 took: 42.249598ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-39 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-40 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-41 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.635: INFO: Deleting { ReplicationController} density-latency-pod-37 took: 41.317289ms
+Aug 22 16:17:43.639: INFO: Deleting { ReplicationController} density-latency-pod-38 took: 39.707012ms
+Aug 22 16:17:43.640: INFO: Terminating { ReplicationController} density-latency-pod-36 pods took: 100.165928ms
+Aug 22 16:17:43.642: INFO: Terminating { ReplicationController} density-latency-pod-35 pods took: 100.230653ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-42 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.735: INFO: Terminating { ReplicationController} density-latency-pod-37 pods took: 100.190605ms
+Aug 22 16:17:43.736: INFO: Deleting { ReplicationController} density-latency-pod-39 took: 40.758195ms
+Aug 22 16:17:43.736: INFO: Deleting { ReplicationController} density-latency-pod-40 took: 41.366566ms
+Aug 22 16:17:43.739: INFO: Deleting { ReplicationController} density-latency-pod-41 took: 40.077897ms
+Aug 22 16:17:43.739: INFO: Terminating { ReplicationController} density-latency-pod-38 pods took: 100.226811ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-43 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:43.836: INFO: Terminating { ReplicationController} density-latency-pod-39 pods took: 100.151114ms
+Aug 22 16:17:43.839: INFO: Deleting { ReplicationController} density-latency-pod-42 took: 40.159006ms
+Aug 22 16:17:43.936: INFO: Terminating { ReplicationController} density-latency-pod-40 pods took: 200.182036ms
+Aug 22 16:17:43.940: INFO: Deleting { ReplicationController} density-latency-pod-43 took: 40.435841ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-44 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:44.039: INFO: Terminating { ReplicationController} density-latency-pod-41 pods took: 300.219624ms
+Aug 22 16:17:44.139: INFO: Terminating { ReplicationController} density-latency-pod-42 pods took: 300.207934ms
+Aug 22 16:17:44.140: INFO: Deleting { ReplicationController} density-latency-pod-44 took: 40.287155ms
+Aug 22 16:17:44.240: INFO: Terminating { ReplicationController} density-latency-pod-43 pods took: 300.173169ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-45 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:44.340: INFO: Terminating { ReplicationController} density-latency-pod-44 pods took: 200.129785ms
+Aug 22 16:17:44.440: INFO: Deleting { ReplicationController} density-latency-pod-45 took: 40.617688ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-46 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:44.540: INFO: Terminating { ReplicationController} density-latency-pod-45 pods took: 100.21669ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-47 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:44.635: INFO: Deleting { ReplicationController} density-latency-pod-46 took: 40.54318ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-48 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-49 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:44.722: INFO: Deleting { ReplicationController} density-latency-pod-47 took: 40.919121ms
+Aug 22 16:17:44.736: INFO: Terminating { ReplicationController} density-latency-pod-46 pods took: 100.242878ms
+Aug 22 16:17:44.820: INFO: Deleting { ReplicationController} density-latency-pod-48 took: 40.458902ms
+Aug 22 16:17:44.822: INFO: Terminating { ReplicationController} density-latency-pod-47 pods took: 100.214923ms
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-50 in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:44.840: INFO: Deleting { ReplicationController} density-latency-pod-49 took: 39.800847ms
+Aug 22 16:17:44.920: INFO: Terminating { ReplicationController} density-latency-pod-48 pods took: 100.231385ms
+Aug 22 16:17:44.940: INFO: Terminating { ReplicationController} density-latency-pod-49 pods took: 100.194406ms
+Aug 22 16:17:45.017: INFO: Deleting { ReplicationController} density-latency-pod-50 took: 40.49667ms
+Aug 22 16:17:45.117: INFO: Terminating { ReplicationController} density-latency-pod-50 pods took: 100.263588ms
+[1mSTEP[0m: Deleting created Collections
+[1mSTEP[0m: Cleaning up only the { ReplicationController}, garbage collector will clean up the pods
+[1mSTEP[0m: deleting { ReplicationController} density1500-0-de20fa44-878f-11e7-9974-480fcf4a51ea in namespace e2e-tests-density-30-1-nvcrc, will wait for the garbage collector to delete the pods
+Aug 22 16:17:54.422: INFO: Deleting { ReplicationController} density1500-0-de20fa44-878f-11e7-9974-480fcf4a51ea took: 40.24704ms
+Aug 22 16:20:24.422: INFO: Terminating { ReplicationController} density1500-0-de20fa44-878f-11e7-9974-480fcf4a51ea pods took: 2m30.000450617s
+[AfterEach] [sig-scalability] Density
+  /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:348
+Aug 22 16:20:46.449: INFO: Cluster saturation time: {
+  "timeToSaturate": 80184891238,
+  "numberOfNodes": 50,
+  "numberOfPods": 1500,
+  "throughput": 18.75
+}
+
+Aug 22 16:20:46.542: INFO: Top latency metric: {Resource:pods Subresource: Verb:LIST Latency:{Perc50:3.846ms Perc90:4.158ms Perc99:69.564ms Perc100:0s} Count:105}
+Aug 22 16:20:46.542: INFO: Top latency metric: {Resource:pods Subresource: Verb:DELETE Latency:{Perc50:2.985ms Perc90:4.702ms Perc99:6.867ms Perc100:0s} Count:3100}
+Aug 22 16:20:46.542: INFO: Top latency metric: {Resource:replicationcontrollers Subresource: Verb:DELETE Latency:{Perc50:3.366ms Perc90:5.765ms Perc99:6.607ms Perc100:0s} Count:51}
+Aug 22 16:20:46.542: INFO: Top latency metric: {Resource:nodes Subresource: Verb:LIST Latency:{Perc50:2.858ms Perc90:3.284ms Perc99:6.15ms Perc100:0s} Count:16}
+Aug 22 16:20:46.542: INFO: Top latency metric: {Resource:pods Subresource: Verb:POST Latency:{Perc50:1.525ms Perc90:1.847ms Perc99:5.856ms Perc100:0s} Count:1551}
+Aug 22 16:20:47.143: INFO: Printing summary: APIResponsiveness
+Aug 22 16:20:47.143: INFO: APIResponsiveness JSON
+{
+  "version": "v1",
+  "dataItems": [
+    {
+      "data": {
+        "Perc50": 3.846,
+        "Perc90": 4.158,
+        "Perc99": 69.564
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "105",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.985,
+        "Perc90": 4.702,
+        "Perc99": 6.867
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "3100",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 3.366,
+        "Perc90": 5.765,
+        "Perc99": 6.607
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "51",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.858,
+        "Perc90": 3.284,
+        "Perc99": 6.15
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "16",
+        "Resource": "nodes",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.525,
+        "Perc90": 1.847,
+        "Perc99": 5.856
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1551",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.861,
+        "Perc90": 2.394,
+        "Perc99": 4.398
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1627",
+        "Resource": "nodes",
+        "Subresource": "status",
+        "Verb": "PATCH"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.154,
+        "Perc90": 1.725,
+        "Perc99": 3.809
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1550",
+        "Resource": "pods",
+        "Subresource": "binding",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.217,
+        "Perc90": 1.665,
+        "Perc99": 3.685
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "8079",
+        "Resource": "pods",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.119,
+        "Perc90": 1.411,
+        "Perc99": 3.665
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "20",
+        "Resource": "clusterrolebindings",
+        "Subresource": "",
+        "Verb": "PATCH"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.536,
+        "Perc90": 3.014,
+        "Perc99": 3.415
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "29",
+        "Resource": "limitranges",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.385,
+        "Perc90": 1.623,
+        "Perc99": 3.297
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "51",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.224,
+        "Perc90": 1.606,
+        "Perc99": 3.091
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "282",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.626,
+        "Perc90": 2.626,
+        "Perc99": 2.626
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "secrets",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.563,
+        "Perc90": 0.834,
+        "Perc99": 2.541
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "10943",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.816,
+        "Perc90": 1.776,
+        "Perc99": 2.428
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "19",
+        "Resource": "apiservices",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.522,
+        "Perc90": 1.8,
+        "Perc99": 2.275
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "172",
+        "Resource": "replicationcontrollers",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.514,
+        "Perc90": 0.696,
+        "Perc99": 1.977
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "311",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.144,
+        "Perc90": 1.733,
+        "Perc99": 1.789
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "19",
+        "Resource": "apiservices",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.495,
+        "Perc90": 0.87,
+        "Perc99": 1.468
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "39",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.449,
+        "Perc90": 0.64,
+        "Perc99": 1.351
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "29",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.344,
+        "Perc90": 1.344,
+        "Perc99": 1.344
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.132,
+        "Perc90": 0.607,
+        "Perc99": 1.125
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "20352",
+        "Resource": "secrets",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.091,
+        "Perc90": 1.091,
+        "Perc99": 1.091
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.078,
+        "Perc90": 1.078,
+        "Perc99": 1.078
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.005,
+        "Perc90": 1.005,
+        "Perc99": 1.005
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.57,
+        "Perc90": 0.733,
+        "Perc99": 1.004
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "110",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.845,
+        "Perc90": 0.863,
+        "Perc99": 0.863
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "5",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.159,
+        "Perc90": 0.202,
+        "Perc99": 0.862
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1459",
+        "Resource": "nodes",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.526,
+        "Perc90": 0.715,
+        "Perc99": 0.805
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "20",
+        "Resource": "clusterrolebindings",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.717,
+        "Perc90": 0.788,
+        "Perc99": 0.788
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "4",
+        "Resource": "resourcequotas",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.661,
+        "Perc90": 0.747,
+        "Perc99": 0.747
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "5",
+        "Resource": "persistentvolumes",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.433,
+        "Perc90": 0.433,
+        "Perc99": 0.433
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.224,
+        "Perc90": 0.224,
+        "Perc99": 0.224
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    }
+  ]
+}
+
+Aug 22 16:20:47.143: INFO: Finished
+Aug 22 16:20:47.143: INFO: Printing summary: SchedulingLatency
+Aug 22 16:20:47.143: INFO: SchedulingLatency JSON
+{
+  "scheduling": {
+    "Perc50": 0,
+    "Perc90": 0,
+    "Perc99": 0,
+    "Perc100": 0
+  },
+  "binding": {
+    "Perc50": 0,
+    "Perc90": 0,
+    "Perc99": 0,
+    "Perc100": 0
+  },
+  "total": {
+    "Perc50": 0,
+    "Perc90": 0,
+    "Perc99": 0,
+    "Perc100": 0
+  }
+}
+
+Aug 22 16:20:47.143: INFO: Finished
+[AfterEach] [sig-scalability] Density
+  /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/framework/framework.go:140
+Aug 22 16:20:47.143: INFO: Printing summary: PodStartupLatency
+Aug 22 16:20:47.143: INFO: PodStartupLatency JSON
+{
+  "version": "v1",
+  "dataItems": [
+    {
+      "data": {
+        "Perc100": 2928.351556,
+        "Perc50": 1848.246364,
+        "Perc90": 2497.034904,
+        "Perc99": 2928.351556
+      },
+      "unit": "ms",
+      "labels": {
+        "Metric": "pod_startup"
+      }
+    }
+  ]
+}
+
+Aug 22 16:20:47.143: INFO: Finished
+Aug 22 16:20:47.143: INFO: Waiting up to 3m0s for all (but 0) nodes to be ready
+[1mSTEP[0m: Destroying namespace "e2e-tests-density-pclz6" for this suite.
+Aug 22 16:20:55.298: INFO: namespace: e2e-tests-density-pclz6, resource: bindings, ignored listing per whitelist
+Aug 22 16:20:55.298: INFO: namespace e2e-tests-density-pclz6 deletion completed in 8.110687247s
+[1mSTEP[0m: Destroying namespace "e2e-tests-density-30-1-nvcrc" for this suite.
+Aug 22 16:21:03.019: INFO: namespace: e2e-tests-density-30-1-nvcrc, resource: bindings, ignored listing per whitelist
+Aug 22 16:21:03.415: INFO: namespace e2e-tests-density-30-1-nvcrc deletion completed in 8.116619569s
+
+[32m• [SLOW TEST:300.059 seconds][0m
+[sig-scalability] Density
+[90m/usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/scalability/framework.go:22[0m
+  [Feature:Performance] should allow starting 30 pods per node using { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons
+  [90m/usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/_output/local/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:774[0m
+[90m------------------------------[0m
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0mAug 22 16:21:03.420: INFO: Running AfterSuite actions on all node
+Aug 22 16:21:03.420: INFO: Running AfterSuite actions on node 1
+
+[1m[32mRan 1 of 675 Specs in 300.522 seconds[0m
+[1m[32mSUCCESS![0m -- [32m[1m1 Passed[0m | [91m[1m0 Failed[0m | [33m[1m0 Pending[0m | [36m[1m674 Skipped[0m PASS
+
+Ginkgo ran 1 suite in 5m0.915214979s
+Test Suite Passed

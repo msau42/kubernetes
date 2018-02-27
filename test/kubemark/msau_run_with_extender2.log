@@ -1,0 +1,1553 @@
+Kubemark master name: kubernetes-kubemark-master
+Project: msau-k8s-dev
+Zone: us-central1-b
+Trying to find master named 'kubernetes-kubemark-master'
+Looking for address 'kubernetes-kubemark-master-ip'
+Using master: kubernetes-kubemark-master (external IP: 104.198.176.22)
+Setting up for KUBERNETES_PROVIDER="kubemark".
+Project: msau-k8s-dev
+Zone: us-central1-b
+Trying to find master named 'kubernetes-kubemark-master'
+Looking for address 'kubernetes-kubemark-master-ip'
+Using master: kubernetes-kubemark-master (external IP: 104.198.176.22)
+Aug 15 13:45:16.330: INFO: Overriding default scale value of zero to 1
+Aug 15 13:45:16.330: INFO: Overriding default milliseconds value of zero to 5000
+I0815 13:45:16.445222    8426 e2e.go:342] Starting e2e run "a4a2395e-81fa-11e7-b692-480fcf4a51ea" on Ginkgo node 1
+Running Suite: Kubernetes e2e suite
+===================================
+Random Seed: [1m1502829916[0m - Will randomize all specs
+Will run [1m2[0m of [1m641[0m specs
+
+Aug 15 13:45:16.466: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 15 13:45:16.471: INFO: Waiting up to 4h0m0s for all (but 0) nodes to be schedulable
+Aug 15 13:45:16.675: INFO: Waiting up to 10m0s for all pods (need at least 0) in namespace 'kube-system' to be running and ready
+Aug 15 13:45:16.793: INFO: 0 / 0 pods in namespace 'kube-system' are running and ready (0 seconds elapsed)
+Aug 15 13:45:16.793: INFO: expected 0 pod replicas in namespace 'kube-system', 0 are Running and Ready.
+Aug 15 13:45:16.843: INFO: Waiting for pods to enter Success, but no pods in "kube-system" match label map[name:e2e-image-puller]
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m
+[90m------------------------------[0m
+[0m[sig-scalability] Density[0m 
+  [1m[Feature:Performance] should allow starting 30 pods per node using { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons[0m
+  [37m/go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:774[0m
+[BeforeEach] [sig-scalability] Density
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/framework/framework.go:130
+[1mSTEP[0m: Creating a kubernetes client
+Aug 15 13:45:16.844: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+[1mSTEP[0m: Building a namespace api object
+Aug 15 13:45:16.894: INFO: Skipping waiting for service account
+[BeforeEach] [sig-scalability] Density
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:394
+Aug 15 13:45:16.934: INFO: Waiting for terminating namespaces to be deleted...
+Aug 15 13:45:16.975: INFO: Resetting latency metrics in apiserver...
+Aug 15 13:45:17.013: INFO: Listing nodes for easy debugging:
+
+Aug 15 13:45:17.013: INFO: Name: hollow-node-22t96, clusterIP: 10.100.3.49, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-2qkhj, clusterIP: 10.100.1.41, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-46fwj, clusterIP: 10.100.1.40, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-4t92r, clusterIP: 10.100.3.50, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-bw2kf, clusterIP: 10.100.2.33, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-c29jg, clusterIP: 10.100.3.51, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-c6bbf, clusterIP: 10.100.3.53, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-dh6tf, clusterIP: 10.100.2.31, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-mmvwf, clusterIP: 10.100.3.52, externalIP: 
+Aug 15 13:45:17.013: INFO: Name: hollow-node-n2sq5, clusterIP: 10.100.2.32, externalIP: 
+[It] [Feature:Performance] should allow starting 30 pods per node using { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:774
+Aug 15 13:45:17.054: INFO: Setting resource constraings for provider: kubemark
+Aug 15 13:45:17.094: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 15 13:45:17.135: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 15 13:45:17.139: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 15 13:45:17.317: INFO: Created replication controller with name: density300-0-a518b5cd-81fa-11e7-b692-480fcf4a51ea, namespace: e2e-tests-density-30-1-blzlg, replica count: 300
+I0815 13:45:17.317555    8426 runners.go:177] Created replication controller with name: density300-0-a518b5cd-81fa-11e7-b692-480fcf4a51ea, namespace: e2e-tests-density-30-1-blzlg, replica count: 300
+Aug 15 13:45:27.143: INFO: Density Pods: 228 out of 300 created, 20 running, 208 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 15 13:45:37.143: INFO: Density Pods: 300 out of 300 created, 177 running, 123 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 15 13:45:47.143: INFO: Density Pods: 300 out of 300 created, 300 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 15 13:45:47.318: INFO: E2E startup time for 300 pods: 30.176243239s
+Aug 15 13:45:47.318: INFO: Throughput (pods/s) during cluster saturation phase: 10
+[1mSTEP[0m: Printing Pod to Node allocation data
+Aug 15 13:45:47.319: INFO: Density Pods: 300 out of 300 created, 300 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+Aug 15 13:45:47.650: INFO: hollow-node-22t96: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-2qkhj: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-46fwj: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-4t92r: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-bw2kf: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-c29jg: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-c6bbf: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-dh6tf: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-mmvwf: 30 pause pods, system pods: []
+Aug 15 13:45:47.650: INFO: hollow-node-n2sq5: 30 pause pods, system pods: []
+[1mSTEP[0m: Scheduling additional Pods to measure startup latencies
+Aug 15 13:45:52.769: INFO: Found pod 'density-latency-pod-1' running
+Aug 15 13:45:53.008: INFO: Found pod 'density-latency-pod-2' running
+Aug 15 13:45:53.245: INFO: Found pod 'density-latency-pod-3' running
+Aug 15 13:45:53.484: INFO: Found pod 'density-latency-pod-4' running
+Aug 15 13:45:53.722: INFO: Found pod 'density-latency-pod-5' running
+Aug 15 13:45:53.961: INFO: Found pod 'density-latency-pod-6' running
+Aug 15 13:45:54.199: INFO: Found pod 'density-latency-pod-7' running
+Aug 15 13:45:54.437: INFO: Found pod 'density-latency-pod-8' running
+Aug 15 13:45:54.678: INFO: Found pod 'density-latency-pod-9' running
+Aug 15 13:45:54.914: INFO: Found pod 'density-latency-pod-10' running
+[1mSTEP[0m: Waiting for all Pods begin observed by the watch...
+Aug 15 13:45:55.037: INFO: 10% worst schedule latencies: [{density-latency-pod-7-h4gxp hollow-node-4t92r 0s}]
+Aug 15 13:45:55.037: INFO: perc50: 0s, perc90: 0s, perc99: 0s
+Aug 15 13:45:55.037: INFO: 10% worst run-after-schedule latencies: [{density-latency-pod-1-bhcxh hollow-node-n2sq5 1s}]
+Aug 15 13:45:55.037: INFO: perc50: 1s, perc90: 1s, perc99: 1s
+Aug 15 13:45:55.037: INFO: 10% worst watch latencies: [{density-latency-pod-6-mf2gz hollow-node-bw2kf 1.981006862s}]
+Aug 15 13:45:55.037: INFO: perc50: 928.942419ms, perc90: 1.532063026s, perc99: 1.981006862s
+Aug 15 13:45:55.037: INFO: 10% worst scheduled-to-end total latencies: [{density-latency-pod-9-fw7p6 hollow-node-2qkhj 2.278862705s}]
+Aug 15 13:45:55.037: INFO: perc50: 1.558735049s, perc90: 1.981006862s, perc99: 2.278862705s
+Aug 15 13:45:55.037: INFO: 10% worst e2e total latencies: [{density-latency-pod-9-fw7p6 hollow-node-2qkhj 2.278862705s}]
+Aug 15 13:45:55.037: INFO: perc50: 1.558735049s, perc90: 1.981006862s, perc99: 2.278862705s
+Aug 15 13:45:55.037: INFO: Approx throughput: 263.28922698307093 pods/min
+[1mSTEP[0m: Removing additional replication controllers
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-1 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-3 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-2 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-6 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-5 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-4 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-8 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-7 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-9 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} density-latency-pod-10 in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+Aug 15 13:45:55.231: INFO: Deleting { ReplicationController} density-latency-pod-1 took: 53.47783ms
+Aug 15 13:45:55.234: INFO: Deleting { ReplicationController} density-latency-pod-10 took: 55.179672ms
+Aug 15 13:45:55.237: INFO: Deleting { ReplicationController} density-latency-pod-5 took: 60.029012ms
+Aug 15 13:45:55.237: INFO: Deleting { ReplicationController} density-latency-pod-3 took: 58.994366ms
+Aug 15 13:45:55.258: INFO: Deleting { ReplicationController} density-latency-pod-7 took: 45.591879ms
+Aug 15 13:45:55.273: INFO: Deleting { ReplicationController} density-latency-pod-4 took: 60.882095ms
+Aug 15 13:45:55.274: INFO: Deleting { ReplicationController} density-latency-pod-6 took: 61.375817ms
+Aug 15 13:45:55.274: INFO: Deleting { ReplicationController} density-latency-pod-8 took: 61.667547ms
+Aug 15 13:45:55.274: INFO: Deleting { ReplicationController} density-latency-pod-9 took: 61.936654ms
+Aug 15 13:45:55.278: INFO: Deleting { ReplicationController} density-latency-pod-2 took: 65.662125ms
+Aug 15 13:45:55.331: INFO: Terminating { ReplicationController} density-latency-pod-1 pods took: 100.229764ms
+Aug 15 13:45:55.334: INFO: Terminating { ReplicationController} density-latency-pod-10 pods took: 100.231403ms
+Aug 15 13:45:55.338: INFO: Terminating { ReplicationController} density-latency-pod-3 pods took: 100.171355ms
+Aug 15 13:45:55.338: INFO: Terminating { ReplicationController} density-latency-pod-5 pods took: 100.190866ms
+Aug 15 13:45:55.358: INFO: Terminating { ReplicationController} density-latency-pod-7 pods took: 100.201201ms
+Aug 15 13:45:55.373: INFO: Terminating { ReplicationController} density-latency-pod-4 pods took: 100.201022ms
+Aug 15 13:45:55.374: INFO: Terminating { ReplicationController} density-latency-pod-6 pods took: 100.160807ms
+Aug 15 13:45:55.374: INFO: Terminating { ReplicationController} density-latency-pod-8 pods took: 100.132496ms
+Aug 15 13:45:55.375: INFO: Terminating { ReplicationController} density-latency-pod-9 pods took: 100.153293ms
+Aug 15 13:45:55.378: INFO: Terminating { ReplicationController} density-latency-pod-2 pods took: 100.204547ms
+[1mSTEP[0m: Deleting created Collections
+[1mSTEP[0m: Cleaning up only the { ReplicationController}, garbage collector will clean up the pods
+[1mSTEP[0m: deleting { ReplicationController} density300-0-a518b5cd-81fa-11e7-b692-480fcf4a51ea in namespace e2e-tests-density-30-1-blzlg, will wait for the garbage collector to delete the pods
+Aug 15 13:46:02.756: INFO: Deleting { ReplicationController} density300-0-a518b5cd-81fa-11e7-b692-480fcf4a51ea took: 41.462232ms
+Aug 15 13:46:31.756: INFO: Terminating { ReplicationController} density300-0-a518b5cd-81fa-11e7-b692-480fcf4a51ea pods took: 29.000300453s
+[AfterEach] [sig-scalability] Density
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:348
+Aug 15 13:46:43.188: INFO: Cluster saturation time: {
+  "timeToStaturate": 30176243239,
+  "numberOfNodes": 10,
+  "numberOfPods": 300,
+  "throughput": 10
+}
+
+Aug 15 13:46:43.275: INFO: Top latency metric: {Resource:pods Subresource: Verb:LIST Latency:{Perc50:1.002ms Perc90:1.305ms Perc99:155.774ms Perc100:0s} Count:25}
+Aug 15 13:46:43.275: INFO: Top latency metric: {Resource:pods Subresource: Verb:POST Latency:{Perc50:1.67ms Perc90:6.722ms Perc99:33.735ms Perc100:0s} Count:310}
+Aug 15 13:46:43.275: INFO: Top latency metric: {Resource:pods Subresource: Verb:DELETE Latency:{Perc50:3.95ms Perc90:6.701ms Perc99:19.005ms Perc100:0s} Count:620}
+Aug 15 13:46:43.275: INFO: Top latency metric: {Resource:replicationcontrollers Subresource: Verb:DELETE Latency:{Perc50:7.448ms Perc90:11.433ms Perc99:18.601ms Perc100:0s} Count:11}
+Aug 15 13:46:43.275: INFO: Top latency metric: {Resource:limitranges Subresource: Verb:LIST Latency:{Perc50:5.132ms Perc90:10.133ms Perc99:10.595ms Perc100:0s} Count:13}
+Aug 15 13:46:43.871: INFO: Printing summary: APIResponsiveness
+Aug 15 13:46:43.871: INFO: APIResponsiveness JSON
+{
+  "version": "v1",
+  "dataItems": [
+    {
+      "data": {
+        "Perc50": 1.002,
+        "Perc90": 1.305,
+        "Perc99": 155.774
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "25",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.67,
+        "Perc90": 6.722,
+        "Perc99": 33.735
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "310",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 3.95,
+        "Perc90": 6.701,
+        "Perc99": 19.005
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "620",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 7.448,
+        "Perc90": 11.433,
+        "Perc99": 18.601
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "11",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 5.132,
+        "Perc90": 10.133,
+        "Perc99": 10.595
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "13",
+        "Resource": "limitranges",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.411,
+        "Perc90": 4.84,
+        "Perc99": 9.901
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "103",
+        "Resource": "nodes",
+        "Subresource": "status",
+        "Verb": "PATCH"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.506,
+        "Perc90": 3.095,
+        "Perc99": 9.351
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "310",
+        "Resource": "pods",
+        "Subresource": "binding",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.63,
+        "Perc90": 2.765,
+        "Perc99": 7.557
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1672",
+        "Resource": "pods",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.713,
+        "Perc90": 0.99,
+        "Perc99": 7.481
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "95",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.713,
+        "Perc90": 1.448,
+        "Perc99": 5.629
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2197",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.364,
+        "Perc90": 2.41,
+        "Perc99": 5.017
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "86",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.706,
+        "Perc90": 3.23,
+        "Perc99": 3.435
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "11",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.846,
+        "Perc90": 2.846,
+        "Perc99": 2.846
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "secrets",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.158,
+        "Perc90": 0.807,
+        "Perc99": 2.542
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1579",
+        "Resource": "secrets",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.489,
+        "Perc90": 1.971,
+        "Perc99": 2.518
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "134",
+        "Resource": "replicationcontrollers",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.62,
+        "Perc90": 1.223,
+        "Perc99": 2.113
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "51",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.047,
+        "Perc90": 2.047,
+        "Perc99": 2.047
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.591,
+        "Perc90": 1.774,
+        "Perc99": 1.774
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "6",
+        "Resource": "nodes",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.141,
+        "Perc90": 1.641,
+        "Perc99": 1.641
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "4",
+        "Resource": "clusterrolebindings",
+        "Subresource": "",
+        "Verb": "PATCH"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.408,
+        "Perc90": 1.408,
+        "Perc99": 1.408
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.17,
+        "Perc90": 1.17,
+        "Perc99": 1.17
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.93,
+        "Perc90": 0.93,
+        "Perc99": 0.93
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.664,
+        "Perc90": 0.811,
+        "Perc99": 0.811
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "4",
+        "Resource": "clusterrolebindings",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.804,
+        "Perc90": 0.804,
+        "Perc99": 0.804
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2",
+        "Resource": "resourcequotas",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.201,
+        "Perc90": 0.466,
+        "Perc99": 0.763
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "93",
+        "Resource": "nodes",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.664,
+        "Perc90": 0.754,
+        "Perc99": 0.763
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "11",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.671,
+        "Perc90": 0.671,
+        "Perc99": 0.671
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.469,
+        "Perc90": 0.611,
+        "Perc99": 0.611
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "9",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.604,
+        "Perc90": 0.604,
+        "Perc99": 0.604
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "persistentvolumes",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.572,
+        "Perc90": 0.572,
+        "Perc99": 0.572
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    }
+  ]
+}
+
+Aug 15 13:46:43.872: INFO: Finished
+Aug 15 13:46:43.872: INFO: Printing summary: SchedulingLatency
+Aug 15 13:46:43.872: INFO: SchedulingLatency JSON
+{
+  "scheduling": {
+    "Perc50": 0,
+    "Perc90": 0,
+    "Perc99": 0,
+    "Perc100": 0
+  },
+  "binding": {
+    "Perc50": 0,
+    "Perc90": 0,
+    "Perc99": 0,
+    "Perc100": 0
+  },
+  "total": {
+    "Perc50": 0,
+    "Perc90": 0,
+    "Perc99": 0,
+    "Perc100": 0
+  }
+}
+
+Aug 15 13:46:43.872: INFO: Finished
+[AfterEach] [sig-scalability] Density
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/framework/framework.go:131
+Aug 15 13:46:43.872: INFO: Printing summary: PodStartupLatency
+Aug 15 13:46:43.872: INFO: PodStartupLatency JSON
+{
+  "version": "v1",
+  "dataItems": [
+    {
+      "data": {
+        "Perc100": 2278.862705,
+        "Perc50": 1558.735049,
+        "Perc90": 1981.006862,
+        "Perc99": 2278.862705
+      },
+      "unit": "ms",
+      "labels": {
+        "Metric": "pod_startup"
+      }
+    }
+  ]
+}
+
+Aug 15 13:46:43.872: INFO: Finished
+Aug 15 13:46:43.872: INFO: Waiting up to 3m0s for all (but 0) nodes to be ready
+[1mSTEP[0m: Destroying namespace "e2e-tests-density-gls4c" for this suite.
+Aug 15 13:46:51.582: INFO: namespace: e2e-tests-density-gls4c, resource: bindings, ignored listing per whitelist
+Aug 15 13:46:51.977: INFO: namespace e2e-tests-density-gls4c deletion completed in 8.065481128s
+[1mSTEP[0m: Destroying namespace "e2e-tests-density-30-1-blzlg" for this suite.
+Aug 15 13:46:59.054: INFO: namespace: e2e-tests-density-30-1-blzlg, resource: bindings, ignored listing per whitelist
+Aug 15 13:47:00.039: INFO: namespace e2e-tests-density-30-1-blzlg deletion completed in 8.061804938s
+
+[32m• [SLOW TEST:103.195 seconds][0m
+[sig-scalability] Density
+[90m/go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/framework.go:22[0m
+  [Feature:Performance] should allow starting 30 pods per node using { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons
+  [90m/go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/density.go:774[0m
+[90m------------------------------[0m
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m
+[90m------------------------------[0m
+[0m[sig-scalability] Load capacity[0m 
+  [1m[Feature:Performance] should be able to handle 30 pods per node { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons[0m
+  [37m/go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/load.go:288[0m
+[BeforeEach] [sig-scalability] Load capacity
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/framework/framework.go:130
+[1mSTEP[0m: Creating a kubernetes client
+Aug 15 13:47:00.040: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+[1mSTEP[0m: Building a namespace api object
+Aug 15 13:47:00.089: INFO: Skipping waiting for service account
+[BeforeEach] [sig-scalability] Load capacity
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/load.go:139
+Aug 15 13:47:00.130: INFO: Waiting for terminating namespaces to be deleted...
+Aug 15 13:47:00.169: INFO: Resetting latency metrics in apiserver...
+[It] [Feature:Performance] should be able to handle 30 pods per node { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/load.go:288
+Aug 15 13:47:00.250: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 15 13:47:00.254: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 15 13:47:00.257: INFO: >>> kubeConfig: /usr/local/google/home/msau/workspace/go/src/k8s.io/kubernetes/test/kubemark/resources/kubeconfig.kubemark
+Aug 15 13:47:00.260: INFO: Creating services
+Aug 15 13:47:01.256: INFO: 23 Services created.
+Aug 15 13:47:01.256: INFO: Starting to create ReplicationControllers...
+I0815 13:47:01.543607    8426 runners.go:177] Created replication controller with name: load-small-35, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:01.809701    8426 runners.go:177] Created replication controller with name: load-small-25, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:02.726956    8426 runners.go:177] Created replication controller with name: load-small-23, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:03.427951    8426 runners.go:177] Created replication controller with name: load-small-10, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:03.500429    8426 runners.go:177] Created replication controller with name: load-small-16, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:04.333315    8426 runners.go:177] Created replication controller with name: load-small-42, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:05.770554    8426 runners.go:177] Created replication controller with name: load-small-11, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:06.837169    8426 runners.go:177] Created replication controller with name: load-small-39, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:07.889185    8426 runners.go:177] Created replication controller with name: load-small-21, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:08.120758    8426 runners.go:177] Created replication controller with name: load-small-6, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:08.447328    8426 runners.go:177] Created replication controller with name: load-small-29, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:08.490497    8426 runners.go:177] Created replication controller with name: load-small-3, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:08.601635    8426 runners.go:177] Created replication controller with name: load-small-5, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:09.347577    8426 runners.go:177] Created replication controller with name: load-small-22, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:09.961380    8426 runners.go:177] Created replication controller with name: load-small-19, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:10.562801    8426 runners.go:177] Created replication controller with name: load-small-18, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:11.543890    8426 runners.go:177] load-small-35 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:11.809969    8426 runners.go:177] load-small-25 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:12.407800    8426 runners.go:177] Created replication controller with name: load-small-13, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:12.613232    8426 runners.go:177] Created replication controller with name: load-small-37, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:12.727262    8426 runners.go:177] load-small-23 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:13.132500    8426 runners.go:177] Created replication controller with name: load-small-12, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:13.428253    8426 runners.go:177] load-small-10 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:13.500757    8426 runners.go:177] load-small-16 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:13.957046    8426 runners.go:177] Created replication controller with name: load-small-33, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:14.333557    8426 runners.go:177] load-small-42 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:14.455226    8426 runners.go:177] Created replication controller with name: load-small-14, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:14.608598    8426 runners.go:177] Created replication controller with name: load-small-34, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:14.774341    8426 runners.go:177] Created replication controller with name: load-small-24, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:15.770853    8426 runners.go:177] load-small-11 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:16.837464    8426 runners.go:177] load-small-39 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:17.889447    8426 runners.go:177] load-small-21 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:18.121037    8426 runners.go:177] load-small-6 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:18.447660    8426 runners.go:177] load-small-29 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:18.490789    8426 runners.go:177] load-small-3 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:18.601966    8426 runners.go:177] load-small-5 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:19.105544    8426 runners.go:177] Created replication controller with name: load-small-30, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:19.347796    8426 runners.go:177] load-small-22 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:19.351349    8426 runners.go:177] Created replication controller with name: load-small-27, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:19.961690    8426 runners.go:177] load-small-19 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:20.563142    8426 runners.go:177] load-small-18 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:20.895294    8426 runners.go:177] Created replication controller with name: load-small-8, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:21.423561    8426 runners.go:177] Created replication controller with name: load-small-15, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:22.185906    8426 runners.go:177] Created replication controller with name: load-small-4, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:22.384490    8426 runners.go:177] Created replication controller with name: load-small-36, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:22.408087    8426 runners.go:177] load-small-13 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:22.613534    8426 runners.go:177] load-small-37 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:22.726958    8426 runners.go:177] Created replication controller with name: load-medium-3, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 30
+I0815 13:47:22.739700    8426 runners.go:177] Created replication controller with name: load-small-38, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:23.003199    8426 runners.go:177] Created replication controller with name: load-medium-2, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 30
+I0815 13:47:23.095555    8426 runners.go:177] Created replication controller with name: load-small-2, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:23.132820    8426 runners.go:177] load-small-12 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:23.501465    8426 runners.go:177] Created replication controller with name: load-small-41, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:23.601132    8426 runners.go:177] Created replication controller with name: load-small-20, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:23.957361    8426 runners.go:177] load-small-33 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:24.455495    8426 runners.go:177] load-small-14 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:24.456380    8426 runners.go:177] Created replication controller with name: load-small-7, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:24.608875    8426 runners.go:177] load-small-34 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:24.774575    8426 runners.go:177] load-small-24 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:24.886412    8426 runners.go:177] Created replication controller with name: load-small-9, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:25.481921    8426 runners.go:177] Created replication controller with name: load-medium-1, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 30
+I0815 13:47:25.579330    8426 runners.go:177] Created replication controller with name: load-small-26, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:26.439519    8426 runners.go:177] Created replication controller with name: load-small-40, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:27.012012    8426 runners.go:177] Created replication controller with name: load-small-32, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:27.482913    8426 runners.go:177] Created replication controller with name: load-small-31, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:27.873431    8426 runners.go:177] Created replication controller with name: load-small-28, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:29.105822    8426 runners.go:177] load-small-30 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:29.351653    8426 runners.go:177] load-small-27 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:29.410015    8426 runners.go:177] Created replication controller with name: load-small-17, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:30.656382    8426 runners.go:177] Created replication controller with name: load-small-1, namespace: e2e-tests-load-30-nodepods-1-nrptb, replica count: 5
+I0815 13:47:30.895605    8426 runners.go:177] load-small-8 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:31.423891    8426 runners.go:177] load-small-15 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:32.186198    8426 runners.go:177] load-small-4 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:32.384803    8426 runners.go:177] load-small-36 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:32.727311    8426 runners.go:177] load-medium-3 Pods: 30 out of 30 created, 30 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:32.739903    8426 runners.go:177] load-small-38 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:33.003548    8426 runners.go:177] load-medium-2 Pods: 30 out of 30 created, 26 running, 4 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:33.095827    8426 runners.go:177] load-small-2 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:33.501762    8426 runners.go:177] load-small-41 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:33.601425    8426 runners.go:177] load-small-20 Pods: 5 out of 5 created, 3 running, 2 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:34.456713    8426 runners.go:177] load-small-7 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:34.886692    8426 runners.go:177] load-small-9 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:35.482231    8426 runners.go:177] load-medium-1 Pods: 30 out of 30 created, 27 running, 3 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:35.579589    8426 runners.go:177] load-small-26 Pods: 5 out of 5 created, 4 running, 1 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:36.439856    8426 runners.go:177] load-small-40 Pods: 5 out of 5 created, 4 running, 1 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:37.012310    8426 runners.go:177] load-small-32 Pods: 5 out of 5 created, 3 running, 2 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:37.483216    8426 runners.go:177] load-small-31 Pods: 5 out of 5 created, 3 running, 2 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:37.873674    8426 runners.go:177] load-small-28 Pods: 5 out of 5 created, 3 running, 2 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:39.410288    8426 runners.go:177] load-small-17 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:40.656698    8426 runners.go:177] load-small-1 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:43.003846    8426 runners.go:177] load-medium-2 Pods: 30 out of 30 created, 30 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:43.601718    8426 runners.go:177] load-small-20 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:45.482517    8426 runners.go:177] load-medium-1 Pods: 30 out of 30 created, 30 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:45.579776    8426 runners.go:177] load-small-26 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:46.440098    8426 runners.go:177] load-small-40 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:47.012513    8426 runners.go:177] load-small-32 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:47.483393    8426 runners.go:177] load-small-31 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+I0815 13:47:47.873884    8426 runners.go:177] load-small-28 Pods: 5 out of 5 created, 5 running, 0 pending, 0 waiting, 0 inactive, 0 terminating, 0 unknown, 0 runningButNotReady 
+[1mSTEP[0m: ============================================================================
+Aug 15 13:47:47.873: INFO: Starting to scale ReplicationControllers first time...
+[1mSTEP[0m: Scaling { ReplicationController} load-small-36 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-23 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-29 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-27 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-4 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-12 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-medium-2 in namespace e2e-tests-load-30-nodepods-1-nrptb to 15
+[1mSTEP[0m: Scaling { ReplicationController} load-small-5 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-19 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-18 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-26 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-1 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-37 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-39 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-15 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-32 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-24 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-38 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-16 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-28 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-13 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-40 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-35 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-8 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-21 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-30 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-14 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-11 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-25 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-medium-3 in namespace e2e-tests-load-30-nodepods-1-nrptb to 27
+[1mSTEP[0m: Scaling { ReplicationController} load-small-34 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-20 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-10 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-42 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-3 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-33 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-9 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-17 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-6 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-41 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-2 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-22 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-31 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-medium-1 in namespace e2e-tests-load-30-nodepods-1-nrptb to 15
+[1mSTEP[0m: Scaling { ReplicationController} load-small-7 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: ============================================================================
+Aug 15 13:48:04.927: INFO: Starting to scale ReplicationControllers second time...
+[1mSTEP[0m: Scaling { ReplicationController} load-small-18 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-38 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-19 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-10 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-17 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-27 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-4 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-12 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-42 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-21 in namespace e2e-tests-load-30-nodepods-1-nrptb to 6
+[1mSTEP[0m: Scaling { ReplicationController} load-small-1 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-13 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-medium-1 in namespace e2e-tests-load-30-nodepods-1-nrptb to 39
+[1mSTEP[0m: Scaling { ReplicationController} load-small-32 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-15 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-2 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-40 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-8 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-23 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-16 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-26 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-25 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-41 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-5 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-24 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-20 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-6 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-14 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-28 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-39 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-7 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-35 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-34 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-33 in namespace e2e-tests-load-30-nodepods-1-nrptb to 2
+[1mSTEP[0m: Scaling { ReplicationController} load-small-11 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-3 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-30 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-medium-2 in namespace e2e-tests-load-30-nodepods-1-nrptb to 35
+[1mSTEP[0m: Scaling { ReplicationController} load-small-9 in namespace e2e-tests-load-30-nodepods-1-nrptb to 3
+[1mSTEP[0m: Scaling { ReplicationController} load-small-36 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-medium-3 in namespace e2e-tests-load-30-nodepods-1-nrptb to 18
+[1mSTEP[0m: Scaling { ReplicationController} load-small-29 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-37 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: Scaling { ReplicationController} load-small-22 in namespace e2e-tests-load-30-nodepods-1-nrptb to 4
+[1mSTEP[0m: Scaling { ReplicationController} load-small-31 in namespace e2e-tests-load-30-nodepods-1-nrptb to 5
+[1mSTEP[0m: ============================================================================
+Aug 15 13:48:22.414: INFO: Starting to delete ReplicationControllers...
+[1mSTEP[0m: deleting { ReplicationController} load-small-31 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:23.118: INFO: Deleting { ReplicationController} load-small-31 took: 42.237855ms
+Aug 15 13:48:23.218: INFO: Terminating { ReplicationController} load-small-31 pods took: 100.186533ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-22 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} load-small-7 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:24.261: INFO: Deleting { ReplicationController} load-small-22 took: 40.527886ms
+Aug 15 13:48:24.361: INFO: Terminating { ReplicationController} load-small-22 pods took: 100.199678ms
+Aug 15 13:48:24.432: INFO: Deleting { ReplicationController} load-small-7 took: 42.002006ms
+Aug 15 13:48:24.532: INFO: Terminating { ReplicationController} load-small-7 pods took: 100.250228ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-14 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:24.964: INFO: Deleting { ReplicationController} load-small-14 took: 40.915067ms
+Aug 15 13:48:25.064: INFO: Terminating { ReplicationController} load-small-14 pods took: 100.255146ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-17 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:25.820: INFO: Deleting { ReplicationController} load-small-17 took: 40.982061ms
+Aug 15 13:48:25.921: INFO: Terminating { ReplicationController} load-small-17 pods took: 100.271948ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-29 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:26.136: INFO: Deleting { ReplicationController} load-small-29 took: 62.149939ms
+Aug 15 13:48:26.236: INFO: Terminating { ReplicationController} load-small-29 pods took: 100.254424ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-28 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} load-small-16 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:26.752: INFO: Deleting { ReplicationController} load-small-28 took: 41.490788ms
+Aug 15 13:48:26.820: INFO: Deleting { ReplicationController} load-small-16 took: 43.010009ms
+Aug 15 13:48:26.853: INFO: Terminating { ReplicationController} load-small-28 pods took: 100.251725ms
+Aug 15 13:48:26.921: INFO: Terminating { ReplicationController} load-small-16 pods took: 100.260611ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-9 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} load-small-12 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:27.375: INFO: Deleting { ReplicationController} load-small-9 took: 41.133537ms
+Aug 15 13:48:27.420: INFO: Deleting { ReplicationController} load-small-12 took: 40.951638ms
+Aug 15 13:48:27.475: INFO: Terminating { ReplicationController} load-small-9 pods took: 100.237298ms
+Aug 15 13:48:27.521: INFO: Terminating { ReplicationController} load-small-12 pods took: 100.221702ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-13 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:27.850: INFO: Deleting { ReplicationController} load-small-13 took: 40.868472ms
+Aug 15 13:48:27.950: INFO: Terminating { ReplicationController} load-small-13 pods took: 100.194068ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-2 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:28.359: INFO: Deleting { ReplicationController} load-small-2 took: 41.489288ms
+Aug 15 13:48:28.459: INFO: Terminating { ReplicationController} load-small-2 pods took: 100.250325ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-10 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:28.660: INFO: Deleting { ReplicationController} load-small-10 took: 41.118304ms
+Aug 15 13:48:28.760: INFO: Terminating { ReplicationController} load-small-10 pods took: 100.245912ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-23 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:29.629: INFO: Deleting { ReplicationController} load-small-23 took: 40.941694ms
+Aug 15 13:48:29.729: INFO: Terminating { ReplicationController} load-small-23 pods took: 100.249653ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-15 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:31.191: INFO: Deleting { ReplicationController} load-small-15 took: 41.448736ms
+Aug 15 13:48:31.291: INFO: Terminating { ReplicationController} load-small-15 pods took: 100.219777ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-6 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:31.658: INFO: Deleting { ReplicationController} load-small-6 took: 40.166322ms
+Aug 15 13:48:31.758: INFO: Terminating { ReplicationController} load-small-6 pods took: 100.255353ms
+[1mSTEP[0m: deleting { ReplicationController} load-medium-3 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:32.668: INFO: Deleting { ReplicationController} load-medium-3 took: 40.854913ms
+Aug 15 13:48:32.968: INFO: Terminating { ReplicationController} load-medium-3 pods took: 300.229107ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-5 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:33.206: INFO: Deleting { ReplicationController} load-small-5 took: 45.247462ms
+Aug 15 13:48:33.406: INFO: Terminating { ReplicationController} load-small-5 pods took: 200.240833ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-34 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:34.736: INFO: Deleting { ReplicationController} load-small-34 took: 41.585506ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-35 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} load-small-19 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:35.216: INFO: Deleting { ReplicationController} load-small-35 took: 40.757247ms
+Aug 15 13:48:35.338: INFO: Deleting { ReplicationController} load-small-19 took: 41.341791ms
+Aug 15 13:48:35.416: INFO: Terminating { ReplicationController} load-small-35 pods took: 200.262491ms
+Aug 15 13:48:35.436: INFO: Terminating { ReplicationController} load-small-34 pods took: 700.231935ms
+Aug 15 13:48:35.438: INFO: Terminating { ReplicationController} load-small-19 pods took: 100.283846ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-27 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:36.019: INFO: Deleting { ReplicationController} load-small-27 took: 40.742841ms
+Aug 15 13:48:36.119: INFO: Terminating { ReplicationController} load-small-27 pods took: 100.23188ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-40 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} load-small-3 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} load-small-18 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:36.506: INFO: Deleting { ReplicationController} load-small-40 took: 43.918114ms
+Aug 15 13:48:36.607: INFO: Terminating { ReplicationController} load-small-40 pods took: 100.144483ms
+Aug 15 13:48:36.648: INFO: Deleting { ReplicationController} load-small-3 took: 42.960743ms
+Aug 15 13:48:36.652: INFO: Deleting { ReplicationController} load-small-18 took: 45.88836ms
+Aug 15 13:48:36.748: INFO: Terminating { ReplicationController} load-small-3 pods took: 100.317786ms
+Aug 15 13:48:36.752: INFO: Terminating { ReplicationController} load-small-18 pods took: 100.316684ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-39 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:37.066: INFO: Deleting { ReplicationController} load-small-39 took: 40.432101ms
+Aug 15 13:48:37.167: INFO: Terminating { ReplicationController} load-small-39 pods took: 100.234024ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-42 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:38.475: INFO: Deleting { ReplicationController} load-small-42 took: 41.266367ms
+Aug 15 13:48:38.575: INFO: Terminating { ReplicationController} load-small-42 pods took: 100.269486ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-33 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:38.852: INFO: Deleting { ReplicationController} load-small-33 took: 41.468872ms
+Aug 15 13:48:38.952: INFO: Terminating { ReplicationController} load-small-33 pods took: 100.25343ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-1 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:39.917: INFO: Deleting { ReplicationController} load-small-1 took: 41.572992ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-30 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:40.017: INFO: Terminating { ReplicationController} load-small-1 pods took: 100.205639ms
+Aug 15 13:48:40.120: INFO: Deleting { ReplicationController} load-small-30 took: 41.427878ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-8 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:40.220: INFO: Terminating { ReplicationController} load-small-30 pods took: 100.243451ms
+Aug 15 13:48:40.357: INFO: Deleting { ReplicationController} load-small-8 took: 40.964886ms
+Aug 15 13:48:40.458: INFO: Terminating { ReplicationController} load-small-8 pods took: 100.187382ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-36 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:42.018: INFO: Deleting { ReplicationController} load-small-36 took: 41.711488ms
+Aug 15 13:48:42.119: INFO: Terminating { ReplicationController} load-small-36 pods took: 100.214552ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-21 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:42.512: INFO: Deleting { ReplicationController} load-small-21 took: 41.907814ms
+Aug 15 13:48:42.612: INFO: Terminating { ReplicationController} load-small-21 pods took: 100.261173ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-20 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:43.725: INFO: Deleting { ReplicationController} load-small-20 took: 40.544458ms
+Aug 15 13:48:43.825: INFO: Terminating { ReplicationController} load-small-20 pods took: 100.243301ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-41 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:45.745: INFO: Deleting { ReplicationController} load-small-41 took: 43.140467ms
+Aug 15 13:48:45.845: INFO: Terminating { ReplicationController} load-small-41 pods took: 100.188662ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-32 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:48.439: INFO: Deleting { ReplicationController} load-small-32 took: 42.429959ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-11 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:48.539: INFO: Terminating { ReplicationController} load-small-32 pods took: 100.209294ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-38 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:48.633: INFO: Deleting { ReplicationController} load-small-11 took: 43.229708ms
+Aug 15 13:48:48.733: INFO: Terminating { ReplicationController} load-small-11 pods took: 100.238489ms
+Aug 15 13:48:48.734: INFO: Deleting { ReplicationController} load-small-38 took: 41.834736ms
+Aug 15 13:48:48.835: INFO: Terminating { ReplicationController} load-small-38 pods took: 100.2482ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-24 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+[1mSTEP[0m: deleting { ReplicationController} load-small-4 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:49.122: INFO: Deleting { ReplicationController} load-small-24 took: 42.827922ms
+Aug 15 13:48:49.222: INFO: Terminating { ReplicationController} load-small-24 pods took: 100.236776ms
+Aug 15 13:48:49.295: INFO: Deleting { ReplicationController} load-small-4 took: 42.650349ms
+Aug 15 13:48:49.395: INFO: Terminating { ReplicationController} load-small-4 pods took: 100.203379ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-26 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:50.271: INFO: Deleting { ReplicationController} load-small-26 took: 42.533642ms
+Aug 15 13:48:50.371: INFO: Terminating { ReplicationController} load-small-26 pods took: 100.256163ms
+[1mSTEP[0m: deleting { ReplicationController} load-medium-1 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:50.556: INFO: Deleting { ReplicationController} load-medium-1 took: 42.059182ms
+[1mSTEP[0m: deleting { ReplicationController} load-medium-2 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:52.075: INFO: Deleting { ReplicationController} load-medium-2 took: 42.802366ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-37 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:52.369: INFO: Deleting { ReplicationController} load-small-37 took: 48.319451ms
+[1mSTEP[0m: deleting { ReplicationController} load-small-25 in namespace e2e-tests-load-30-nodepods-1-nrptb, will wait for the garbage collector to delete the pods
+Aug 15 13:48:52.578: INFO: Deleting { ReplicationController} load-small-25 took: 41.515617ms
+Aug 15 13:48:53.356: INFO: Terminating { ReplicationController} load-medium-1 pods took: 2.800251453s
+Aug 15 13:48:56.975: INFO: Terminating { ReplicationController} load-medium-2 pods took: 4.900249832s
+Aug 15 13:48:57.270: INFO: Terminating { ReplicationController} load-small-37 pods took: 4.900253821s
+Aug 15 13:48:57.479: INFO: Terminating { ReplicationController} load-small-25 pods took: 4.900254578s
+Aug 15 13:49:10.270: INFO: Starting to delete services...
+Aug 15 13:49:11.371: INFO: Services deleted
+[AfterEach] [sig-scalability] Load capacity
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/load.go:103
+Aug 15 13:49:11.466: INFO: Top latency metric: {Resource:pods Subresource: Verb:DELETE Latency:{Perc50:5.246ms Perc90:10.283ms Perc99:26.393ms Perc100:0s} Count:756}
+Aug 15 13:49:11.466: INFO: Top latency metric: {Resource:pods Subresource:binding Verb:POST Latency:{Perc50:1.514ms Perc90:4.318ms Perc99:22.599ms Perc100:0s} Count:378}
+Aug 15 13:49:11.466: INFO: Top latency metric: {Resource:pods Subresource: Verb:POST Latency:{Perc50:1.713ms Perc90:6.169ms Perc99:19.428ms Perc100:0s} Count:378}
+Aug 15 13:49:11.466: INFO: Top latency metric: {Resource:limitranges Subresource: Verb:LIST Latency:{Perc50:1.764ms Perc90:15.529ms Perc99:15.529ms Perc100:0s} Count:8}
+Aug 15 13:49:11.466: INFO: Top latency metric: {Resource:services Subresource: Verb:DELETE Latency:{Perc50:9.062ms Perc90:11.177ms Perc99:13.594ms Perc100:0s} Count:23}
+Aug 15 13:49:11.466: INFO: Printing summary: APIResponsiveness
+Aug 15 13:49:11.467: INFO: APIResponsiveness JSON
+{
+  "version": "v1",
+  "dataItems": [
+    {
+      "data": {
+        "Perc50": 5.246,
+        "Perc90": 10.283,
+        "Perc99": 26.393
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "756",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.514,
+        "Perc90": 4.318,
+        "Perc99": 22.599
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "378",
+        "Resource": "pods",
+        "Subresource": "binding",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.713,
+        "Perc90": 6.169,
+        "Perc99": 19.428
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "378",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.764,
+        "Perc90": 15.529,
+        "Perc99": 15.529
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "8",
+        "Resource": "limitranges",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 9.062,
+        "Perc90": 11.177,
+        "Perc99": 13.594
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "23",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.308,
+        "Perc90": 2.13,
+        "Perc99": 12.661
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "270",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.71,
+        "Perc90": 3.661,
+        "Perc99": 11.599
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2040",
+        "Resource": "pods",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.391,
+        "Perc90": 3.786,
+        "Perc99": 10.639
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "150",
+        "Resource": "nodes",
+        "Subresource": "status",
+        "Verb": "PATCH"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 3.029,
+        "Perc90": 4.994,
+        "Perc99": 9.501
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "45",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.861,
+        "Perc90": 2.122,
+        "Perc99": 8.733
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2570",
+        "Resource": "pods",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.48,
+        "Perc90": 7.399,
+        "Perc99": 8.152
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "18",
+        "Resource": "apiservices",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.673,
+        "Perc90": 2.883,
+        "Perc99": 7.273
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "486",
+        "Resource": "replicationcontrollers",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.891,
+        "Perc90": 3.798,
+        "Perc99": 5.574
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "90",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 4.289,
+        "Perc90": 4.848,
+        "Perc99": 5.07
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "23",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.75,
+        "Perc90": 1.895,
+        "Perc99": 4.986
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1952",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.784,
+        "Perc90": 2.763,
+        "Perc99": 4.712
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "45",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.886,
+        "Perc90": 2.123,
+        "Perc99": 3.796
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "18",
+        "Resource": "apiservices",
+        "Subresource": "status",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 3.623,
+        "Perc90": 3.623,
+        "Perc99": 3.623
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "secrets",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 3.567,
+        "Perc90": 3.567,
+        "Perc99": 3.567
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.78,
+        "Perc90": 1.564,
+        "Perc99": 3.234
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "358",
+        "Resource": "replicationcontrollers",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.187,
+        "Perc90": 0.88,
+        "Perc99": 3.168
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2429",
+        "Resource": "secrets",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.513,
+        "Perc90": 1.16,
+        "Perc99": 2.728
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "14",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.05,
+        "Perc90": 2.001,
+        "Perc99": 2.267
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "23",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "DELETE"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.711,
+        "Perc90": 1.195,
+        "Perc99": 2.257
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "18",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.714,
+        "Perc90": 1.26,
+        "Perc99": 2.245
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "144",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 2.063,
+        "Perc90": 2.063,
+        "Perc99": 2.063
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "2",
+        "Resource": "services",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.561,
+        "Perc90": 1.634,
+        "Perc99": 1.634
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "7",
+        "Resource": "nodes",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.11,
+        "Perc90": 1.331,
+        "Perc99": 1.493
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "23",
+        "Resource": "endpoints",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.288,
+        "Perc90": 1.427,
+        "Perc99": 1.459
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "12",
+        "Resource": "clusterrolebindings",
+        "Subresource": "",
+        "Verb": "PATCH"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.389,
+        "Perc90": 1.389,
+        "Perc99": 1.389
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "PUT"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.339,
+        "Perc90": 1.339,
+        "Perc99": 1.339
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "POST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.977,
+        "Perc90": 1.16,
+        "Perc99": 1.16
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "3",
+        "Resource": "namespaces",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 1.002,
+        "Perc90": 1.048,
+        "Perc99": 1.048
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "3",
+        "Resource": "resourcequotas",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.823,
+        "Perc90": 0.873,
+        "Perc99": 1.003
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "12",
+        "Resource": "clusterrolebindings",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.75,
+        "Perc90": 0.839,
+        "Perc99": 0.839
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "3",
+        "Resource": "persistentvolumes",
+        "Subresource": "",
+        "Verb": "LIST"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.194,
+        "Perc90": 0.284,
+        "Perc99": 0.7
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "130",
+        "Resource": "nodes",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    },
+    {
+      "data": {
+        "Perc50": 0.504,
+        "Perc90": 0.504,
+        "Perc99": 0.504
+      },
+      "unit": "ms",
+      "labels": {
+        "Count": "1",
+        "Resource": "serviceaccounts",
+        "Subresource": "",
+        "Verb": "GET"
+      }
+    }
+  ]
+}
+
+Aug 15 13:49:11.467: INFO: Finished
+[AfterEach] [sig-scalability] Load capacity
+  /go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/framework/framework.go:131
+Aug 15 13:49:11.467: INFO: Waiting up to 3m0s for all (but 0) nodes to be ready
+[1mSTEP[0m: Destroying namespace "e2e-tests-load-kqzlx" for this suite.
+Aug 15 13:49:18.791: INFO: namespace: e2e-tests-load-kqzlx, resource: bindings, ignored listing per whitelist
+Aug 15 13:49:19.584: INFO: namespace e2e-tests-load-kqzlx deletion completed in 8.076800788s
+[1mSTEP[0m: Destroying namespace "e2e-tests-load-30-nodepods-1-nrptb" for this suite.
+Aug 15 13:49:27.305: INFO: namespace: e2e-tests-load-30-nodepods-1-nrptb, resource: bindings, ignored listing per whitelist
+Aug 15 13:49:27.656: INFO: namespace e2e-tests-load-30-nodepods-1-nrptb deletion completed in 8.071989977s
+
+[32m• [SLOW TEST:147.616 seconds][0m
+[sig-scalability] Load capacity
+[90m/go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/framework.go:22[0m
+  [Feature:Performance] should be able to handle 30 pods per node { ReplicationController} with 0 secrets, 0 configmaps and 0 daemons
+  [90m/go/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/test/e2e/scalability/load.go:288[0m
+[90m------------------------------[0m
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0mAug 15 13:49:27.661: INFO: Running AfterSuite actions on all node
+Aug 15 13:49:27.661: INFO: Running AfterSuite actions on node 1
+
+[1m[32mRan 2 of 641 Specs in 251.195 seconds[0m
+[1m[32mSUCCESS![0m -- [32m[1m2 Passed[0m | [91m[1m0 Failed[0m | [33m[1m0 Pending[0m | [36m[1m639 Skipped[0m PASS
+
+Ginkgo ran 1 suite in 4m11.557720933s
+Test Suite Passed
