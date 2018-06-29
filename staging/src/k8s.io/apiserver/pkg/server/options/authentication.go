@@ -228,7 +228,7 @@ func (s *DelegatingAuthenticationOptions) AddFlags(fs *pflag.FlagSet) {
 		"Note that this can result in authentication that treats all requests as anonymous.")
 }
 
-func (s *DelegatingAuthenticationOptions) ApplyTo(authenticationInfo *server.AuthenticationInfo, servingInfo *server.SecureServingInfo, openAPIConfig *openapicommon.Config) error {
+func (s *DelegatingAuthenticationOptions) ApplyTo(authenticationInfo *server.AuthenticationInfo, servingInfo *server.SecureServingInfo, newServingInfo *server.SecureServingInfo, openAPIConfig *openapicommon.Config) error {
 	if s == nil {
 		authenticationInfo.Authenticator = nil
 		return nil
@@ -258,7 +258,7 @@ func (s *DelegatingAuthenticationOptions) ApplyTo(authenticationInfo *server.Aut
 			return fmt.Errorf("unable to load client CA file %q: %v", s.ClientCert.ClientCA, err)
 		}
 		cfg.ClientCertificateCAContentProvider = clientCAProvider
-		if err = authenticationInfo.ApplyClientCert(cfg.ClientCertificateCAContentProvider, servingInfo); err != nil {
+		if err = authenticationInfo.ApplyClientCert(cfg.ClientCertificateCAContentProvider, servingInfo, newServingInfo); err != nil {
 			return fmt.Errorf("unable to assign  client CA file: %v", err)
 		}
 
@@ -271,7 +271,7 @@ func (s *DelegatingAuthenticationOptions) ApplyTo(authenticationInfo *server.Aut
 				return fmt.Errorf("unable to load configmap based client CA file: %v", err)
 			}
 			cfg.ClientCertificateCAContentProvider = clientCAProvider
-			if err = authenticationInfo.ApplyClientCert(cfg.ClientCertificateCAContentProvider, servingInfo); err != nil {
+			if err = authenticationInfo.ApplyClientCert(cfg.ClientCertificateCAContentProvider, servingInfo, newServingInfo); err != nil {
 				return fmt.Errorf("unable to assign configmap based client CA file: %v", err)
 			}
 
@@ -304,7 +304,7 @@ func (s *DelegatingAuthenticationOptions) ApplyTo(authenticationInfo *server.Aut
 	}
 	if requestHeaderConfig != nil {
 		cfg.RequestHeaderConfig = requestHeaderConfig
-		if err = authenticationInfo.ApplyClientCert(cfg.RequestHeaderConfig.CAContentProvider, servingInfo); err != nil {
+		if err = authenticationInfo.ApplyClientCert(cfg.RequestHeaderConfig.CAContentProvider, servingInfo, newServingInfo); err != nil {
 			return fmt.Errorf("unable to load request-header-client-ca-file: %v", err)
 		}
 	}

@@ -82,7 +82,8 @@ const (
 // Its members are sorted roughly in order of importance for composers.
 type Config struct {
 	// SecureServing is required to serve https
-	SecureServing *SecureServingInfo
+	SecureServing    *SecureServingInfo
+	NewSecureServing *SecureServingInfo // For cert (or IP/port) migration
 
 	// Authentication is the configuration for authentication
 	Authentication AuthenticationInfo
@@ -237,6 +238,10 @@ type SecureServingInfo struct {
 	// SNICerts are the TLS certificates used for SNI.
 	SNICerts []dynamiccertificates.SNICertKeyContentProvider
 
+	// IPMigrationCert is the other main server cert which is used during IP migration. If IPMigrationCert
+	// is non-nil, the ClientCA of the current SecureServingInfo must not leak the IPMigrationCert.
+	IPMigrationCert dynamiccertificates.CertKeyContentProvider
+
 	// ClientCA is the certificate bundle for all the signers that you'll recognize for incoming client certificates
 	ClientCA dynamiccertificates.CAContentProvider
 
@@ -345,12 +350,22 @@ func DefaultOpenAPIConfig(getDefinitions openapicommon.GetOpenAPIDefinitions, de
 	}
 }
 
-func (c *AuthenticationInfo) ApplyClientCert(clientCA dynamiccertificates.CAContentProvider, servingInfo *SecureServingInfo) error {
+func (c *AuthenticationInfo) ApplyClientCert(clientCA dynamiccertificates.CAContentProvider, servingInfo *SecureServingInfo, newServingInfo *SecureServingInfo) error {
 	if servingInfo == nil {
 		return nil
 	}
 	if clientCA == nil {
 		return nil
+	}
+	// Set IPMigrationCert once
+	if servingInfo.IPMigrationCert == nil {
+		servingInfo.IPMigrationCert = newServingInfo.Cert
+	}
+	if newServingInfo != nil {
+		// Set IPMigrationCert once
+		if newServingInfo.IPMigrationCert == nil {
+			newServingInfo.IPMigrationCert = servingInfo.Cert
+		}
 	}
 	if servingInfo.ClientCA == nil {
 		servingInfo.ClientCA = clientCA
@@ -542,6 +557,7 @@ func (c completedConfig) New(name string, delegationTarget DelegationTarget) (*G
 		ShutdownTimeout:       c.RequestTimeout,
 		ShutdownDelayDuration: c.ShutdownDelayDuration,
 		SecureServingInfo:     c.SecureServing,
+		NewSecureServingInfo:  c.NewSecureServing,
 		ExternalAddress:       c.ExternalAddress,
 
 		Handler: apiServerHandler,
