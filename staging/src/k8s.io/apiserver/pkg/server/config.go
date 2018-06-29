@@ -83,7 +83,8 @@ const (
 // Its members are sorted roughly in order of importance for composers.
 type Config struct {
 	// SecureServing is required to serve https
-	SecureServing *SecureServingInfo
+	SecureServing    *SecureServingInfo
+	NewSecureServing *SecureServingInfo // For cert (or IP/port) migration
 
 	// Authentication is the configuration for authentication
 	Authentication AuthenticationInfo
@@ -273,6 +274,18 @@ type AuthorizationInfo struct {
 	Authorizer authorizer.Authorizer
 }
 
+func (s *SecureServingInfo) GetCertIssuerCommonName() (string, bool) {
+	// Simplify call sites.
+	if s == nil || s.Cert == nil {
+		return "", false
+	}
+	x509Cert, err := x509.ParseCertificate(s.Cert.Certificate[0])
+	if err != nil {
+		return "", false
+	}
+	return x509Cert.Issuer.CommonName, true
+}
+
 // NewConfig returns a Config struct with the default values
 func NewConfig(codecs serializer.CodecFactory) *Config {
 	defaultHealthChecks := []healthz.HealthChecker{healthz.PingHealthz, healthz.LogHealthz}
@@ -343,7 +356,7 @@ func DefaultOpenAPIConfig(getDefinitions openapicommon.GetOpenAPIDefinitions, de
 	}
 }
 
-func (c *AuthenticationInfo) ApplyClientCert(clientCAFile string, servingInfo *SecureServingInfo) error {
+func (c *AuthenticationInfo) ApplyClientCert(clientCAFile string, servingInfo *SecureServingInfo, newServingInfo *SecureServingInfo) error {
 	if servingInfo != nil {
 		if len(clientCAFile) > 0 {
 			clientCAs, err := certutil.CertsFromFile(clientCAFile)
@@ -353,9 +366,37 @@ func (c *AuthenticationInfo) ApplyClientCert(clientCAFile string, servingInfo *S
 			if servingInfo.ClientCA == nil {
 				servingInfo.ClientCA = x509.NewCertPool()
 			}
+
+			// This code is intended to be easy to cherry-pick, not to be pretty...
+			if newServingInfo != nil {
+				if newServingInfo.ClientCA == nil {
+					newServingInfo.ClientCA = x509.NewCertPool()
+				}
+				avoid, ok := servingInfo.GetCertIssuerCommonName()
+				klog.Infof("new port: must avoid %v %v", avoid, ok)
+				for _, cert := range clientCAs {
+					if ok && cert.Subject.CommonName == avoid {
+						// Ensure the old CA doesn't leak out the new port.
+						klog.Infof("new port: skipping client ca %v", cert.Subject.CommonName)
+						continue
+					}
+					klog.Infof("new port: adding client ca %v", cert.Subject.CommonName)
+					newServingInfo.ClientCA.AddCert(cert)
+				}
+			}
+			avoid, ok := newServingInfo.GetCertIssuerCommonName()
+			klog.Infof("old port: must avoid %v %v", avoid, ok)
+
 			for _, cert := range clientCAs {
+				if ok && cert.Subject.CommonName == avoid {
+					// Ensure the new CA doesn't leak out the old port.
+					klog.Infof("old port: skipping client ca %v", cert.Subject.CommonName)
+					continue
+				}
+				klog.Infof("old port: adding client ca %v", cert.Subject.CommonName)
 				servingInfo.ClientCA.AddCert(cert)
 			}
+
 		}
 	}
 
@@ -513,6 +554,7 @@ func (c completedConfig) New(name string, delegationTarget DelegationTarget) (*G
 		ShutdownTimeout:       c.RequestTimeout,
 		ShutdownDelayDuration: c.ShutdownDelayDuration,
 		SecureServingInfo:     c.SecureServing,
+		NewSecureServingInfo:  c.NewSecureServing,
 		ExternalAddress:       c.ExternalAddress,
 
 		Handler: apiServerHandler,

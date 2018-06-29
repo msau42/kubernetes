@@ -406,7 +406,7 @@ func buildGenericConfig(
 	if lastErr = s.InsecureServing.ApplyTo(&insecureServingInfo, &genericConfig.LoopbackClientConfig); lastErr != nil {
 		return
 	}
-	if lastErr = s.SecureServing.ApplyTo(&genericConfig.SecureServing, &genericConfig.LoopbackClientConfig); lastErr != nil {
+	if lastErr = s.SecureServing.ApplyTo(&genericConfig.SecureServing, &genericConfig.NewSecureServing, &genericConfig.LoopbackClientConfig); lastErr != nil {
 		return
 	}
 	if lastErr = s.Authentication.ApplyTo(genericConfig); lastErr != nil {
