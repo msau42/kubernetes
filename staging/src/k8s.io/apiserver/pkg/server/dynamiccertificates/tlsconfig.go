@@ -49,6 +49,8 @@ type DynamicServingCertificateController struct {
 	servingCert CertKeyContentProvider
 	// sniCerts are a list of CertKeyContentProvider with associated names used for SNI
 	sniCerts []SNICertKeyContentProvider
+	// ipMigrationCert provides the very latest content of the other serving certificate which is used during IP Migration
+	ipMigrationServingCert CertKeyContentProvider
 
 	// currentlyServedContent holds the original bytes that we are serving. This is used to decide if we need to set a
 	// new atomic value. The types used for efficient TLSConfig preclude using the processed value.
@@ -69,16 +71,17 @@ func NewDynamicServingCertificateController(
 	clientCA CAContentProvider,
 	servingCert CertKeyContentProvider,
 	sniCerts []SNICertKeyContentProvider,
+	ipMigrationServingCert CertKeyContentProvider,
 	eventRecorder events.EventRecorder,
 ) *DynamicServingCertificateController {
 	c := &DynamicServingCertificateController{
-		baseTLSConfig: baseTLSConfig,
-		clientCA:      clientCA,
-		servingCert:   servingCert,
-		sniCerts:      sniCerts,
-
-		queue:         workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "DynamicServingCertificateController"),
-		eventRecorder: eventRecorder,
+		baseTLSConfig:          baseTLSConfig,
+		clientCA:               clientCA,
+		servingCert:            servingCert,
+		sniCerts:               sniCerts,
+		ipMigrationServingCert: ipMigrationServingCert,
+		queue:                  workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "DynamicServingCertificateController"),
+		eventRecorder:          eventRecorder,
 	}
 
 	return c
@@ -175,8 +178,16 @@ func (c *DynamicServingCertificateController) syncCerts() error {
 		if err != nil {
 			return fmt.Errorf("unable to load client CA file %q: %v", string(newContent.clientCA.caBundle), err)
 		}
+		avoid, ok := getCertIssuerCommonName(c.ipMigrationServingCert)
+		klog.Infof("ip migration: must avoid %v %v", avoid, ok)
 		for i, cert := range newClientCAs {
 			klog.V(2).Infof("loaded client CA [%d/%q]: %s", i, c.clientCA.Name(), GetHumanCertDetail(cert))
+			if ok && cert.Subject.CommonName == avoid {
+				// Ensure the old CA doesn't leak out the new port.
+				klog.Infof("ip migration: skipping client ca %v", cert.Subject.CommonName)
+				continue
+			}
+			klog.Infof("ip migration: adding client ca %v", cert.Subject.CommonName)
 			if c.eventRecorder != nil {
 				c.eventRecorder.Eventf(nil, nil, v1.EventTypeWarning, "TLSConfigChanged", "CACertificateReload", "loaded client CA [%d/%q]: %s", i, c.clientCA.Name(), GetHumanCertDetail(cert))
 			}
@@ -226,6 +237,23 @@ func (c *DynamicServingCertificateController) syncCerts() error {
 	c.currentlyServedContent = newContent // this is single threaded, so we have no locking issue
 
 	return nil
+}
+
+func getCertIssuerCommonName(p CertKeyContentProvider) (string, bool) {
+	// Simplify call sites.
+	if p == nil {
+		return "", false
+	}
+	c, k := p.CurrentCertKeyContent()
+	cert, err := tls.X509KeyPair(c, k)
+	if err != nil {
+		return "", false
+	}
+	x509Cert, err := x509.ParseCertificate(cert.Certificate[0])
+	if err != nil {
+		return "", false
+	}
+	return x509Cert.Issuer.CommonName, true
 }
 
 // RunOnce runs a single sync step to ensure that we have a valid starting configuration.

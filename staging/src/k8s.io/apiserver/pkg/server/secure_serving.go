@@ -70,6 +70,7 @@ func (s *SecureServingInfo) tlsConfig(stopCh <-chan struct{}) (*tls.Config, erro
 			s.ClientCA,
 			s.Cert,
 			s.SNICerts,
+			s.IPMigrationCert,
 			nil, // TODO see how to plumb an event recorder down in here. For now this results in simply klog messages.
 		)
 		// register if possible

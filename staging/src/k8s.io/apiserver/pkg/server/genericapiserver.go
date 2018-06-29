@@ -106,7 +106,8 @@ type GenericAPIServer struct {
 	admissionControl admission.Interface
 
 	// SecureServingInfo holds configuration of the TLS server.
-	SecureServingInfo *SecureServingInfo
+	SecureServingInfo    *SecureServingInfo
+	NewSecureServingInfo *SecureServingInfo // For cert (or IP/port) migration
 
 	// ExternalAddress is the address (hostname or IP and port) that should be used in
 	// external (public internet) URLs for this GenericAPIServer.
@@ -364,6 +365,7 @@ func (s preparedGenericAPIServer) NonBlockingRun(stopCh <-chan struct{}) error {
 	// Use an internal stop channel to allow cleanup of the listeners on error.
 	internalStopCh := make(chan struct{})
 	var stoppedCh <-chan struct{}
+	var newStoppedCh <-chan struct{}
 	if s.SecureServingInfo != nil && s.Handler != nil {
 		var err error
 		stoppedCh, err = s.SecureServingInfo.Serve(s.Handler, s.ShutdownTimeout, internalStopCh)
@@ -371,6 +373,16 @@ func (s preparedGenericAPIServer) NonBlockingRun(stopCh <-chan struct{}) error {
 			close(internalStopCh)
 			close(auditStopCh)
 			return err
+		}
+	}
+
+	if s.NewSecureServingInfo != nil && s.Handler != nil {
+		var newErr error
+		newStoppedCh, newErr = s.NewSecureServingInfo.Serve(s.Handler, s.ShutdownTimeout, internalStopCh)
+		if newErr != nil {
+			close(internalStopCh)
+			close(auditStopCh)
+			return newErr
 		}
 	}
 
@@ -383,6 +395,9 @@ func (s preparedGenericAPIServer) NonBlockingRun(stopCh <-chan struct{}) error {
 		close(internalStopCh)
 		if stoppedCh != nil {
 			<-stoppedCh
+		}
+		if newStoppedCh != nil {
+			<-newStoppedCh
 		}
 		s.HandlerChainWaitGroup.Wait()
 		close(auditStopCh)
