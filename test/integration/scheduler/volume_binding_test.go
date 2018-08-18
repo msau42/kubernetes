@@ -32,6 +32,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/rand"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	"k8s.io/client-go/informers"
@@ -94,7 +95,7 @@ func TestVolumeBinding(t *testing.T) {
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-scheduling", 2, features, 0)
+	config := setupCluster(t, "volume-scheduling-", 2, features, 0, false)
 	defer config.teardown()
 
 	cases := map[string]struct {
@@ -267,7 +268,7 @@ func TestVolumeBindingRescheduling(t *testing.T) {
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-scheduling", 2, features, 0)
+	config := setupCluster(t, "volume-scheduling-", 2, features, 0, false)
 	defer config.teardown()
 
 	storageClassName := "local-storage"
@@ -402,7 +403,7 @@ func testVolumeBindingStress(t *testing.T, schedulerResyncPeriod time.Duration) 
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-binding-stress", 1, features, schedulerResyncPeriod)
+	config := setupCluster(t, "volume-binding-stress-", 1, features, schedulerResyncPeriod, false)
 	defer config.teardown()
 
 	// Create enough PVs and PVCs for all the pods
@@ -431,7 +432,7 @@ func testVolumeBindingStress(t *testing.T, schedulerResyncPeriod time.Duration) 
 			podPvcs = append(podPvcs, pvcs[j].Name)
 		}
 
-		pod := makePod(fmt.Sprintf("pod%v", i), config.ns, podPvcs)
+		pod := makePod(fmt.Sprintf("pod%03d", i), config.ns, podPvcs)
 		if pod, err := config.client.CoreV1().Pods(config.ns).Create(pod); err != nil {
 			t.Fatalf("Failed to create Pod %q: %v", pod.Name, err)
 		}
@@ -442,7 +443,7 @@ func testVolumeBindingStress(t *testing.T, schedulerResyncPeriod time.Duration) 
 	for _, pod := range pods {
 		// Use increased timeout for stress test because there is a higher chance of
 		// PV sync error
-		if err := waitForPodToScheduleWithTimeout(config.client, pod, 60*time.Second); err != nil {
+		if err := waitForPodToScheduleWithTimeout(config.client, pod, 2*time.Minute); err != nil {
 			t.Errorf("Failed to schedule Pod %q: %v", pod.Name, err)
 		}
 	}
@@ -456,12 +457,142 @@ func testVolumeBindingStress(t *testing.T, schedulerResyncPeriod time.Duration) 
 	}
 }
 
+func testVolumeBindingWithAffinity(t *testing.T, anti bool, numNodes, numPods, numPVsFirstNode int) {
+	features := map[string]bool{
+		"VolumeScheduling":       true,
+		"PersistentLocalVolumes": true,
+	}
+	// TODO: disable equivalence cache until kubernetes/kubernetes#67680 is fixed
+	config := setupCluster(t, "volume-pod-affinity-", numNodes, features, 0, true)
+	defer config.teardown()
+
+	pods := []*v1.Pod{}
+	pvcs := []*v1.PersistentVolumeClaim{}
+	pvs := []*v1.PersistentVolume{}
+
+	// Create PVs for the first node
+	for i := 0; i < numPVsFirstNode; i++ {
+		pv := makePV(fmt.Sprintf("pv-node1-%v", i), classWait, "", "", node1)
+		if pv, err := config.client.CoreV1().PersistentVolumes().Create(pv); err != nil {
+			t.Fatalf("Failed to create PersistentVolume %q: %v", pv.Name, err)
+		}
+		pvs = append(pvs, pv)
+	}
+
+	// Create 1 PV per Node for the remaining nodes
+	for i := 2; i <= numNodes; i++ {
+		pv := makePV(fmt.Sprintf("pv-node%v-0", i), classWait, "", "", fmt.Sprintf("node-%v", i))
+		if pv, err := config.client.CoreV1().PersistentVolumes().Create(pv); err != nil {
+			t.Fatalf("Failed to create PersistentVolume %q: %v", pv.Name, err)
+		}
+		pvs = append(pvs, pv)
+	}
+
+	// Create pods
+	for i := 0; i < numPods; i++ {
+		// Create one pvc per pod
+		pvc := makePVC(fmt.Sprintf("pvc-%v", i), config.ns, &classWait, "")
+		if pvc, err := config.client.CoreV1().PersistentVolumeClaims(config.ns).Create(pvc); err != nil {
+			t.Fatalf("Failed to create PersistentVolumeClaim %q: %v", pvc.Name, err)
+		}
+		pvcs = append(pvcs, pvc)
+
+		// Create pod with pod affinity
+		pod := makePod(fmt.Sprintf("pod%03d", i), config.ns, []string{pvc.Name})
+		pod.Spec.Affinity = &v1.Affinity{}
+		affinityTerms := []v1.PodAffinityTerm{
+			{
+				LabelSelector: &metav1.LabelSelector{
+					MatchExpressions: []metav1.LabelSelectorRequirement{
+						{
+							Key:      "app",
+							Operator: metav1.LabelSelectorOpIn,
+							Values:   []string{"volume-binding-test"},
+						},
+					},
+				},
+				TopologyKey: nodeAffinityLabelKey,
+			},
+		}
+		if anti {
+			pod.Spec.Affinity.PodAntiAffinity = &v1.PodAntiAffinity{
+				RequiredDuringSchedulingIgnoredDuringExecution: affinityTerms,
+			}
+		} else {
+			pod.Spec.Affinity.PodAffinity = &v1.PodAffinity{
+				RequiredDuringSchedulingIgnoredDuringExecution: affinityTerms,
+			}
+		}
+
+		if pod, err := config.client.CoreV1().Pods(config.ns).Create(pod); err != nil {
+			t.Fatalf("Failed to create Pod %q: %v", pod.Name, err)
+		}
+		pods = append(pods, pod)
+	}
+
+	// Validate Pods scheduled
+	scheduledNodes := sets.NewString()
+	for _, pod := range pods {
+		if err := waitForPodToSchedule(config.client, pod); err != nil {
+			t.Errorf("Failed to schedule Pod %q: %v", pod.Name, err)
+		} else {
+			// Keep track of all the nodes that the Pods were scheduled on
+			pod, err = config.client.CoreV1().Pods(config.ns).Get(pod.Name, metav1.GetOptions{})
+			if err != nil {
+				t.Fatalf("Failed to get Pod %q: %v", pod.Name, err)
+			}
+			if pod.Spec.NodeName == "" {
+				t.Fatalf("Pod %q node name unset after scheduling", pod.Name)
+			}
+			scheduledNodes.Insert(pod.Spec.NodeName)
+		}
+	}
+
+	// Validate the affinity policy
+	if anti {
+		// The pods should have been spread across different nodes
+		if scheduledNodes.Len() != numPods {
+			t.Errorf("Pods were scheduled across %v nodes instead of %v", scheduledNodes.Len(), numPods)
+		}
+	} else {
+		// The pods should have been scheduled on 1 node
+		if scheduledNodes.Len() != 1 {
+			t.Errorf("Pods were scheduled across %v nodes instead of %v", scheduledNodes.Len(), 1)
+		}
+	}
+
+	// Validate PVC binding
+	for _, pvc := range pvcs {
+		validatePVCPhase(t, config.client, pvc.Name, config.ns, v1.ClaimBound)
+	}
+}
+
+func TestVolumeBindingWithAntiAffinity(t *testing.T) {
+	numNodes := 10
+	// Create as many pods as number of nodes
+	numPods := numNodes
+	// Create many more PVs on node1 to increase chance of selecting node1
+	numPVsFirstNode := 10 * numNodes
+
+	testVolumeBindingWithAffinity(t, true, numNodes, numPods, numPVsFirstNode)
+}
+
+func TestVolumeBindingWithAffinity(t *testing.T) {
+	numPods := 10
+	// Create many more nodes to increase chance of selecting a PV on a different node than node1
+	numNodes := 10 * numPods
+	// Create numPods PVs on the first node
+	numPVsFirstNode := numPods
+
+	testVolumeBindingWithAffinity(t, true, numNodes, numPods, numPVsFirstNode)
+}
+
 func TestPVAffinityConflict(t *testing.T) {
 	features := map[string]bool{
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-scheduling", 3, features, 0)
+	config := setupCluster(t, "volume-scheduling-", 3, features, 0, false)
 	defer config.teardown()
 
 	pv := makePV("local-pv", classImmediate, "", "", node1)
@@ -519,7 +650,7 @@ func TestPVAffinityConflict(t *testing.T) {
 	}
 }
 
-func setupCluster(t *testing.T, nsName string, numberOfNodes int, features map[string]bool, resyncPeriod time.Duration) *testConfig {
+func setupCluster(t *testing.T, nsName string, numberOfNodes int, features map[string]bool, resyncPeriod time.Duration, disableEquivalenceCache bool) *testConfig {
 	oldFeatures := make(map[string]bool, len(features))
 	for feature := range features {
 		oldFeatures[feature] = utilfeature.DefaultFeatureGate.Enabled(utilfeature.Feature(feature))
@@ -529,7 +660,7 @@ func setupCluster(t *testing.T, nsName string, numberOfNodes int, features map[s
 
 	controllerCh := make(chan struct{})
 
-	context := initTestSchedulerWithOptions(t, initTestMaster(t, nsName, nil), controllerCh, false, nil, false, resyncPeriod)
+	context := initTestSchedulerWithOptions(t, initTestMaster(t, nsName, nil), controllerCh, false, nil, false, disableEquivalenceCache, resyncPeriod)
 
 	clientset := context.clientSet
 	ns := context.ns.Name
@@ -732,6 +863,9 @@ func makePod(name, ns string, pvcs []string) *v1.Pod {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      name,
 			Namespace: ns,
+			Labels: map[string]string{
+				"app": "volume-binding-test",
+			},
 		},
 		Spec: v1.PodSpec{
 			Containers: []v1.Container{
