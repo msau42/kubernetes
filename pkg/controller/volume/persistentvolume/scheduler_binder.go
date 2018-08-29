@@ -253,12 +253,10 @@ func (b *volumeBinder) AssumePodVolumes(assumedPod *v1.Pod, nodeName string) (al
 	}
 
 	// Update cache with the assumed pvcs and pvs
-	if len(newBindings) > 0 {
-		b.podBindingCache.UpdateBindings(assumedPod, nodeName, newBindings)
-	}
-	if len(newProvisionedPVCs) > 0 {
-		b.podBindingCache.UpdateProvisionedPVCs(assumedPod, nodeName, newProvisionedPVCs)
-	}
+	// Even if length is zero, update the cache with an empty slice to indicate that no
+	// operations are needed
+	b.podBindingCache.UpdateBindings(assumedPod, nodeName, newBindings)
+	b.podBindingCache.UpdateProvisionedPVCs(assumedPod, nodeName, newProvisionedPVCs)
 
 	return
 }
@@ -280,6 +278,9 @@ func (b *volumeBinder) BindPodVolumes(assumedPod *v1.Pod) error {
 	}
 
 	return wait.Poll(time.Second, b.bindTimeout, func() (bool, error) {
+		// Get cached values every time in case the pod gets deleted
+		bindings = b.podBindingCache.GetBindings(assumedPod, assumedPod.Spec.NodeName)
+		claimsToProvision = b.podBindingCache.GetProvisionedPVCs(assumedPod, assumedPod.Spec.NodeName)
 		return b.checkBindings(assumedPod, bindings, claimsToProvision)
 	})
 }
@@ -295,6 +296,13 @@ func getPVCName(pvc *v1.PersistentVolumeClaim) string {
 // bindAPIUpdate gets the cached bindings and PVCs to provision in podBindingCache
 // and makes the API update for those PVs/PVCs.
 func (b *volumeBinder) bindAPIUpdate(podName string, bindings []*bindingInfo, claimsToProvision []*v1.PersistentVolumeClaim) error {
+	if bindings == nil {
+		return fmt.Errorf("failed to get cached bindings for pod %q", podName)
+	}
+	if claimsToProvision == nil {
+		return fmt.Errorf("failed to get cached claims to provision for pod %q", podName)
+	}
+
 	lastProcessedBinding := 0
 	lastProcessedProvisioning := 0
 	defer func() {
@@ -345,6 +353,13 @@ func (b *volumeBinder) bindAPIUpdate(podName string, bindings []*bindingInfo, cl
 // binding (and scheduling) needs to be retried
 func (b *volumeBinder) checkBindings(pod *v1.Pod, bindings []*bindingInfo, claimsToProvision []*v1.PersistentVolumeClaim) (bool, error) {
 	podName := getPodName(pod)
+	if bindings == nil {
+		return false, fmt.Errorf("failed to get cached bindings for pod %q", podName)
+	}
+	if claimsToProvision == nil {
+		return false, fmt.Errorf("failed to get cached claims to provision for pod %q", podName)
+	}
+
 	for _, binding := range bindings {
 		// Check for any conditions that might require scheduling retry
 
