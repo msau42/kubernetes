@@ -287,6 +287,11 @@ func NewSchedulerConfig(s schedulerserverconfig.CompletedConfig) (*scheduler.Con
 		storageClassInformer = s.InformerFactory.Storage().V1().StorageClasses()
 	}
 
+	// If not set by the user, this should have been defaulted by component config defaulting
+	if s.ComponentConfig.BindTimeoutSeconds == nil {
+		return nil, fmt.Errorf("bind timeout seconds unset")
+	}
+
 	// Set up the configurator which can create schedulers from configs.
 	configurator := factory.NewConfigFactory(&factory.ConfigFactoryArgs{
 		SchedulerName:                  s.ComponentConfig.SchedulerName,
@@ -305,6 +310,7 @@ func NewSchedulerConfig(s schedulerserverconfig.CompletedConfig) (*scheduler.Con
 		EnableEquivalenceClassCache:    utilfeature.DefaultFeatureGate.Enabled(features.EnableEquivalenceClassCache),
 		DisablePreemption:              s.ComponentConfig.DisablePreemption,
 		PercentageOfNodesToScore:       s.ComponentConfig.PercentageOfNodesToScore,
+		BindTimeoutSeconds:             *s.ComponentConfig.BindTimeoutSeconds,
 	})
 
 	source := s.ComponentConfig.AlgorithmSource
