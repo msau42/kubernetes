@@ -61,7 +61,7 @@ func TestUpdateGetBindings(t *testing.T) {
 	}
 
 	for name, scenario := range scenarios {
-		cache := NewPodBindingCache()
+		cache := NewPodBindingCache(NewBroadcaster())
 
 		// Perform updates
 		updatePod := &v1.Pod{ObjectMeta: metav1.ObjectMeta{Name: scenario.updatePod, Namespace: "ns"}}
@@ -98,7 +98,7 @@ func TestUpdateGetBindings(t *testing.T) {
 func TestDeleteBindings(t *testing.T) {
 	initialBindings := []*bindingInfo{{pvc: &v1.PersistentVolumeClaim{ObjectMeta: metav1.ObjectMeta{Name: "pvc1"}}}}
 	initialProvisionings := []*v1.PersistentVolumeClaim{{ObjectMeta: metav1.ObjectMeta{Name: "pvc2"}}}
-	cache := NewPodBindingCache()
+	cache := NewPodBindingCache(NewBroadcaster())
 
 	pod := &v1.Pod{ObjectMeta: metav1.ObjectMeta{Name: "pod1", Namespace: "ns"}}
 

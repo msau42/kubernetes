@@ -56,6 +56,9 @@ type podBindingCache struct {
 	// Key = pod name
 	// Value = nodeDecisions
 	bindingDecisions map[string]nodeDecisions
+
+	// mechanism to broadcast bindingDecisions updates to listeners
+	broadcaster Broadcaster
 }
 
 // Key = nodeName
@@ -68,37 +71,45 @@ type nodeDecision struct {
 	provisionings []*v1.PersistentVolumeClaim
 }
 
-func NewPodBindingCache() PodBindingCache {
-	return &podBindingCache{bindingDecisions: map[string]nodeDecisions{}}
+func NewPodBindingCache(broadcaster Broadcaster) PodBindingCache {
+	return &podBindingCache{bindingDecisions: map[string]nodeDecisions{}, broadcaster: broadcaster}
 }
 
 func (c *podBindingCache) DeleteBindings(pod *v1.Pod) {
-	c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
+	func() {
+		c.rwMutex.Lock()
+		defer c.rwMutex.Unlock()
 
-	podName := getPodName(pod)
-	delete(c.bindingDecisions, podName)
+		podName := getPodName(pod)
+		delete(c.bindingDecisions, podName)
+	}()
+
+	c.broadcaster.Broadcast()
 }
 
 func (c *podBindingCache) UpdateBindings(pod *v1.Pod, node string, bindings []*bindingInfo) {
-	c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
+	func() {
+		c.rwMutex.Lock()
+		defer c.rwMutex.Unlock()
 
-	podName := getPodName(pod)
-	decisions, ok := c.bindingDecisions[podName]
-	if !ok {
-		decisions = nodeDecisions{}
-		c.bindingDecisions[podName] = decisions
-	}
-	decision, ok := decisions[node]
-	if !ok {
-		decision = nodeDecision{
-			bindings: bindings,
+		podName := getPodName(pod)
+		decisions, ok := c.bindingDecisions[podName]
+		if !ok {
+			decisions = nodeDecisions{}
+			c.bindingDecisions[podName] = decisions
 		}
-	} else {
-		decision.bindings = bindings
-	}
-	decisions[node] = decision
+		decision, ok := decisions[node]
+		if !ok {
+			decision = nodeDecision{
+				bindings: bindings,
+			}
+		} else {
+			decision.bindings = bindings
+		}
+		decisions[node] = decision
+	}()
+
+	c.broadcaster.Broadcast()
 }
 
 func (c *podBindingCache) GetBindings(pod *v1.Pod, node string) []*bindingInfo {
@@ -118,24 +129,28 @@ func (c *podBindingCache) GetBindings(pod *v1.Pod, node string) []*bindingInfo {
 }
 
 func (c *podBindingCache) UpdateProvisionedPVCs(pod *v1.Pod, node string, pvcs []*v1.PersistentVolumeClaim) {
-	c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
+	func() {
+		c.rwMutex.Lock()
+		defer c.rwMutex.Unlock()
 
-	podName := getPodName(pod)
-	decisions, ok := c.bindingDecisions[podName]
-	if !ok {
-		decisions = nodeDecisions{}
-		c.bindingDecisions[podName] = decisions
-	}
-	decision, ok := decisions[node]
-	if !ok {
-		decision = nodeDecision{
-			provisionings: pvcs,
+		podName := getPodName(pod)
+		decisions, ok := c.bindingDecisions[podName]
+		if !ok {
+			decisions = nodeDecisions{}
+			c.bindingDecisions[podName] = decisions
 		}
-	} else {
-		decision.provisionings = pvcs
-	}
-	decisions[node] = decision
+		decision, ok := decisions[node]
+		if !ok {
+			decision = nodeDecision{
+				provisionings: pvcs,
+			}
+		} else {
+			decision.provisionings = pvcs
+		}
+		decisions[node] = decision
+	}()
+
+	c.broadcaster.Broadcast()
 }
 
 func (c *podBindingCache) GetProvisionedPVCs(pod *v1.Pod, node string) []*v1.PersistentVolumeClaim {

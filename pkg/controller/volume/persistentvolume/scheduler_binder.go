@@ -26,7 +26,6 @@ import (
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/apimachinery/pkg/util/wait"
 	coreinformers "k8s.io/client-go/informers/core/v1"
 	storageinformers "k8s.io/client-go/informers/storage/v1"
 	clientset "k8s.io/client-go/kubernetes"
@@ -108,6 +107,9 @@ type volumeBinder struct {
 
 	// Amount of time to wait for the bind operation to succeed
 	bindTimeout time.Duration
+
+	// mechanism to broadcaster and listen to cache updates
+	broadcaster Broadcaster
 }
 
 // NewVolumeBinder sets up all the caches needed for the scheduler to make volume binding decisions.
@@ -124,12 +126,14 @@ func NewVolumeBinder(
 		classLister: storageClassInformer.Lister(),
 	}
 
+	broadcaster := NewBroadcaster()
 	b := &volumeBinder{
 		ctrl:            ctrl,
-		pvcCache:        NewPVCAssumeCache(pvcInformer.Informer()),
-		pvCache:         NewPVAssumeCache(pvInformer.Informer()),
-		podBindingCache: NewPodBindingCache(),
+		pvcCache:        NewPVCAssumeCache(pvcInformer.Informer(), broadcaster),
+		pvCache:         NewPVAssumeCache(pvInformer.Informer(), broadcaster),
+		podBindingCache: NewPodBindingCache(broadcaster),
 		bindTimeout:     bindTimeout,
+		broadcaster:     broadcaster,
 	}
 
 	return b
@@ -277,12 +281,36 @@ func (b *volumeBinder) BindPodVolumes(assumedPod *v1.Pod) error {
 		return err
 	}
 
-	return wait.Poll(time.Second, b.bindTimeout, func() (bool, error) {
+	bid, eventCh := b.broadcaster.Register()
+	defer b.broadcaster.Unregister(bid)
+	glog.V(5).Infof("got listener id %v", bid)
+
+	timer := time.NewTimer(b.bindTimeout)
+	defer timer.Stop()
+
+	for {
+		glog.V(5).Infof("BindPodVolumes: starting checkBindings for pod %q", podName)
+
 		// Get cached values every time in case the pod gets deleted
 		bindings = b.podBindingCache.GetBindings(assumedPod, assumedPod.Spec.NodeName)
 		claimsToProvision = b.podBindingCache.GetProvisionedPVCs(assumedPod, assumedPod.Spec.NodeName)
-		return b.checkBindings(assumedPod, bindings, claimsToProvision)
-	})
+		allBound, err := b.checkBindings(assumedPod, bindings, claimsToProvision)
+		if err != nil {
+			return err
+		}
+		if allBound {
+			glog.V(4).Infof("BindPodVolumes: all volumes bound for pod %q", podName)
+			return nil
+		}
+
+		// Wait for API updates
+		select {
+		case <-eventCh:
+		case <-timer.C:
+			return fmt.Errorf("timed out waiting for volumes to bind for pod %q", podName)
+
+		}
+	}
 }
 
 func getPodName(pod *v1.Pod) string {
@@ -375,7 +403,7 @@ func (b *volumeBinder) checkBindings(pod *v1.Pod, bindings []*bindingInfo, claim
 		}
 
 		// Check if pvc is fully bound
-		if isBound, _, err := b.isPVCBound(binding.pvc.Namespace, binding.pvc.Name); !isBound || err != nil {
+		if isBound, _, err := b.checkPVCBound(binding.pvc.Namespace, binding.pvc.Name); !isBound || err != nil {
 			return false, err
 		}
 
@@ -384,7 +412,7 @@ func (b *volumeBinder) checkBindings(pod *v1.Pod, bindings []*bindingInfo, claim
 	}
 
 	for _, claim := range claimsToProvision {
-		bound, pvc, err := b.isPVCBound(claim.Namespace, claim.Name)
+		bound, pvc, err := b.checkPVCBound(claim.Namespace, claim.Name)
 		if err != nil || pvc == nil {
 			return false, fmt.Errorf("failed to check pvc binding: %v", err)
 		}
@@ -414,10 +442,6 @@ func (b *volumeBinder) isVolumeBound(namespace string, vol *v1.Volume) (bool, *v
 	}
 
 	pvcName := vol.PersistentVolumeClaim.ClaimName
-	return b.isPVCBound(namespace, pvcName)
-}
-
-func (b *volumeBinder) isPVCBound(namespace, pvcName string) (bool, *v1.PersistentVolumeClaim, error) {
 	claim := &v1.PersistentVolumeClaim{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      pvcName,
@@ -428,20 +452,37 @@ func (b *volumeBinder) isPVCBound(namespace, pvcName string) (bool, *v1.Persiste
 	if err != nil || pvc == nil {
 		return false, nil, fmt.Errorf("error getting PVC %q: %v", pvcName, err)
 	}
+	return b.isPVCBound(pvc), pvc, nil
+}
 
+func (b *volumeBinder) checkPVCBound(namespace, pvcName string) (bool, *v1.PersistentVolumeClaim, error) {
+	claim := &v1.PersistentVolumeClaim{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      pvcName,
+			Namespace: namespace,
+		},
+	}
+	pvc, err := b.pvcCache.GetPVC(getPVCName(claim))
+	if err != nil || pvc == nil {
+		return false, nil, fmt.Errorf("error getting PVC %q: %v", pvcName, err)
+	}
+	return b.isPVCBound(pvc), pvc, nil
+}
+
+func (b *volumeBinder) isPVCBound(pvc *v1.PersistentVolumeClaim) bool {
 	pvName := pvc.Spec.VolumeName
 	if pvName != "" {
 		if metav1.HasAnnotation(pvc.ObjectMeta, annBindCompleted) {
 			glog.V(5).Infof("PVC %q is fully bound to PV %q", getPVCName(pvc), pvName)
-			return true, pvc, nil
+			return true
 		} else {
 			glog.V(5).Infof("PVC %q is not fully bound to PV %q", getPVCName(pvc), pvName)
-			return false, pvc, nil
+			return false
 		}
 	}
 
 	glog.V(5).Infof("PVC %q is not bound", getPVCName(pvc))
-	return false, pvc, nil
+	return false
 }
 
 // arePodVolumesBound returns true if all volumes are fully bound

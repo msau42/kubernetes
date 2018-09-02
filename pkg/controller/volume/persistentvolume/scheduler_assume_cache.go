@@ -95,6 +95,9 @@ type assumeCache struct {
 	// Index function for object
 	indexFunc cache.IndexFunc
 	indexName string
+
+	// mechanism to broadcast store updates to listeners
+	broadcaster Broadcaster
 }
 
 type objInfo struct {
@@ -124,11 +127,12 @@ func (c *assumeCache) objInfoIndexFunc(obj interface{}) ([]string, error) {
 	return c.indexFunc(objInfo.latestObj)
 }
 
-func NewAssumeCache(informer cache.SharedIndexInformer, description, indexName string, indexFunc cache.IndexFunc) *assumeCache {
+func NewAssumeCache(informer cache.SharedIndexInformer, description, indexName string, indexFunc cache.IndexFunc, broadcaster Broadcaster) *assumeCache {
 	c := &assumeCache{
 		description: description,
 		indexFunc:   indexFunc,
 		indexName:   indexName,
+		broadcaster: broadcaster,
 	}
 	c.store = cache.NewIndexer(objInfoKeyFunc, cache.Indexers{indexName: c.objInfoIndexFunc})
 
@@ -156,33 +160,42 @@ func (c *assumeCache) add(obj interface{}) {
 		return
 	}
 
-	c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
+	updated := false
+	func() {
+		c.rwMutex.Lock()
+		defer c.rwMutex.Unlock()
 
-	if objInfo, _ := c.getObjInfo(name); objInfo != nil {
-		newVersion, err := c.getObjVersion(name, obj)
-		if err != nil {
-			glog.Errorf("add: couldn't get object version: %v", err)
-			return
+		if objInfo, _ := c.getObjInfo(name); objInfo != nil {
+			newVersion, err := c.getObjVersion(name, obj)
+			if err != nil {
+				glog.Errorf("add: couldn't get object version: %v", err)
+				return
+			}
+
+			storedVersion, err := c.getObjVersion(name, objInfo.latestObj)
+			if err != nil {
+				glog.Errorf("add: couldn't get stored object version: %v", err)
+				return
+			}
+
+			// Only update object if version is newer.
+			// This is so we don't override assumed objects due to informer resync.
+			if newVersion <= storedVersion {
+				glog.V(10).Infof("Skip adding %v %v to assume cache because version %v is not newer than %v", c.description, name, newVersion, storedVersion)
+				return
+			}
 		}
 
-		storedVersion, err := c.getObjVersion(name, objInfo.latestObj)
-		if err != nil {
-			glog.Errorf("add: couldn't get stored object version: %v", err)
-			return
-		}
+		objInfo := &objInfo{name: name, latestObj: obj, apiObj: obj}
+		c.store.Update(objInfo)
+		updated = true
+		glog.V(10).Infof("Adding %v %v to assume cache: %+v ", c.description, name, obj)
+	}()
 
-		// Only update object if version is newer.
-		// This is so we don't override assumed objects due to informer resync.
-		if newVersion <= storedVersion {
-			glog.V(10).Infof("Skip adding %v %v to assume cache because version %v is not newer than %v", c.description, name, newVersion, storedVersion)
-			return
-		}
+	if updated {
+		// Signal that an api update was made
+		c.broadcaster.Broadcast()
 	}
-
-	objInfo := &objInfo{name: name, latestObj: obj, apiObj: obj}
-	c.store.Update(objInfo)
-	glog.V(10).Infof("Adding %v %v to assume cache: %+v ", c.description, name, obj)
 }
 
 func (c *assumeCache) update(oldObj interface{}, newObj interface{}) {
@@ -200,13 +213,20 @@ func (c *assumeCache) delete(obj interface{}) {
 		return
 	}
 
-	c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
+	func() {
+		c.rwMutex.Lock()
+		defer c.rwMutex.Unlock()
 
-	objInfo := &objInfo{name: name}
-	err = c.store.Delete(objInfo)
-	if err != nil {
-		glog.Errorf("delete: failed to delete %v %v: %v", c.description, name, err)
+		objInfo := &objInfo{name: name}
+		err = c.store.Delete(objInfo)
+		if err != nil {
+			glog.Errorf("delete: failed to delete %v %v: %v", c.description, name, err)
+		}
+	}()
+
+	if err == nil {
+		// Signal that an api update was made
+		c.broadcaster.Broadcast()
 	}
 }
 
@@ -278,45 +298,63 @@ func (c *assumeCache) Assume(obj interface{}) error {
 		return &errObjectName{err}
 	}
 
-	c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
+	err = func() error {
+		c.rwMutex.Lock()
+		defer c.rwMutex.Unlock()
 
-	objInfo, err := c.getObjInfo(name)
-	if err != nil {
-		return err
+		objInfo, getErr := c.getObjInfo(name)
+		if getErr != nil {
+			return getErr
+		}
+
+		newVersion, getErr := c.getObjVersion(name, obj)
+		if getErr != nil {
+			return getErr
+		}
+
+		storedVersion, getErr := c.getObjVersion(name, objInfo.latestObj)
+		if getErr != nil {
+			return getErr
+		}
+
+		if newVersion < storedVersion {
+			return fmt.Errorf("%v %q is out of sync", c.description, name)
+		}
+
+		// Only update the cached object
+		objInfo.latestObj = obj
+		glog.V(4).Infof("Assumed %v %q, version %v", c.description, name, newVersion)
+		return nil
+	}()
+
+	if err == nil {
+		// Signal that an update was made
+		c.broadcaster.Broadcast()
 	}
-
-	newVersion, err := c.getObjVersion(name, obj)
-	if err != nil {
-		return err
-	}
-
-	storedVersion, err := c.getObjVersion(name, objInfo.latestObj)
-	if err != nil {
-		return err
-	}
-
-	if newVersion < storedVersion {
-		return fmt.Errorf("%v %q is out of sync", c.description, name)
-	}
-
-	// Only update the cached object
-	objInfo.latestObj = obj
-	glog.V(4).Infof("Assumed %v %q, version %v", c.description, name, newVersion)
-	return nil
+	return err
 }
 
 func (c *assumeCache) Restore(objName string) {
-	c.rwMutex.Lock()
-	defer c.rwMutex.Unlock()
+	updated := false
 
-	objInfo, err := c.getObjInfo(objName)
-	if err != nil {
-		// This could be expected if object got deleted
-		glog.V(5).Infof("Restore %v %q warning: %v", c.description, objName, err)
-	} else {
-		objInfo.latestObj = objInfo.apiObj
-		glog.V(4).Infof("Restored %v %q", c.description, objName)
+	func() {
+		c.rwMutex.Lock()
+		defer c.rwMutex.Unlock()
+
+		objInfo, err := c.getObjInfo(objName)
+		if err != nil {
+			// This could be expected if object got deleted
+			glog.V(5).Infof("Restore %v %q warning: %v", c.description, objName, err)
+		} else {
+			objInfo.latestObj = objInfo.apiObj
+			glog.V(4).Infof("Restored %v %q", c.description, objName)
+			updated = true
+		}
+	}()
+
+	if updated {
+		// Signal that an update was made
+		c.broadcaster.Broadcast()
 	}
 }
 
@@ -339,8 +377,8 @@ func pvStorageClassIndexFunc(obj interface{}) ([]string, error) {
 	return []string{""}, fmt.Errorf("object is not a v1.PersistentVolume: %v", obj)
 }
 
-func NewPVAssumeCache(informer cache.SharedIndexInformer) PVAssumeCache {
-	return &pvAssumeCache{assumeCache: NewAssumeCache(informer, "v1.PersistentVolume", "storageclass", pvStorageClassIndexFunc)}
+func NewPVAssumeCache(informer cache.SharedIndexInformer, broadcaster Broadcaster) PVAssumeCache {
+	return &pvAssumeCache{assumeCache: NewAssumeCache(informer, "v1.PersistentVolume", "storageclass", pvStorageClassIndexFunc, broadcaster)}
 }
 
 func (c *pvAssumeCache) GetPV(pvName string) (*v1.PersistentVolume, error) {
@@ -387,8 +425,8 @@ type pvcAssumeCache struct {
 	*assumeCache
 }
 
-func NewPVCAssumeCache(informer cache.SharedIndexInformer) PVCAssumeCache {
-	return &pvcAssumeCache{assumeCache: NewAssumeCache(informer, "v1.PersistentVolumeClaim", "namespace", cache.MetaNamespaceIndexFunc)}
+func NewPVCAssumeCache(informer cache.SharedIndexInformer, broadcaster Broadcaster) PVCAssumeCache {
+	return &pvcAssumeCache{assumeCache: NewAssumeCache(informer, "v1.PersistentVolumeClaim", "namespace", cache.MetaNamespaceIndexFunc, broadcaster)}
 }
 
 func (c *pvcAssumeCache) GetPVC(pvcKey string) (*v1.PersistentVolumeClaim, error) {
