@@ -20,6 +20,7 @@ package scheduler
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -39,6 +40,7 @@ import (
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/kubernetes/pkg/controller/volume/persistentvolume"
 	persistentvolumeoptions "k8s.io/kubernetes/pkg/controller/volume/persistentvolume/options"
+	"k8s.io/kubernetes/pkg/scheduler/algorithm/predicates"
 	"k8s.io/kubernetes/pkg/volume"
 	volumetest "k8s.io/kubernetes/pkg/volume/testing"
 	imageutils "k8s.io/kubernetes/test/utils/image"
@@ -61,6 +63,7 @@ var (
 
 	classWait      = "wait"
 	classImmediate = "immediate"
+	classDynamic   = "dynamic"
 
 	sharedClasses = map[storagev1.VolumeBindingMode]*storagev1.StorageClass{
 		modeImmediate: makeStorageClass(classImmediate, &modeImmediate),
@@ -95,7 +98,7 @@ func TestVolumeBinding(t *testing.T) {
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-scheduling-", 2, features, 0, false)
+	config := setupCluster(t, "volume-scheduling-", 2, features, 0, 0, false)
 	defer config.teardown()
 
 	cases := map[string]struct {
@@ -268,7 +271,7 @@ func TestVolumeBindingRescheduling(t *testing.T) {
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-scheduling-", 2, features, 0, false)
+	config := setupCluster(t, "volume-scheduling-", 2, features, 0, 0, false)
 	defer config.teardown()
 
 	storageClassName := "local-storage"
@@ -386,8 +389,9 @@ func TestVolumeBindingRescheduling(t *testing.T) {
 }
 
 // TestVolumeBindingStress creates <podLimit> pods, each with <volsPerPod> unbound PVCs.
+// PVs are precreated.
 func TestVolumeBindingStress(t *testing.T) {
-	testVolumeBindingStress(t, 0)
+	testVolumeBindingStress(t, 0, false, 0)
 }
 
 // Like TestVolumeBindingStress but with scheduler resync. In real cluster,
@@ -395,32 +399,60 @@ func TestVolumeBindingStress(t *testing.T) {
 // service/node update events.
 // This is useful to detect possible race conditions.
 func TestVolumeBindingStressWithSchedulerResync(t *testing.T) {
-	testVolumeBindingStress(t, time.Second)
+	testVolumeBindingStress(t, time.Second, false, 0)
 }
 
-func testVolumeBindingStress(t *testing.T, schedulerResyncPeriod time.Duration) {
+// Like TestVolumeBindingStress but with fast dynamic provisioning
+func TestVolumeBindingDynamicStressFast(t *testing.T) {
+	testVolumeBindingStress(t, 0, true, 0)
+}
+
+// Like TestVolumeBindingStress but with slow dynamic provisioning
+func TestVolumeBindingDynamicStressSlow(t *testing.T) {
+	testVolumeBindingStress(t, 0, true, 30)
+}
+
+func testVolumeBindingStress(t *testing.T, schedulerResyncPeriod time.Duration, dynamic bool, provisionDelaySeconds int) {
 	features := map[string]bool{
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-binding-stress-", 1, features, schedulerResyncPeriod, false)
+	config := setupCluster(t, "volume-binding-stress-", 1, features, schedulerResyncPeriod, provisionDelaySeconds, false)
 	defer config.teardown()
+
+	// Set max volume limit to the number of PVCs the test will create
+	// TODO: remove when max volume limit allows setting through storageclass
+	if err := os.Setenv(predicates.KubeMaxPDVols, fmt.Sprintf("%v", podLimit*volsPerPod)); err != nil {
+		t.Fatalf("failed to set max pd limit: %v", err)
+	}
+	defer os.Unsetenv(predicates.KubeMaxPDVols)
+
+	scName := &classWait
+	if dynamic {
+		scName = &classDynamic
+		sc := makeDynamicProvisionerStorageClass(*scName, &modeWait)
+		if _, err := config.client.StorageV1().StorageClasses().Create(sc); err != nil {
+			t.Fatalf("Failed to create StorageClass %q: %v", sc.Name, err)
+		}
+	}
 
 	// Create enough PVs and PVCs for all the pods
 	pvs := []*v1.PersistentVolume{}
 	pvcs := []*v1.PersistentVolumeClaim{}
 	for i := 0; i < podLimit*volsPerPod; i++ {
-		pv := makePV(fmt.Sprintf("pv-stress-%v", i), classWait, "", "", node1)
-		pvc := makePVC(fmt.Sprintf("pvc-stress-%v", i), config.ns, &classWait, "")
-
-		if pv, err := config.client.CoreV1().PersistentVolumes().Create(pv); err != nil {
-			t.Fatalf("Failed to create PersistentVolume %q: %v", pv.Name, err)
+		// Don't create pvs for dynamic provisioning test
+		if !dynamic {
+			pv := makePV(fmt.Sprintf("pv-stress-%v", i), *scName, "", "", node1)
+			if pv, err := config.client.CoreV1().PersistentVolumes().Create(pv); err != nil {
+				t.Fatalf("Failed to create PersistentVolume %q: %v", pv.Name, err)
+			}
+			pvs = append(pvs, pv)
 		}
+
+		pvc := makePVC(fmt.Sprintf("pvc-stress-%v", i), config.ns, scName, "")
 		if pvc, err := config.client.CoreV1().PersistentVolumeClaims(config.ns).Create(pvc); err != nil {
 			t.Fatalf("Failed to create PersistentVolumeClaim %q: %v", pvc.Name, err)
 		}
-
-		pvs = append(pvs, pv)
 		pvcs = append(pvcs, pvc)
 	}
 
@@ -463,7 +495,7 @@ func testVolumeBindingWithAffinity(t *testing.T, anti bool, numNodes, numPods, n
 		"PersistentLocalVolumes": true,
 	}
 	// TODO: disable equivalence cache until kubernetes/kubernetes#67680 is fixed
-	config := setupCluster(t, "volume-pod-affinity-", numNodes, features, 0, true)
+	config := setupCluster(t, "volume-pod-affinity-", numNodes, features, 0, 0, true)
 	defer config.teardown()
 
 	pods := []*v1.Pod{}
@@ -592,7 +624,7 @@ func TestPVAffinityConflict(t *testing.T) {
 		"VolumeScheduling":       true,
 		"PersistentLocalVolumes": true,
 	}
-	config := setupCluster(t, "volume-scheduling-", 3, features, 0, false)
+	config := setupCluster(t, "volume-scheduling-", 3, features, 0, 0, false)
 	defer config.teardown()
 
 	pv := makePV("local-pv", classImmediate, "", "", node1)
@@ -650,7 +682,7 @@ func TestPVAffinityConflict(t *testing.T) {
 	}
 }
 
-func setupCluster(t *testing.T, nsName string, numberOfNodes int, features map[string]bool, resyncPeriod time.Duration, disableEquivalenceCache bool) *testConfig {
+func setupCluster(t *testing.T, nsName string, numberOfNodes int, features map[string]bool, resyncPeriod time.Duration, provisionDelaySeconds int, disableEquivalenceCache bool) *testConfig {
 	oldFeatures := make(map[string]bool, len(features))
 	for feature := range features {
 		oldFeatures[feature] = utilfeature.DefaultFeatureGate.Enabled(utilfeature.Feature(feature))
@@ -674,6 +706,7 @@ func setupCluster(t *testing.T, nsName string, numberOfNodes int, features map[s
 		Host:                   host,
 		Config:                 volume.VolumeConfig{},
 		LastProvisionerOptions: volume.VolumeOptions{},
+		ProvisionDelaySeconds:  provisionDelaySeconds,
 		NewAttacherCallCount:   0,
 		NewDetacherCallCount:   0,
 		Mounters:               nil,
