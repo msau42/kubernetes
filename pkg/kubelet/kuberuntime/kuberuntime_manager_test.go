@@ -17,6 +17,7 @@ limitations under the License.
 package kuberuntime
 
 import (
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -159,6 +160,7 @@ func makeFakeContainer(t *testing.T, m *kubeGenericRuntimeManager, template cont
 			State:       template.state,
 			Labels:      containerConfig.Labels,
 			Annotations: containerConfig.Annotations,
+			LogPath:     filepath.Join(sandboxConfig.GetLogDirectory(), containerConfig.GetLogPath()),
 		},
 		SandboxID: podSandboxID,
 	}

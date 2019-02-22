@@ -157,10 +157,10 @@ func TestCRIListPodStats(t *testing.T) {
 	}
 
 	fakeLogStats := map[string]*volume.Metrics{
-		kuberuntime.BuildContainerLogsDirectory(types.UID("sandbox0-uid"), cName0): containerLogStats0,
-		kuberuntime.BuildContainerLogsDirectory(types.UID("sandbox0-uid"), cName1): containerLogStats1,
-		kuberuntime.BuildContainerLogsDirectory(types.UID("sandbox1-uid"), cName2): containerLogStats2,
-		kuberuntime.BuildContainerLogsDirectory(types.UID("sandbox2-uid"), cName3): containerLogStats4,
+		kuberuntime.BuildContainerLogsDirectory("sandbox0-ns", "sandbox0-name", types.UID("sandbox0-uid"), cName0): containerLogStats0,
+		kuberuntime.BuildContainerLogsDirectory("sandbox0-ns", "sandbox0-name", types.UID("sandbox0-uid"), cName1): containerLogStats1,
+		kuberuntime.BuildContainerLogsDirectory("sandbox1-ns", "sandbox1-name", types.UID("sandbox1-uid"), cName2): containerLogStats2,
+		kuberuntime.BuildContainerLogsDirectory("sandbox2-ns", "sandbox2-name", types.UID("sandbox2-uid"), cName3): containerLogStats4,
 	}
 	fakeLogStatsProvider := NewFakeLogMetricsService(fakeLogStats)
 

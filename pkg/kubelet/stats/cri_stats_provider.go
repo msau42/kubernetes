@@ -146,7 +146,7 @@ func (p *criStatsProvider) ListPodStats() ([]statsapi.PodStats, error) {
 		}
 
 		// Fill available stats for full set of required pod stats
-		cs := p.makeContainerStats(stats, container, &rootFsInfo, fsIDtoInfo, podSandbox.GetMetadata().GetUid())
+		cs := p.makeContainerStats(stats, container, &rootFsInfo, fsIDtoInfo, podSandbox.GetMetadata())
 		p.addPodNetworkStats(ps, podSandboxID, caInfos, cs)
 		p.addPodCPUMemoryStats(ps, types.UID(podSandbox.Metadata.Uid), allInfos, cs)
 
@@ -419,7 +419,7 @@ func (p *criStatsProvider) makeContainerStats(
 	container *runtimeapi.Container,
 	rootFsInfo *cadvisorapiv2.FsInfo,
 	fsIDtoInfo map[runtimeapi.FilesystemIdentifier]*cadvisorapiv2.FsInfo,
-	uid string,
+	meta *runtimeapi.PodSandboxMetadata,
 ) *statsapi.ContainerStats {
 	result := &statsapi.ContainerStats{
 		Name: stats.Attributes.Metadata.Name,
@@ -469,7 +469,12 @@ func (p *criStatsProvider) makeContainerStats(
 			result.Rootfs.Inodes = imageFsInfo.Inodes
 		}
 	}
-	containerLogPath := kuberuntime.BuildContainerLogsDirectory(types.UID(uid), container.GetMetadata().GetName())
+	// NOTE: This doesn't support the old pod log path, `/var/log/pods/UID`. For containers
+	// using old log path, empty log stats are returned. This is fine, because we don't
+	// officially support in-place upgrade anyway.
+	containerLogPath := kuberuntime.BuildContainerLogsDirectory(meta.GetNamespace(),
+		meta.GetName(), types.UID(meta.GetUid()), container.GetMetadata().GetName())
+	// TODO(random-liu): Collect log stats for logs under the pod log directory.
 	result.Logs = p.getContainerLogStats(containerLogPath, rootFsInfo)
 	return result
 }
