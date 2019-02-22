@@ -131,7 +131,7 @@ func (p *cadvisorStatsProvider) ListPodStats() ([]statsapi.PodStats, error) {
 			copy(ephemeralStats, vstats.EphemeralVolumes)
 			podStats.VolumeStats = append(vstats.EphemeralVolumes, vstats.PersistentVolumes...)
 		}
-		podStats.EphemeralStorage = calcEphemeralStorage(podStats.Containers, ephemeralStats, &rootFsInfo)
+		podStats.EphemeralStorage = calcEphemeralStorage(podStats.Containers, ephemeralStats, &rootFsInfo, nil, false)
 		// Lookup the pod-level cgroup's CPU and memory stats
 		podInfo := getCadvisorPodInfoFromPodUID(podUID, allInfos)
 		if podInfo != nil {
@@ -207,7 +207,8 @@ func (p *cadvisorStatsProvider) ListPodCPUAndMemoryStats() ([]statsapi.PodStats,
 	return result, nil
 }
 
-func calcEphemeralStorage(containers []statsapi.ContainerStats, volumes []statsapi.VolumeStats, rootFsInfo *cadvisorapiv2.FsInfo) *statsapi.FsStats {
+func calcEphemeralStorage(containers []statsapi.ContainerStats, volumes []statsapi.VolumeStats, rootFsInfo *cadvisorapiv2.FsInfo,
+	podLogStats *statsapi.FsStats, isCRIStatsProvider bool) *statsapi.FsStats {
 	result := &statsapi.FsStats{
 		Time:           metav1.NewTime(rootFsInfo.Timestamp),
 		AvailableBytes: &rootFsInfo.Available,
@@ -216,23 +217,32 @@ func calcEphemeralStorage(containers []statsapi.ContainerStats, volumes []statsa
 		Inodes:         rootFsInfo.Inodes,
 	}
 	for _, container := range containers {
-		addContainerUsage(result, &container)
+		addContainerUsage(result, &container, isCRIStatsProvider)
 	}
 	for _, volume := range volumes {
 		result.UsedBytes = addUsage(result.UsedBytes, volume.FsStats.UsedBytes)
 		result.InodesUsed = addUsage(result.InodesUsed, volume.InodesUsed)
 		result.Time = maxUpdateTime(&result.Time, &volume.FsStats.Time)
 	}
+	if podLogStats != nil {
+		result.UsedBytes = addUsage(result.UsedBytes, podLogStats.UsedBytes)
+		result.InodesUsed = addUsage(result.InodesUsed, podLogStats.InodesUsed)
+		result.Time = maxUpdateTime(&result.Time, &podLogStats.Time)
+	}
 	return result
 }
 
-func addContainerUsage(stat *statsapi.FsStats, container *statsapi.ContainerStats) {
+func addContainerUsage(stat *statsapi.FsStats, container *statsapi.ContainerStats, isCRIStatsProvider bool) {
 	if rootFs := container.Rootfs; rootFs != nil {
 		stat.Time = maxUpdateTime(&stat.Time, &rootFs.Time)
 		stat.InodesUsed = addUsage(stat.InodesUsed, rootFs.InodesUsed)
 		stat.UsedBytes = addUsage(stat.UsedBytes, rootFs.UsedBytes)
 		if logs := container.Logs; logs != nil {
 			stat.UsedBytes = addUsage(stat.UsedBytes, logs.UsedBytes)
+			// We have accurate container log inode usage for CRI stats provider.
+			if isCRIStatsProvider {
+				stat.InodesUsed = addUsage(stat.InodesUsed, logs.InodesUsed)
+			}
 			stat.Time = maxUpdateTime(&stat.Time, &logs.Time)
 		}
 	}

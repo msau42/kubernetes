@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"path"
+	"path/filepath"
 	"sort"
 	"strings"
 	"time"
@@ -34,6 +35,7 @@ import (
 	runtimeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/runtime/v1alpha2"
 	statsapi "k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1"
 	"k8s.io/kubernetes/pkg/kubelet/cadvisor"
+	kubecontainer "k8s.io/kubernetes/pkg/kubelet/container"
 	"k8s.io/kubernetes/pkg/kubelet/kuberuntime"
 	"k8s.io/kubernetes/pkg/kubelet/server/stats"
 	kubetypes "k8s.io/kubernetes/pkg/kubelet/types"
@@ -55,6 +57,8 @@ type criStatsProvider struct {
 	imageService internalapi.ImageManagerService
 	// logMetrics provides the metrics for container logs
 	logMetricsService LogMetricsService
+	// osInterface is the interface for syscalls.
+	osInterface kubecontainer.OSInterface
 }
 
 // newCRIStatsProvider returns a containerStatsProvider implementation that
@@ -65,6 +69,7 @@ func newCRIStatsProvider(
 	runtimeService internalapi.RuntimeService,
 	imageService internalapi.ImageManagerService,
 	logMetricsService LogMetricsService,
+	osInterface kubecontainer.OSInterface,
 ) containerStatsProvider {
 	return &criStatsProvider{
 		cadvisor:          cadvisor,
@@ -72,6 +77,7 @@ func newCRIStatsProvider(
 		runtimeService:    runtimeService,
 		imageService:      imageService,
 		logMetricsService: logMetricsService,
+		osInterface:       osInterface,
 	}
 }
 
@@ -338,13 +344,22 @@ func buildPodStats(podSandbox *runtimeapi.PodSandbox) *statsapi.PodStats {
 }
 
 func (p *criStatsProvider) makePodStorageStats(s *statsapi.PodStats, rootFsInfo *cadvisorapiv2.FsInfo) *statsapi.PodStats {
+	podNs := s.PodRef.Namespace
+	podName := s.PodRef.Name
 	podUID := types.UID(s.PodRef.UID)
-	if vstats, found := p.resourceAnalyzer.GetPodVolumeStats(podUID); found {
-		ephemeralStats := make([]statsapi.VolumeStats, len(vstats.EphemeralVolumes))
-		copy(ephemeralStats, vstats.EphemeralVolumes)
-		s.VolumeStats = append(vstats.EphemeralVolumes, vstats.PersistentVolumes...)
-		s.EphemeralStorage = calcEphemeralStorage(s.Containers, ephemeralStats, rootFsInfo)
+	vstats, found := p.resourceAnalyzer.GetPodVolumeStats(podUID)
+	if !found {
+		return s
 	}
+	podLogDir := kuberuntime.BuildPodLogsDirectory(podNs, podName, podUID)
+	logStats, err := p.getPodLogStats(podLogDir, rootFsInfo)
+	if err != nil {
+		klog.Errorf("Unable to fetch pod log stats for path %s: %v ", podLogDir, err)
+	}
+	ephemeralStats := make([]statsapi.VolumeStats, len(vstats.EphemeralVolumes))
+	copy(ephemeralStats, vstats.EphemeralVolumes)
+	s.VolumeStats = append(vstats.EphemeralVolumes, vstats.PersistentVolumes...)
+	s.EphemeralStorage = calcEphemeralStorage(s.Containers, ephemeralStats, rootFsInfo, logStats, true)
 	return s
 }
 
@@ -472,10 +487,15 @@ func (p *criStatsProvider) makeContainerStats(
 	// NOTE: This doesn't support the old pod log path, `/var/log/pods/UID`. For containers
 	// using old log path, empty log stats are returned. This is fine, because we don't
 	// officially support in-place upgrade anyway.
-	containerLogPath := kuberuntime.BuildContainerLogsDirectory(meta.GetNamespace(),
-		meta.GetName(), types.UID(meta.GetUid()), container.GetMetadata().GetName())
-	// TODO(random-liu): Collect log stats for logs under the pod log directory.
-	result.Logs = p.getContainerLogStats(containerLogPath, rootFsInfo)
+	var (
+		containerLogPath = kuberuntime.BuildContainerLogsDirectory(meta.GetNamespace(),
+			meta.GetName(), types.UID(meta.GetUid()), container.GetMetadata().GetName())
+		err error
+	)
+	result.Logs, err = p.getPathFsStats(containerLogPath, rootFsInfo)
+	if err != nil {
+		klog.Errorf("Unable to fetch container log stats for path %s: %v ", containerLogPath, err)
+	}
 	return result
 }
 
@@ -579,13 +599,11 @@ func getCRICadvisorStats(infos map[string]cadvisorapiv2.ContainerInfo) map[strin
 	return stats
 }
 
-// TODO Cache the metrics in container log manager
-func (p *criStatsProvider) getContainerLogStats(path string, rootFsInfo *cadvisorapiv2.FsInfo) *statsapi.FsStats {
+func (p *criStatsProvider) getPathFsStats(path string, rootFsInfo *cadvisorapiv2.FsInfo) (*statsapi.FsStats, error) {
 	m := p.logMetricsService.createLogMetricsProvider(path)
 	logMetrics, err := m.GetMetrics()
 	if err != nil {
-		klog.Errorf("Unable to fetch container log stats for path %s: %v ", path, err)
-		return nil
+		return nil, err
 	}
 	result := &statsapi.FsStats{
 		Time:           metav1.NewTime(rootFsInfo.Timestamp),
@@ -598,5 +616,40 @@ func (p *criStatsProvider) getContainerLogStats(path string, rootFsInfo *cadviso
 	result.UsedBytes = &usedbytes
 	inodesUsed := uint64(logMetrics.InodesUsed.Value())
 	result.InodesUsed = &inodesUsed
-	return result
+	result.Time = maxUpdateTime(&result.Time, &logMetrics.Time)
+	return result, nil
+}
+
+// getPodLogStats gets stats for logs under the pod log directory. Container logs usually exist
+// under the container log directory. However, for some container runtimes, e.g. kata, gvisor,
+// they may want to keep some pod level logs, in that case they can put those logs directly under
+// the pod log directory. And kubelet will take those logs into account as part of pod ephemeral
+// storage.
+func (p *criStatsProvider) getPodLogStats(path string, rootFsInfo *cadvisorapiv2.FsInfo) (*statsapi.FsStats, error) {
+	files, err := p.osInterface.ReadDir(path)
+	if err != nil {
+		return nil, err
+	}
+	result := &statsapi.FsStats{
+		Time:           metav1.NewTime(rootFsInfo.Timestamp),
+		AvailableBytes: &rootFsInfo.Available,
+		CapacityBytes:  &rootFsInfo.Capacity,
+		InodesFree:     rootFsInfo.InodesFree,
+		Inodes:         rootFsInfo.Inodes,
+	}
+	for _, f := range files {
+		if f.IsDir() {
+			continue
+		}
+		// Only include *files* under pod log directory.
+		fpath := filepath.Join(path, f.Name())
+		fstats, err := p.getPathFsStats(fpath, rootFsInfo)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get fsstats for %q: %v", fpath, err)
+		}
+		result.UsedBytes = addUsage(result.UsedBytes, fstats.UsedBytes)
+		result.InodesUsed = addUsage(result.InodesUsed, fstats.InodesUsed)
+		result.Time = maxUpdateTime(&result.Time, &fstats.Time)
+	}
+	return result, nil
 }
