@@ -170,7 +170,7 @@ current-context: cluster
 			servingInfo := &server.SecureServingInfo{}
 			openAPIConfig := &openapicommon.Config{}
 
-			err := tc.options.ApplyTo(c, servingInfo, openAPIConfig)
+			err := tc.options.ApplyTo(c, servingInfo, nil, openAPIConfig)
 			if (err != nil) != tc.expectError {
 				t.Errorf("expected error=%v, got %v", tc.expectError, err)
 			}
