@@ -126,6 +126,13 @@ type KubeletFlags struct {
 	// Its corresponding flag only gets registered in Windows builds.
 	WindowsService bool
 
+	// EXPERIMENTAL FLAGS
+	// Collection of Linux kernel parameters (sysctls) that will be applied to
+	// the pods running on this node.
+	// +optional
+	PodSysctls map[string]string
+	// containerized should be set to true if kubelet is running in a container.
+	Containerized bool
 	// remoteRuntimeEndpoint is the endpoint of remote runtime service
 	RemoteRuntimeEndpoint string
 	// remoteImageEndpoint is the endpoint of remote image service
@@ -205,6 +212,7 @@ func NewKubeletFlags() *KubeletFlags {
 		ContainerRuntimeOptions:             *NewContainerRuntimeOptions(),
 		CertDirectory:                       "/var/lib/kubelet/pki",
 		RootDirectory:                       defaultRootDir,
+		PodSysctls:                          make(map[string]string),
 		MasterServiceNamespace:              metav1.NamespaceDefault,
 		MaxContainerCount:                   -1,
 		MaxPerPodContainerCount:             1,
@@ -384,6 +392,8 @@ func (f *KubeletFlags) AddFlags(mainfs *pflag.FlagSet) {
 
 	// EXPERIMENTAL FLAGS
 	fs.StringVar(&f.ExperimentalMounterPath, "experimental-mounter-path", f.ExperimentalMounterPath, "[Experimental] Path of mounter binary. Leave empty to use the default mount.")
+	bindablePodSysctls := cliflag.ConfigurationMap(f.PodSysctls)
+	fs.Var(&bindablePodSysctls, "pod-sysctls", "List of Linux kernel parameters (sysctls) that will be applied to the pods running on this node. Must be specified as key=value pairs separated by ','.")
 	fs.BoolVar(&f.ExperimentalKernelMemcgNotification, "experimental-kernel-memcg-notification", f.ExperimentalKernelMemcgNotification, "If enabled, the kubelet will integrate with the kernel memcg notification to determine if memory eviction thresholds are crossed rather than polling.")
 	fs.StringVar(&f.RemoteRuntimeEndpoint, "container-runtime-endpoint", f.RemoteRuntimeEndpoint, "[Experimental] The endpoint of remote runtime service. Currently unix socket endpoint is supported on Linux, while npipe and tcp endpoints are supported on windows.  Examples:'unix:///var/run/dockershim.sock', 'npipe:////./pipe/dockershim'")
 	fs.StringVar(&f.RemoteImageEndpoint, "image-service-endpoint", f.RemoteImageEndpoint, "[Experimental] The endpoint of remote image service. If not specified, it will be the same with container-runtime-endpoint by default. Currently unix socket endpoint is supported on Linux, while npipe and tcp endpoints are supported on windows.  Examples:'unix:///var/run/dockershim.sock', 'npipe:////./pipe/dockershim'")
