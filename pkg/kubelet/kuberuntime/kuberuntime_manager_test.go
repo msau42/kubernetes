@@ -27,7 +27,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -1307,4 +1307,80 @@ func makeBasePodAndStatusWithInitAndEphemeralContainers() (*v1.Pod, *kubecontain
 		Hash: kubecontainer.HashContainer((*v1.Container)(&pod.Spec.EphemeralContainers[0].EphemeralContainerCommon)),
 	})
 	return pod, status
+}
+
+func TestSysctlFiltering(t *testing.T) {
+	_, _, m, err := createTestRuntimeManager()
+	assert.NoError(t, err)
+	m.podSysctls = map[string]string{
+		"net.somaxconn":     "1024",
+		"kernel.msgmax":     "true",
+		"fs.mqueue.msg_max": "1024",
+		"kernel.domainname": "my-name",
+		"kernel.hostname":   "my-name",
+		"non.whitelisted":   "true",
+	}
+
+	createTestPodFunc := func(hostNetwork, hostIPC bool) *v1.Pod {
+		return &v1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
+				UID:       "12345678",
+				Name:      "foo",
+				Namespace: "new",
+			},
+			Spec: v1.PodSpec{
+				HostNetwork: hostNetwork,
+				HostIPC:     hostIPC,
+				Containers: []v1.Container{
+					{
+						Name:            "foo1",
+						Image:           "busybox",
+						ImagePullPolicy: v1.PullIfNotPresent,
+					},
+				},
+			},
+		}
+	}
+
+	for _, test := range []struct {
+		hostNetwork     bool
+		hostIPC         bool
+		expectedSysctls map[string]string
+	}{
+		{
+			expectedSysctls: map[string]string{
+				"net.somaxconn":     "1024",
+				"kernel.msgmax":     "true",
+				"fs.mqueue.msg_max": "1024",
+				"kernel.domainname": "my-name",
+			},
+		},
+		{
+			hostNetwork: true,
+			expectedSysctls: map[string]string{
+				"kernel.msgmax":     "true",
+				"fs.mqueue.msg_max": "1024",
+			},
+		},
+		{
+			hostIPC: true,
+			expectedSysctls: map[string]string{
+				"net.somaxconn":     "1024",
+				"kernel.domainname": "my-name",
+			},
+		},
+		{
+			hostNetwork:     true,
+			hostIPC:         true,
+			expectedSysctls: map[string]string{},
+		},
+	} {
+		pod := createTestPodFunc(test.hostNetwork, test.hostIPC)
+		template := sandboxTemplate{pod, 1, fakeCreatedAt, runtimeapi.PodSandboxState_SANDBOX_READY}
+		config, err := m.generatePodSandboxConfig(template.pod, template.attempt)
+		assert.NoError(t, err)
+		if !reflect.DeepEqual(test.expectedSysctls, config.Linux.Sysctls) {
+			t.Errorf("Expected sysctls %v, got %v", test.expectedSysctls, config.Linux.Sysctls)
+		}
+	}
 }
