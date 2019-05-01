@@ -23,7 +23,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	appsv1 "k8s.io/api/apps/v1"
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
@@ -370,6 +370,89 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 				ss, err = c.AppsV1().StatefulSets(ns).Create(spec)
 				framework.ExpectNoError(err)
 				ssTester.WaitForRunningAndReady(1, ss)
+			})
+		})
+	})
+
+	Describe("msau testing", func() {
+		Context("secrets", func() {
+			It("should be able to support many secrets", func() {
+				numSecretsPerPod := 15
+				numPods := 50
+				numSecrets := numPods * numSecretsPerPod
+
+				pods := []*v1.Pod{}
+
+				By("Creating secrets")
+				secrets := []*v1.Secret{}
+				for i := 0; i < numSecrets; i++ {
+					secretName := fmt.Sprintf("secret%v", i)
+					s := &v1.Secret{
+						ObjectMeta: metav1.ObjectMeta{
+							Namespace: ns,
+							Name:      secretName,
+						},
+					}
+					s, err = c.CoreV1().Secrets(ns).Create(s)
+					framework.ExpectNoError(err)
+					secrets = append(secrets, s)
+				}
+
+				for i := 0; i < numPods; i++ {
+					pod := &v1.Pod{
+						ObjectMeta: metav1.ObjectMeta{
+							Namespace: ns,
+							Name:      fmt.Sprintf("pod%v", i),
+						},
+						Spec: v1.PodSpec{
+							Volumes: []v1.Volume{},
+							Containers: []v1.Container{
+								{
+									Name:         "secret-container",
+									Image:        imageutils.GetE2EImage(imageutils.BusyBox),
+									VolumeMounts: []v1.VolumeMount{},
+								},
+							},
+						},
+					}
+
+					for secretIndex := i * numSecretsPerPod; secretIndex < (i+1)*numSecretsPerPod; secretIndex++ {
+						secretName := fmt.Sprintf("secret%v", secretIndex)
+						volumeName := fmt.Sprintf("vol%v", secretIndex)
+						mountPath := fmt.Sprintf("path%v", secretIndex)
+						pod.Spec.Volumes = append(pod.Spec.Volumes,
+							v1.Volume{
+								Name: volumeName,
+								VolumeSource: v1.VolumeSource{
+									Secret: &v1.SecretVolumeSource{
+										SecretName: secretName,
+									},
+								},
+							},
+						)
+						pod.Spec.Containers[0].VolumeMounts = append(pod.Spec.Containers[0].VolumeMounts,
+							v1.VolumeMount{
+								Name:      volumeName,
+								MountPath: mountPath,
+							},
+						)
+					}
+
+					pods = append(pods, pod)
+				}
+
+				By("Creating pods")
+				for _, p := range pods {
+					_, err := c.CoreV1().Pods(p.Namespace).Create(p)
+					framework.ExpectNoError(err)
+				}
+
+				By("waiting for pods to be running")
+				for _, p := range pods {
+
+					framework.ExpectNoError(framework.WaitForPodRunningInNamespace(c, p))
+					framework.Logf("Pod %v is running", p.Name)
+				}
 			})
 		})
 	})
