@@ -3280,7 +3280,11 @@ function main() {
   if [[ "${container_runtime}" == "docker" ]]; then
     assemble-docker-flags
   elif [[ "${container_runtime}" == "containerd" ]]; then
-    setup-containerd
+    if [[ -e "${KUBE_HOME}/bin/gke-internal-configure-helper.sh" ]]; then
+      gke-setup-containerd
+    else
+      setup-containerd
+    fi
   fi
   start-kubelet
 
