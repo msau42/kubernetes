@@ -49,6 +49,7 @@ pkg_tar(
     name = "gci-trusty-manifests",
     srcs = glob(
         [
+            "gke-internal-configure.sh",
             "gke-internal-configure-helper.sh",
             "sysctl/*",
         ]),
