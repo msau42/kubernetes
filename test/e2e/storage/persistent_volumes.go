@@ -379,13 +379,13 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 			It("should be able to support many secrets", func() {
 				numSecretsPerPod := 15
 				numPods := 50
-				numSecrets := numPods * numSecretsPerPod
+				// numSecrets := numPods * numSecretsPerPod
 
 				pods := []*v1.Pod{}
 
 				By("Creating secrets")
 				secrets := []*v1.Secret{}
-				for i := 0; i < numSecrets; i++ {
+				for i := 0; i < numSecretsPerPod; i++ {
 					secretName := fmt.Sprintf("secret%v", i)
 					s := &v1.Secret{
 						ObjectMeta: metav1.ObjectMeta{
@@ -410,16 +410,18 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 								{
 									Name:         "secret-container",
 									Image:        imageutils.GetE2EImage(imageutils.BusyBox),
+									Command:      []string{"/bin/sh"},
+									Args:         []string{"-c", "sleep 1000000"},
 									VolumeMounts: []v1.VolumeMount{},
 								},
 							},
 						},
 					}
 
-					for secretIndex := i * numSecretsPerPod; secretIndex < (i+1)*numSecretsPerPod; secretIndex++ {
+					for secretIndex := 0; secretIndex < numSecretsPerPod; secretIndex++ {
 						secretName := fmt.Sprintf("secret%v", secretIndex)
 						volumeName := fmt.Sprintf("vol%v", secretIndex)
-						mountPath := fmt.Sprintf("path%v", secretIndex)
+						mountPath := fmt.Sprintf("/path%v", secretIndex)
 						pod.Spec.Volumes = append(pod.Spec.Volumes,
 							v1.Volume{
 								Name: volumeName,
