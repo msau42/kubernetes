@@ -375,7 +375,7 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 	})
 
 	Describe("msau testing", func() {
-		Context("secrets", func() {
+		Context("stress", func() {
 			It("should be able to support many secrets", func() {
 				numSecretsPerPod := 15
 				numPods := 50
@@ -429,6 +429,155 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 									Secret: &v1.SecretVolumeSource{
 										SecretName: secretName,
 									},
+								},
+							},
+						)
+						pod.Spec.Containers[0].VolumeMounts = append(pod.Spec.Containers[0].VolumeMounts,
+							v1.VolumeMount{
+								Name:      volumeName,
+								MountPath: mountPath,
+							},
+						)
+					}
+
+					pods = append(pods, pod)
+				}
+
+				By("Creating pods")
+				for _, p := range pods {
+					_, err := c.CoreV1().Pods(p.Namespace).Create(p)
+					framework.ExpectNoError(err)
+				}
+
+				By("waiting for pods to be running")
+				for _, p := range pods {
+
+					framework.ExpectNoError(framework.WaitForPodRunningInNamespace(c, p))
+					framework.Logf("Pod %v is running", p.Name)
+				}
+			})
+			It("should be able to support many configmaps", func() {
+				numCMsPerPod := 15
+				numPods := 50
+
+				pods := []*v1.Pod{}
+
+				By("Creating configmaps")
+				cms := []*v1.ConfigMap{}
+				for i := 0; i < numCMsPerPod; i++ {
+					cmName := fmt.Sprintf("config%v", i)
+					cm := &v1.ConfigMap{
+						ObjectMeta: metav1.ObjectMeta{
+							Namespace: ns,
+							Name:      cmName,
+						},
+						Data: map[string]string{
+							"hello": cmName,
+						},
+					}
+					cm, err = c.CoreV1().ConfigMaps(ns).Create(cm)
+					framework.ExpectNoError(err)
+					cms = append(cms, cm)
+				}
+
+				for i := 0; i < numPods; i++ {
+					pod := &v1.Pod{
+						ObjectMeta: metav1.ObjectMeta{
+							Namespace: ns,
+							Name:      fmt.Sprintf("pod%v", i),
+						},
+						Spec: v1.PodSpec{
+							Volumes: []v1.Volume{},
+							Containers: []v1.Container{
+								{
+									Name:         "cm-container",
+									Image:        imageutils.GetE2EImage(imageutils.BusyBox),
+									Command:      []string{"/bin/sh"},
+									Args:         []string{"-c", "sleep 1000000"},
+									VolumeMounts: []v1.VolumeMount{},
+								},
+							},
+						},
+					}
+
+					for j := 0; j < numCMsPerPod; j++ {
+						cmName := fmt.Sprintf("config%v", j)
+						volumeName := fmt.Sprintf("vol%v", j)
+						mountPath := fmt.Sprintf("/path%v", j)
+						pod.Spec.Volumes = append(pod.Spec.Volumes,
+							v1.Volume{
+								Name: volumeName,
+								VolumeSource: v1.VolumeSource{
+									ConfigMap: &v1.ConfigMapVolumeSource{
+										LocalObjectReference: v1.LocalObjectReference{
+											Name: cmName,
+										},
+									},
+								},
+							},
+						)
+						pod.Spec.Containers[0].VolumeMounts = append(pod.Spec.Containers[0].VolumeMounts,
+							v1.VolumeMount{
+								Name:      volumeName,
+								MountPath: mountPath,
+							},
+						)
+					}
+
+					pods = append(pods, pod)
+				}
+
+				By("Creating pods")
+				for _, p := range pods {
+					_, err := c.CoreV1().Pods(p.Namespace).Create(p)
+					framework.ExpectNoError(err)
+				}
+
+				By("waiting for pods to be running")
+				for _, p := range pods {
+
+					framework.ExpectNoError(framework.WaitForPodRunningInNamespace(c, p))
+					framework.Logf("Pod %v is running", p.Name)
+				}
+			})
+			It("should be able to support many emptydirs", func() {
+				numVolsPerPod := 15
+				numPods := 50
+
+				pods := []*v1.Pod{}
+
+				for i := 0; i < numPods; i++ {
+					pod := &v1.Pod{
+						ObjectMeta: metav1.ObjectMeta{
+							Namespace: ns,
+							Name:      fmt.Sprintf("pod%v", i),
+						},
+						Spec: v1.PodSpec{
+							Volumes: []v1.Volume{},
+							Containers: []v1.Container{
+								{
+									Name:         "cm-container",
+									Image:        imageutils.GetE2EImage(imageutils.BusyBox),
+									Command:      []string{"/bin/sh"},
+									Args:         []string{"-c", "sleep 1000000"},
+									VolumeMounts: []v1.VolumeMount{},
+								},
+							},
+							NodeSelector: map[string]string{
+								"cloud.google.com/gke-nodepool": "default-pool",
+							},
+						},
+					}
+
+					for j := 0; j < numVolsPerPod; j++ {
+						volumeName := fmt.Sprintf("vol%v", j)
+						mountPath := fmt.Sprintf("/path%v", j)
+						pod.Spec.Volumes = append(pod.Spec.Volumes,
+							v1.Volume{
+								Name: volumeName,
+								VolumeSource: v1.VolumeSource{
+									EmptyDir: &v1.EmptyDirVolumeSource{
+										Medium: "Memory"},
 								},
 							},
 						)
