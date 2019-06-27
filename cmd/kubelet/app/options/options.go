@@ -126,10 +126,6 @@ type KubeletFlags struct {
 	// Its corresponding flag only gets registered in Windows builds.
 	WindowsService bool
 
-	// EXPERIMENTAL FLAGS
-	// Whitelist of unsafe sysctls or sysctl patterns (ending in *).
-	// +optional
-	AllowedUnsafeSysctls []string
 	// Collection of Linux kernel parameters (sysctls) that will be applied to
 	// the pods running on this node.
 	// +optional
@@ -395,7 +391,6 @@ func (f *KubeletFlags) AddFlags(mainfs *pflag.FlagSet) {
 
 	// EXPERIMENTAL FLAGS
 	fs.StringVar(&f.ExperimentalMounterPath, "experimental-mounter-path", f.ExperimentalMounterPath, "[Experimental] Path of mounter binary. Leave empty to use the default mount.")
-	fs.StringSliceVar(&f.AllowedUnsafeSysctls, "allowed-unsafe-sysctls", f.AllowedUnsafeSysctls, "Comma-separated whitelist of unsafe sysctls or unsafe sysctl patterns (ending in *). Use these at your own risk. Sysctls feature gate is enabled by default.")
 	bindablePodSysctls := cliflag.ConfigurationMap(f.PodSysctls)
 	fs.Var(&bindablePodSysctls, "pod-sysctls", "List of Linux kernel parameters (sysctls) that will be applied to the pods running on this node. Must be specified as key=value pairs separated by ','.")
 	fs.BoolVar(&f.ExperimentalKernelMemcgNotification, "experimental-kernel-memcg-notification", f.ExperimentalKernelMemcgNotification, "If enabled, the kubelet will integrate with the kernel memcg notification to determine if memory eviction thresholds are crossed rather than polling.")
