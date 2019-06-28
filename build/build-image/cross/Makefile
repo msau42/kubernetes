@@ -14,7 +14,7 @@
 
 .PHONY:	build push
 
-REGISTRY?=staging-k8s.gcr.io
+REGISTRY?=gcr.io/gke-release
 IMAGE=$(REGISTRY)/kube-cross
 TAG=$(shell cat VERSION)
 
