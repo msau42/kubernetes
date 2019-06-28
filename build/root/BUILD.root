@@ -18,6 +18,7 @@ package(default_visibility = ["//visibility:public"])
 
 load("@io_k8s_repo_infra//defs:build.bzl", "gcs_upload")
 load("//build:platforms.bzl", "for_platforms")
+load("//build:licenses.bzl", "gen_licenses")
 
 filegroup(
     name = "_binary-artifacts-and-hashes",
@@ -126,3 +127,4 @@ platform(
       {PARENT_REMOTE_EXECUTION_PROPERTIES}
     """,
 )
+gen_licenses()

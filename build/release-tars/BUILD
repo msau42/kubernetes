@@ -57,9 +57,8 @@ filegroup(
 )
 
 pkg_tar(
-    name = "kubernetes-src",
+    name = "_kubernetes-srcs",
     srcs = ["//:all-srcs"],
-    extension = "tar.gz",
     package_dir = "kubernetes",
     strip_prefix = "//",
     symlinks = {
@@ -70,6 +69,32 @@ pkg_tar(
         "manual",
         "no-cache",
     ],
+    visibility = ["//visibility:private"],
+)
+
+pkg_tar(
+    name = "_glibc-srcs",
+    srcs = ["@glibc_src//:srcs"],
+    package_dir = "glibc",
+    tags = [
+        "manual",
+        "no-cache",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+pkg_tar(
+    name = "kubernetes-src",
+    extension = "tar.gz",
+    tags = [
+        "manual",
+        "no-cache",
+    ],
+    deps = [
+        ":_glibc-srcs",
+        ":_kubernetes-srcs",
+        "@go_src//file",
+    ],
 )
 
 # Included in node and server tarballs.
@@ -77,7 +102,7 @@ filegroup(
     name = "license-targets",
     srcs = [
         ":kubernetes-src.tar.gz",
-        "//:Godeps/LICENSES",
+        "//:LICENSES",
     ],
     visibility = ["//visibility:private"],
 )
@@ -295,7 +320,7 @@ pkg_tar(
 pkg_tar(
     name = "kubernetes",
     srcs = [
-        "//:Godeps/LICENSES",
+        "//:LICENSES",
         "//:README.md",
         "//:version",
         "//cluster:all-srcs",

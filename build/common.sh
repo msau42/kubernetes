@@ -730,6 +730,7 @@ function kube::build::copy_output() {
     --filter='+ /Godeps/' \
     --filter='+ /staging/***/Godeps/**' \
     --filter='+ /_output/dockerized/bin/**' \
+    --filter='+ /_output/dockerized/src/**' \
     --filter='+ zz_generated.*' \
     --filter='+ generated.proto' \
     --filter='+ *.pb.go' \
