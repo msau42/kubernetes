@@ -346,7 +346,7 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 					claims = append(claims, *pvc)
 				}
 
-				spec := makeStatefulSetWithPVCs(ns, writeCmd, mounts, claims, probe)
+				spec := makeStatefulSetWithPVCs(ns, writeCmd, mounts, claims, probe, "")
 				ss, err := c.AppsV1().StatefulSets(ns).Create(spec)
 				framework.ExpectNoError(err)
 				ssTester.WaitForRunningAndReady(1, ss)
@@ -366,7 +366,7 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 				}
 				validateCmd += "&& sleep 10000"
 
-				spec = makeStatefulSetWithPVCs(ns, validateCmd, mounts, claims, probe)
+				spec = makeStatefulSetWithPVCs(ns, validateCmd, mounts, claims, probe, "")
 				ss, err = c.AppsV1().StatefulSets(ns).Create(spec)
 				framework.ExpectNoError(err)
 				ssTester.WaitForRunningAndReady(1, ss)
@@ -376,9 +376,10 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 
 	Describe("msau testing", func() {
 		Context("stress", func() {
+			const gke_nodepool = "default-pool"
 			It("should be able to support many secrets", func() {
 				numSecretsPerPod := 15
-				numPods := 50
+				numPods := 30
 				// numSecrets := numPods * numSecretsPerPod
 
 				pods := []*v1.Pod{}
@@ -497,6 +498,9 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 									VolumeMounts: []v1.VolumeMount{},
 								},
 							},
+							NodeSelector: map[string]string{
+								"cloud.google.com/gke-nodepool": gke_nodepool,
+							},
 						},
 					}
 
@@ -564,7 +568,7 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 								},
 							},
 							NodeSelector: map[string]string{
-								"cloud.google.com/gke-nodepool": "default-pool",
+								"cloud.google.com/gke-nodepool": gke_nodepool,
 							},
 						},
 					}
@@ -605,6 +609,42 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 					framework.Logf("Pod %v is running", p.Name)
 				}
 			})
+			It("should be able to support many pvcs", func() {
+				numVolsPerPod := 1
+				numPods := 180
+
+				stsets := []*appsv1.StatefulSet{}
+
+				ssTester := framework.NewStatefulSetTester(c)
+
+				for i := 0; i < numPods; i++ {
+
+					mounts := []v1.VolumeMount{}
+					claims := []v1.PersistentVolumeClaim{}
+
+					for j := 0; j < numVolsPerPod; j++ {
+						pvc := framework.MakePersistentVolumeClaim(framework.PersistentVolumeClaimConfig{}, ns)
+						pvc.Name = fmt.Sprintf("pod%v-claim%v", i, j)
+						mounts = append(mounts, v1.VolumeMount{Name: pvc.Name, MountPath: getMountPath(j)})
+						claims = append(claims, *pvc)
+					}
+
+					spec := makeStatefulSetWithPVCs(ns, "sleep 1000000", mounts, claims, nil, fmt.Sprintf("%v", i))
+					stsets = append(stsets, spec)
+				}
+
+				By("Creating pods")
+				for _, s := range stsets {
+					_, err := c.AppsV1().StatefulSets(ns).Create(s)
+					framework.ExpectNoError(err)
+				}
+
+				By("waiting for pods to be running")
+				for _, s := range stsets {
+					ssTester.WaitForRunningAndReady(1, s)
+					framework.Logf("StatefulSet %v is running", s.Name)
+				}
+			})
 		})
 	})
 })
@@ -621,18 +661,19 @@ func getVolumeFile(i int) string {
 	return fmt.Sprintf("%v/data%v", getMountPath(i), i)
 }
 
-func makeStatefulSetWithPVCs(ns, cmd string, mounts []v1.VolumeMount, claims []v1.PersistentVolumeClaim, readyProbe *v1.Probe) *appsv1.StatefulSet {
+func makeStatefulSetWithPVCs(ns, cmd string, mounts []v1.VolumeMount, claims []v1.PersistentVolumeClaim, readyProbe *v1.Probe, suffix string) *appsv1.StatefulSet {
 	ssReplicas := int32(1)
 
-	labels := map[string]string{"app": "many-volumes-test"}
+	name := fmt.Sprintf("many-volumes-test-%s", suffix)
+	labels := map[string]string{"app": name}
 	return &appsv1.StatefulSet{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "many-volumes-test",
+			Name:      name,
 			Namespace: ns,
 		},
 		Spec: appsv1.StatefulSetSpec{
 			Selector: &metav1.LabelSelector{
-				MatchLabels: map[string]string{"app": "many-volumes-test"},
+				MatchLabels: map[string]string{"app": name},
 			},
 			Replicas: &ssReplicas,
 			Template: v1.PodTemplateSpec{
