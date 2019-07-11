@@ -1845,6 +1845,9 @@ function start-kube-apiserver {
   if [[ -n "${ETCD_COMPACTION_INTERVAL_SEC:-}" ]]; then
     params+=" --etcd-compaction-interval=${ETCD_COMPACTION_INTERVAL_SEC}s"
   fi
+  if [[ -n "${KUBE_APISERVER_EVENT_TTL_SEC:-}" ]]; then
+    params+=" --event-ttl=${KUBE_APISERVER_EVENT_TTL_SEC}s"
+  fi
   if [[ -n "${KUBE_APISERVER_REQUEST_TIMEOUT_SEC:-}" ]]; then
     params+=" --request-timeout=${KUBE_APISERVER_REQUEST_TIMEOUT_SEC}s"
   fi
