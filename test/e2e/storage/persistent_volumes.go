@@ -379,7 +379,7 @@ var _ = utils.SIGDescribe("PersistentVolumes", func() {
 			const gke_nodepool = "default-pool"
 			It("should be able to support many secrets", func() {
 				numSecretsPerPod := 15
-				numPods := 30
+				numPods := 50
 				// numSecrets := numPods * numSecretsPerPod
 
 				pods := []*v1.Pod{}

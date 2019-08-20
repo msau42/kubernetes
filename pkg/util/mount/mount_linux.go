@@ -139,15 +139,16 @@ func (m *Mounter) doMount(mounterPath string, mountCmd string, source string, ta
 		// No code here, mountCmd and mountArgs are already populated.
 	}
 
-	klog.V(4).Infof("Mounting cmd (%s) with arguments (%s)", mountCmd, mountArgs)
+	klog.V(2).Infof("MSAU Mounting cmd (%s) with arguments (%s)", mountCmd, mountArgs)
 	command := exec.Command(mountCmd, mountArgs...)
 	output, err := command.CombinedOutput()
 	if err != nil {
 		args := strings.Join(mountArgs, " ")
-		klog.Errorf("Mount failed: %v\nMounting command: %s\nMounting arguments: %s\nOutput: %s\n", err, mountCmd, args, string(output))
+		klog.Errorf("MSAU Mount failed: %v\nMounting command: %s\nMounting arguments: %s\nOutput: %s\n", err, mountCmd, args, string(output))
 		return fmt.Errorf("mount failed: %v\nMounting command: %s\nMounting arguments: %s\nOutput: %s\n",
 			err, mountCmd, args, string(output))
 	}
+	klog.V(2).Infof("MSAU Mount (%s) (%s) succeeded", mountCmd, mountArgs)
 	return err
 }
 

@@ -23,7 +23,7 @@ import (
 	"strings"
 	"time"
 
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -655,14 +655,21 @@ func (og *operationGenerator) GenerateMountVolumeFunc(
 		}
 
 		// Execute mount
+		_, detailedMsg := volumeToMount.GenerateMsg("MountVolume.SetUp starting", "")
+		verbosity := klog.Level(1)
+		if isRemount {
+			verbosity = klog.Level(4)
+		}
+		klog.V(verbosity).Infof(detailedMsg)
+
 		mountErr := volumeMounter.SetUp(fsGroup)
 		if mountErr != nil {
 			// On failure, return error. Caller will log and retry.
 			return volumeToMount.GenerateError("MountVolume.SetUp failed", mountErr)
 		}
 
-		_, detailedMsg := volumeToMount.GenerateMsg("MountVolume.SetUp succeeded", "")
-		verbosity := klog.Level(1)
+		_, detailedMsg = volumeToMount.GenerateMsg("MountVolume.SetUp succeeded", "")
+		verbosity = klog.Level(1)
 		if isRemount {
 			verbosity = klog.Level(4)
 		}
