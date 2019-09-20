@@ -36,6 +36,11 @@ github.com/GoogleCloudPlatform/k8s-cloud-provider/pkg/cloud
 github.com/GoogleCloudPlatform/k8s-cloud-provider/pkg/cloud/filter
 github.com/GoogleCloudPlatform/k8s-cloud-provider/pkg/cloud/meta
 github.com/GoogleCloudPlatform/k8s-cloud-provider/pkg/cloud/mock
+# github.com/GoogleCloudPlatform/kubectl-dispatcher v0.0.0-20190515041433-48c55c7cad26 => github.com/GoogleCloudPlatform/kubectl-dispatcher v0.0.0-20190515041433-48c55c7cad26
+github.com/GoogleCloudPlatform/kubectl-dispatcher/pkg/client
+github.com/GoogleCloudPlatform/kubectl-dispatcher/pkg/dispatcher
+github.com/GoogleCloudPlatform/kubectl-dispatcher/pkg/filepath
+github.com/GoogleCloudPlatform/kubectl-dispatcher/pkg/util
 # github.com/JeffAshton/win_pdh v0.0.0-20161109143554-76bb4ee9f0ab => github.com/JeffAshton/win_pdh v0.0.0-20161109143554-76bb4ee9f0ab
 github.com/JeffAshton/win_pdh
 # github.com/MakeNowJust/heredoc v0.0.0-20170808103936-bb23615498cd => github.com/MakeNowJust/heredoc v0.0.0-20170808103936-bb23615498cd
