@@ -169,8 +169,11 @@ kernelSpec:
     description: 'Enable for AppArmor support.'
   - name: CC_STACKPROTECTOR_STRONG
     alias:
-    - CONFIG_CC_STACKPROTECTOR_REGULAR
-      CONFIG_CC_STACKPROTECTOR_ALL
+    - CC_STACKPROTECTOR_REGULAR
+    - CC_STACKPROTECTOR_ALL
+    - STACKPROTECTOR_STRONG
+    - STACKPROTECTOR_REGULAR
+    - STACKPROTECTOR_ALL
     description: 'Add the stack buffer overflow protections.'
   - name: STRICT_DEVMEM
     description: 'Required for blocking the direct physical memory access.'
