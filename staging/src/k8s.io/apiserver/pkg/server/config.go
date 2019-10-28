@@ -357,11 +357,11 @@ func (c *AuthenticationInfo) ApplyClientCert(clientCA dynamiccertificates.CACont
 	if clientCA == nil {
 		return nil
 	}
-	// Set IPMigrationCert once
-	if servingInfo.IPMigrationCert == nil {
-		servingInfo.IPMigrationCert = newServingInfo.Cert
-	}
 	if newServingInfo != nil {
+		// Set IPMigrationCert once
+		if servingInfo.IPMigrationCert == nil {
+			servingInfo.IPMigrationCert = newServingInfo.Cert
+		}
 		// Set IPMigrationCert once
 		if newServingInfo.IPMigrationCert == nil {
 			newServingInfo.IPMigrationCert = servingInfo.Cert
