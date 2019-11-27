@@ -85,6 +85,7 @@ endif
 build:
 	# Explicitly copy files to the temp directory
 	$(BIN_INSTALL) migrate-if-needed.sh $(TEMP_DIR)
+	$(BIN_INSTALL) backup-before-start.sh $(TEMP_DIR)
 	install Dockerfile $(TEMP_DIR)
 
 	# Compile migrate
