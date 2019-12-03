@@ -47,7 +47,8 @@ const (
 	secretboxTransformerPrefixV1 = "k8s:enc:secretbox:v1:"
 	kmsTransformerPrefixV1       = "k8s:enc:kms:v1:"
 	kmsPluginConnectionTimeout   = 3 * time.Second
-	kmsPluginHealthzTTL          = 3 * time.Second
+	kmsPluginHealthzNegativeTTL  = 3 * time.Second
+	kmsPluginHealthzPositiveTTL  = 20 * time.Second
 )
 
 type kmsPluginHealthzResponse struct {
@@ -57,6 +58,7 @@ type kmsPluginHealthzResponse struct {
 
 type kmsPluginProbe struct {
 	name string
+	ttl  time.Duration
 	envelope.Service
 	lastResponse *kmsPluginHealthzResponse
 	l            *sync.Mutex
@@ -119,6 +121,7 @@ func getKMSPluginProbes(reader io.Reader) ([]*kmsPluginProbe, error) {
 
 				result = append(result, &kmsPluginProbe{
 					name:         p.KMS.Name,
+					ttl:          kmsPluginHealthzNegativeTTL,
 					Service:      s,
 					l:            &sync.Mutex{},
 					lastResponse: &kmsPluginHealthzResponse{},
@@ -135,22 +138,25 @@ func (h *kmsPluginProbe) Check() error {
 	h.l.Lock()
 	defer h.l.Unlock()
 
-	if (time.Now().Sub(h.lastResponse.received)) < kmsPluginHealthzTTL {
+	if (time.Since(h.lastResponse.received)) < h.ttl {
 		return h.lastResponse.err
 	}
 
 	p, err := h.Service.Encrypt([]byte("ping"))
 	if err != nil {
 		h.lastResponse = &kmsPluginHealthzResponse{err: err, received: time.Now()}
+		h.ttl = kmsPluginHealthzNegativeTTL
 		return fmt.Errorf("failed to perform encrypt section of the healthz check for KMS Provider %s, error: %v", h.name, err)
 	}
 
 	if _, err := h.Service.Decrypt(p); err != nil {
 		h.lastResponse = &kmsPluginHealthzResponse{err: err, received: time.Now()}
+		h.ttl = kmsPluginHealthzNegativeTTL
 		return fmt.Errorf("failed to perform decrypt section of the healthz check for KMS Provider %s, error: %v", h.name, err)
 	}
 
 	h.lastResponse = &kmsPluginHealthzResponse{err: nil, received: time.Now()}
+	h.ttl = kmsPluginHealthzPositiveTTL
 	return nil
 }
 
