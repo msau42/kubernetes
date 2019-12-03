@@ -22,8 +22,10 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"errors"
 	"reflect"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -64,19 +66,31 @@ func mustConfigReader(t *testing.T, path string) io.Reader {
 // testEnvelopeService is a mock envelope service which can be used to simulate remote Envelope services
 // for testing of the envelope transformer with other transformers.
 type testEnvelopeService struct {
+	err error
 }
 
 func (t *testEnvelopeService) Decrypt(data []byte) ([]byte, error) {
+	if t.err != nil {
+		return nil, t.err
+	}
 	return base64.StdEncoding.DecodeString(string(data))
 }
 
 func (t *testEnvelopeService) Encrypt(data []byte) ([]byte, error) {
+	if t.err != nil {
+		return nil, t.err
+	}
 	return []byte(base64.StdEncoding.EncodeToString(data)), nil
 }
 
 // The factory method to create mock envelope service.
 func newMockEnvelopeService(endpoint string, timeout time.Duration) (envelope.Service, error) {
-	return &testEnvelopeService{}, nil
+	return &testEnvelopeService{nil}, nil
+}
+
+// The factory method to create mock envelope service which always returns error.
+func newMockErrorEnvelopeService(endpoint string, timeout time.Duration) (envelope.Service, error) {
+	return &testEnvelopeService{errors.New("test")}, nil
 }
 
 func TestLegacyConfig(t *testing.T) {
@@ -425,4 +439,47 @@ func getTransformerFromEncryptionConfig(t *testing.T, encryptionConfigPath strin
 		return transformer
 	}
 	panic("unreachable")
+}
+
+func TestKMSPluginHealthzTTL(t *testing.T) {
+	service, _ := newMockEnvelopeService("unix:///tmp/testprovider.sock", 3*time.Second)
+	errService, _ := newMockErrorEnvelopeService("unix:///tmp/testprovider.sock", 3*time.Second)
+
+	testCases := []struct {
+		desc    string
+		probe   *kmsPluginProbe
+		wantTTL time.Duration
+	}{
+		{
+			desc: "kms provider in good state",
+			probe: &kmsPluginProbe{
+				name:         "test",
+				ttl:          kmsPluginHealthzNegativeTTL,
+				Service:      service,
+				l:            &sync.Mutex{},
+				lastResponse: &kmsPluginHealthzResponse{},
+			},
+			wantTTL: kmsPluginHealthzPositiveTTL,
+		},
+		{
+			desc: "kms provider in bad state",
+			probe: &kmsPluginProbe{
+				name:         "test",
+				ttl:          kmsPluginHealthzPositiveTTL,
+				Service:      errService,
+				l:            &sync.Mutex{},
+				lastResponse: &kmsPluginHealthzResponse{},
+			},
+			wantTTL: kmsPluginHealthzNegativeTTL,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.desc, func(t *testing.T) {
+			tt.probe.Check()
+			if tt.probe.ttl != tt.wantTTL {
+				t.Fatalf("want ttl %v, got ttl %v", tt.wantTTL, tt.probe.ttl)
+			}
+		})
+	}
 }
