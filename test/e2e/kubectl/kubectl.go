@@ -610,7 +610,10 @@ var _ = SIGDescribe("Kubectl client", func() {
 			}
 		})
 
-		ginkgo.It("should handle in-cluster config", func() {
+		// Temporarily turning off this test to give a better signal, since this
+		// test is continuously failing. The long-term effort to fix this test
+		// is being coordinated through the bug: https://b/122439474
+		ginkgo.It("should handle in-cluster config [Flaky]", func() {
 			ginkgo.By("adding rbac permissions")
 			// grant the view permission widely to allow inspection of the `invalid` namespace and the default namespace
 			err := auth.BindClusterRole(f.ClientSet.RbacV1(), "view", f.Namespace.Name,
