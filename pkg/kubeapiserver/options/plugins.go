@@ -30,7 +30,6 @@ import (
 	"k8s.io/kubernetes/plugin/pkg/admission/exec"
 	"k8s.io/kubernetes/plugin/pkg/admission/extendedresourcetoleration"
 	"k8s.io/kubernetes/plugin/pkg/admission/gc"
-	"k8s.io/kubernetes/plugin/pkg/admission/gvisor_reject"
 	"k8s.io/kubernetes/plugin/pkg/admission/imagepolicy"
 	"k8s.io/kubernetes/plugin/pkg/admission/limitranger"
 	"k8s.io/kubernetes/plugin/pkg/admission/namespace/autoprovision"
@@ -91,7 +90,6 @@ var AllOrderedPlugins = []string{
 	validatingwebhook.PluginName,            // ValidatingAdmissionWebhook
 	runtimeclass.PluginName,                 //RuntimeClass
 	resourcequota.PluginName,                // ResourceQuota
-	gvisor_reject.PluginName,                // GvisorReject
 	deny.PluginName,                         // AlwaysDeny
 }
 
@@ -107,7 +105,6 @@ func RegisterAllAdmissionPlugins(plugins *admission.Plugins) {
 	exec.Register(plugins)
 	extendedresourcetoleration.Register(plugins)
 	gc.Register(plugins)
-	gvisor_reject.Register(plugins)
 	imagepolicy.Register(plugins)
 	limitranger.Register(plugins)
 	autoprovision.Register(plugins)
