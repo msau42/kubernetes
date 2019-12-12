@@ -60,7 +60,8 @@ func TestLoopbackHostPortIPv6(t *testing.T) {
 		t.Fatalf("fail to enumerate network interface, %s", err)
 	}
 	if !ipv6 {
-		t.Fatalf("no ipv6 loopback interface")
+		t.Log("no ipv6 loopback interface")
+		return
 	}
 
 	host, port, err := LoopbackHostPort("[ff06:0:0:0:0:0:0:c3]:443")
