@@ -97,7 +97,7 @@ func (config Config) New() (authorizer.Authorizer, authorizer.RuleResolver, erro
 			authorizers = append(authorizers, abacAuthorizer)
 			ruleResolvers = append(ruleResolvers, abacAuthorizer)
 		case modes.ModeWebhook:
-			webhookAuthorizer, err := webhook.New(config.WebhookConfigFile,
+			webhookAuthorizer, err := webhook.NewGkeApiserverWebhookAuthorizer(config.WebhookConfigFile,
 				config.WebhookCacheAuthorizedTTL,
 				config.WebhookCacheUnauthorizedTTL)
 			if err != nil {
