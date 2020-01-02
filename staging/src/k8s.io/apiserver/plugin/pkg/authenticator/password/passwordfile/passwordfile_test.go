@@ -21,9 +21,12 @@ import (
 	"io/ioutil"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"k8s.io/apiserver/pkg/authentication/user"
+	"k8s.io/component-base/metrics/legacyregistry"
+	"k8s.io/component-base/metrics/testutil"
 )
 
 func TestPasswordFile(t *testing.T) {
@@ -142,6 +145,62 @@ password4
 func TestInsufficientColumnsPasswordFile(t *testing.T) {
 	if _, err := newWithContents(t, "password4\n"); err == nil {
 		t.Fatalf("unexpected non error")
+	}
+}
+
+func TestMetrics(t *testing.T) {
+	auth, err := newWithContents(t, `
+password1,user1,uid1
+`)
+	if err != nil {
+		t.Fatalf("unable to read passwordfile: %v", err)
+	}
+	testCases := []struct {
+		desc     string
+		want     string
+		user     string
+		password string
+	}{
+		{
+			desc:     "success",
+			want:   `
+# HELP passwordfile_authentication_attempts_total [ALPHA] Count of requests that authenticate with basic authentication based on status.
+# TYPE passwordfile_authentication_attempts_total counter
+passwordfile_authentication_attempts_total{status="success"} 1
+`,
+			user:     "user1",
+			password: "password1",
+		},
+		{
+			desc:     "user not found",
+			want:   `
+# HELP passwordfile_authentication_attempts_total [ALPHA] Count of requests that authenticate with basic authentication based on status.
+# TYPE passwordfile_authentication_attempts_total counter
+passwordfile_authentication_attempts_total{status="user_not_found"} 1
+`,
+			user:     "user2",
+			password: "password1",
+		},
+		{
+			desc:     "failure",
+			want:   `
+# HELP passwordfile_authentication_attempts_total [ALPHA] Count of requests that authenticate with basic authentication based on status.
+# TYPE passwordfile_authentication_attempts_total counter
+passwordfile_authentication_attempts_total{status="failure"} 1
+`,
+			user:     "user1",
+			password: "password2",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.desc, func(t *testing.T) {
+			authenticatePasswordCounter.Reset()
+			auth.AuthenticatePassword(context.Background(), tc.user, tc.password)
+			if err := testutil.GatherAndCompare(legacyregistry.DefaultGatherer, strings.NewReader(tc.want), "passwordfile_authentication_attempts_total"); err != nil {
+				t.Fatal(err)
+			}
+		})
 	}
 }
 
