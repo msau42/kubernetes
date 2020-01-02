@@ -25,10 +25,21 @@ import (
 	"os"
 	"strings"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/klog"
 
 	"k8s.io/apiserver/pkg/authentication/authenticator"
 	"k8s.io/apiserver/pkg/authentication/user"
+)
+
+var(
+	authenticatePasswordCounter = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "passwordfile_authentication_attempts_total",
+			Help: "Count of requests that authenticate with basic authentication based on status.",
+		},
+		[]string{"status"},
+	)
 )
 
 type PasswordAuthenticator struct {
@@ -38,6 +49,10 @@ type PasswordAuthenticator struct {
 type userPasswordInfo struct {
 	info     *user.DefaultInfo
 	password string
+}
+
+func init() {
+	prometheus.MustRegister(authenticatePasswordCounter)
 }
 
 // NewCSV returns a PasswordAuthenticator, populated from a CSV file.
@@ -84,10 +99,13 @@ func NewCSV(path string) (*PasswordAuthenticator, error) {
 func (a *PasswordAuthenticator) AuthenticatePassword(ctx context.Context, username, password string) (*authenticator.Response, bool, error) {
 	user, ok := a.users[username]
 	if !ok {
+		authenticatePasswordCounter.WithLabelValues("user_not_found").Inc()
 		return nil, false, nil
 	}
 	if subtle.ConstantTimeCompare([]byte(user.password), []byte(password)) == 0 {
+		authenticatePasswordCounter.WithLabelValues("failure").Inc()
 		return nil, false, nil
 	}
+	authenticatePasswordCounter.WithLabelValues("success").Inc()
 	return &authenticator.Response{User: user.info}, true, nil
 }
