@@ -92,6 +92,9 @@ type ClusterConfiguration struct {
 	// DNS defines the options for the DNS add-on installed in the cluster.
 	DNS DNS `json:"dns,omitempty"`
 
+	// PauseImage defines the pause image to use in the cluster.
+	PauseImage *ImageMeta `json:"pause,omitempty"`
+
 	// CertificatesDir specifies where to store or look for all required certificates.
 	CertificatesDir string `json:"certificatesDir,omitempty"`
 
@@ -103,6 +106,9 @@ type ClusterConfiguration struct {
 
 	// UseHyperKubeImage controls if hyperkube should be used for Kubernetes components instead of their respective separate images
 	UseHyperKubeImage bool `json:"useHyperKubeImage,omitempty"`
+
+	// UseArchImage enables using single arch image.
+	UseArchImage bool `json:"useArchImage,omitempty"`
 
 	// FeatureGates enabled by the user.
 	FeatureGates map[string]bool `json:"featureGates,omitempty"`

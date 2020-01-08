@@ -409,9 +409,11 @@ func autoConvert_v1beta2_ClusterConfiguration_To_kubeadm_ClusterConfiguration(in
 	if err := Convert_v1beta2_DNS_To_kubeadm_DNS(&in.DNS, &out.DNS, s); err != nil {
 		return err
 	}
+	out.PauseImage = (*kubeadm.ImageMeta)(unsafe.Pointer(in.PauseImage))
 	out.CertificatesDir = in.CertificatesDir
 	out.ImageRepository = in.ImageRepository
 	out.UseHyperKubeImage = in.UseHyperKubeImage
+	out.UseArchImage = in.UseArchImage
 	out.FeatureGates = *(*map[string]bool)(unsafe.Pointer(&in.FeatureGates))
 	out.ClusterName = in.ClusterName
 	return nil
@@ -444,10 +446,12 @@ func autoConvert_kubeadm_ClusterConfiguration_To_v1beta2_ClusterConfiguration(in
 	if err := Convert_kubeadm_DNS_To_v1beta2_DNS(&in.DNS, &out.DNS, s); err != nil {
 		return err
 	}
+	out.PauseImage = (*ImageMeta)(unsafe.Pointer(in.PauseImage))
 	out.CertificatesDir = in.CertificatesDir
 	out.ImageRepository = in.ImageRepository
 	// INFO: in.CIImageRepository opted out of conversion generation
 	out.UseHyperKubeImage = in.UseHyperKubeImage
+	out.UseArchImage = in.UseArchImage
 	out.FeatureGates = *(*map[string]bool)(unsafe.Pointer(&in.FeatureGates))
 	out.ClusterName = in.ClusterName
 	return nil

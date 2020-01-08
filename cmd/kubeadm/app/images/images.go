@@ -18,6 +18,7 @@ package images
 
 import (
 	"fmt"
+	"runtime"
 
 	kubeadmapi "k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm"
 	"k8s.io/kubernetes/cmd/kubeadm/app/constants"
@@ -29,6 +30,11 @@ func GetGenericImage(prefix, image, tag string) string {
 	return fmt.Sprintf("%s/%s:%s", prefix, image, tag)
 }
 
+// GetGenericArchImage generates and returns an image based on the current runtime arch
+func GetGenericArchImage(prefix, image, tag string) string {
+	return fmt.Sprintf("%s/%s-%s:%s", prefix, image, runtime.GOARCH, tag)
+}
+
 // GetKubernetesImage generates and returns the image for the components managed in the Kubernetes main repository,
 // including the control-plane components and kube-proxy. If specified, the HyperKube image will be used.
 func GetKubernetesImage(image string, cfg *kubeadmapi.ClusterConfiguration) string {
@@ -37,6 +43,9 @@ func GetKubernetesImage(image string, cfg *kubeadmapi.ClusterConfiguration) stri
 	}
 	repoPrefix := cfg.GetControlPlaneImageRepository()
 	kubernetesImageTag := kubeadmutil.KubernetesVersionToImageTag(cfg.KubernetesVersion)
+	if cfg.UseArchImage {
+		return GetGenericArchImage(repoPrefix, image, kubernetesImageTag)
+	}
 	return GetGenericImage(repoPrefix, image, kubernetesImageTag)
 }
 
@@ -55,6 +64,9 @@ func GetDNSImage(cfg *kubeadmapi.ClusterConfiguration, imageName string) string 
 	// unless an override is specified
 	if cfg.DNS.ImageTag != "" {
 		dnsImageTag = cfg.DNS.ImageTag
+	}
+	if cfg.UseArchImage {
+		return GetGenericArchImage(dnsImageRepository, imageName, dnsImageTag)
 	}
 	return GetGenericImage(dnsImageRepository, imageName, dnsImageTag)
 }
@@ -77,12 +89,28 @@ func GetEtcdImage(cfg *kubeadmapi.ClusterConfiguration) string {
 	if cfg.Etcd.Local != nil && cfg.Etcd.Local.ImageTag != "" {
 		etcdImageTag = cfg.Etcd.Local.ImageTag
 	}
+	if cfg.UseArchImage {
+		return GetGenericArchImage(etcdImageRepository, constants.Etcd, etcdImageTag)
+	}
 	return GetGenericImage(etcdImageRepository, constants.Etcd, etcdImageTag)
 }
 
 // GetPauseImage returns the image for the "pause" container
 func GetPauseImage(cfg *kubeadmapi.ClusterConfiguration) string {
-	return GetGenericImage(cfg.ImageRepository, "pause", constants.PauseVersion)
+	pauseImageRepo := cfg.ImageRepository
+	pauseImageTag := constants.PauseVersion
+	if cfg.PauseImage != nil {
+		if cfg.PauseImage.ImageRepository != "" {
+			pauseImageRepo = cfg.PauseImage.ImageRepository
+		}
+		if cfg.PauseImage.ImageTag != "" {
+			pauseImageTag = cfg.PauseImage.ImageTag
+		}
+	}
+	if cfg.UseArchImage {
+		return GetGenericArchImage(pauseImageRepo, "pause", pauseImageTag)
+	}
+	return GetGenericImage(pauseImageRepo, "pause", pauseImageTag)
 }
 
 // GetControlPlaneImages returns a list of container images kubeadm expects to use on a control plane node

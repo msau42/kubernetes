@@ -99,6 +99,9 @@ type ClusterConfiguration struct {
 	// DNS defines the options for the DNS add-on installed in the cluster.
 	DNS DNS
 
+	// PauseImage defines the pause image to use in the cluster.
+	PauseImage *ImageMeta
+
 	// CertificatesDir specifies where to store or look for all required certificates.
 	CertificatesDir string
 
@@ -115,6 +118,9 @@ type ClusterConfiguration struct {
 
 	// UseHyperKubeImage controls if hyperkube should be used for Kubernetes components instead of their respective separate images
 	UseHyperKubeImage bool
+
+	// UseArchImage enables using single arch image.
+	UseArchImage bool
 
 	// FeatureGates enabled by the user.
 	FeatureGates map[string]bool
