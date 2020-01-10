@@ -87,6 +87,10 @@ var kubeProxyDowngradeTests = []upgrades.Test{
 	&upgrades.ServiceUpgradeTest{},
 }
 
+var gVisorUpgradeTests = []upgrades.Test{
+	&upgrades.GVisorUpgradeTest{},
+}
+
 var _ = SIGDescribe("Upgrade [Feature:Upgrade]", func() {
 	f := framework.NewDefaultFramework("cluster-upgrade")
 
@@ -366,6 +370,72 @@ var _ = SIGDescribe("kube-proxy migration [Feature:KubeProxyDaemonSetMigration]"
 				framework.ExpectNoError(checkMasterVersion(f.ClientSet, target))
 			}
 			runUpgradeSuite(f, kubeProxyDowngradeTests, testFrameworks, testSuite, upgrades.ClusterUpgrade, upgradeFunc)
+		})
+	})
+})
+
+var _ = SIGDescribe("gVisor Upgrade [Feature:GVisorUpgrade]", func() {
+	f := framework.NewDefaultFramework("gvisor-upgrade")
+
+	// Create the frameworks here because we can only create them
+	// in a "Describe".
+	testFrameworks := createUpgradeFrameworks(gVisorUpgradeTests)
+	ginkgo.Describe("master upgrade", func() {
+		ginkgo.It("should NOT disrupt gVisor pod [Feature:GVisorMasterUpgrade]", func() {
+			upgCtx, err := getUpgradeContext(f.ClientSet.Discovery(), *upgradeTarget)
+			framework.ExpectNoError(err)
+
+			testSuite := &junit.TestSuite{Name: "GVisor master upgrade"}
+			gVisorUpgradeTest := &junit.TestCase{Name: "[sig-node] gvisor-master-upgrade", Classname: "upgrade_tests"}
+			testSuite.TestCases = append(testSuite.TestCases, gVisorUpgradeTest)
+			upgradeFunc := func() {
+				start := time.Now()
+				defer finalizeUpgradeTest(start, gVisorUpgradeTest)
+				target := upgCtx.Versions[1].Version.String()
+				framework.ExpectNoError(framework.MasterUpgrade(f, target))
+				framework.ExpectNoError(checkMasterVersion(f.ClientSet, target))
+			}
+			runUpgradeSuite(f, gVisorUpgradeTests, testFrameworks, testSuite, upgrades.MasterUpgrade, upgradeFunc)
+		})
+	})
+	ginkgo.Describe("cluster upgrade", func() {
+		ginkgo.It("should be able to run gVisor pod after upgrade [Feature:GVisorClusterUpgrade]", func() {
+			upgCtx, err := getUpgradeContext(f.ClientSet.Discovery(), *upgradeTarget)
+			framework.ExpectNoError(err)
+
+			testSuite := &junit.TestSuite{Name: "GVisor cluster upgrade"}
+			gVisorUpgradeTest := &junit.TestCase{Name: "[sig-node] gvisor-cluster-upgrade", Classname: "upgrade_tests"}
+			testSuite.TestCases = append(testSuite.TestCases, gVisorUpgradeTest)
+			upgradeFunc := func() {
+				start := time.Now()
+				defer finalizeUpgradeTest(start, gVisorUpgradeTest)
+				target := upgCtx.Versions[1].Version.String()
+				framework.ExpectNoError(framework.MasterUpgrade(f, target))
+				framework.ExpectNoError(checkMasterVersion(f.ClientSet, target))
+				framework.ExpectNoError(framework.NodeUpgrade(f, target, *upgradeImage))
+				framework.ExpectNoError(checkNodesVersions(f.ClientSet, target))
+			}
+			runUpgradeSuite(f, gVisorUpgradeTests, testFrameworks, testSuite, upgrades.ClusterUpgrade, upgradeFunc)
+		})
+	})
+	ginkgo.Describe("cluster downgrade", func() {
+		ginkgo.It("should be able to run gVisor pod after downgrade [Feature:GVisorClusterDowngrade]", func() {
+			upgCtx, err := getUpgradeContext(f.ClientSet.Discovery(), *upgradeTarget)
+			framework.ExpectNoError(err)
+
+			testSuite := &junit.TestSuite{Name: "GVisor cluster downgrade"}
+			gVisorDowngradeTest := &junit.TestCase{Name: "[sig-node] gvisor-cluster-downgrade", Classname: "upgrade_tests"}
+			testSuite.TestCases = append(testSuite.TestCases, gVisorDowngradeTest)
+			upgradeFunc := func() {
+				start := time.Now()
+				defer finalizeUpgradeTest(start, gVisorDowngradeTest)
+				target := upgCtx.Versions[1].Version.String()
+				framework.ExpectNoError(framework.NodeUpgrade(f, target, *upgradeImage))
+				framework.ExpectNoError(checkNodesVersions(f.ClientSet, target))
+				framework.ExpectNoError(framework.MasterUpgrade(f, target))
+				framework.ExpectNoError(checkMasterVersion(f.ClientSet, target))
+			}
+			runUpgradeSuite(f, gVisorUpgradeTests, testFrameworks, testSuite, upgrades.ClusterUpgrade, upgradeFunc)
 		})
 	})
 })
