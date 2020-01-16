@@ -389,6 +389,7 @@ function gke-configure-node-problem-detector {
   local -r km_config="${KUBE_HOME}/node-problem-detector/config/kernel-monitor.json"
   # TODO(random-liu): Handle this for alternative container runtime.
   local -r dm_config="${KUBE_HOME}/node-problem-detector/config/docker-monitor.json"
+  local -r sm_config="${KUBE_HOME}/node-problem-detector/config/systemd-monitor.json"
 
   local -r custom_km_config="${KUBE_HOME}/node-problem-detector/config/kernel-monitor-counter.json"
   local -r custom_sm_config="${KUBE_HOME}/node-problem-detector/config/systemd-monitor-counter.json"
@@ -402,8 +403,8 @@ function gke-configure-node-problem-detector {
 
   flags="${NPD_TEST_LOG_LEVEL:-"--v=2"} ${NPD_TEST_ARGS:-}"
   flags+=" --logtostderr"
-  flags+=" --system-log-monitors=${km_config},${dm_config}"
-  flags+=" --custom-plugin-monitors=${custom_plugin_monitors}"
+  flags+=" --config.system-log-monitor=${km_config},${dm_config},${sm_config}"
+  flags+=" --config.custom-plugin-monitor=${custom_plugin_monitors}"
   local -r npd_port=${NODE_PROBLEM_DETECTOR_PORT:-20256}
   flags+=" --port=${npd_port}"
   if [[ -n "${EXTRA_NPD_ARGS:-}" ]]; then
