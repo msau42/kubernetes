@@ -18,7 +18,6 @@ package passwordfile
 
 import (
 	"context"
-	"crypto/subtle"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -33,7 +32,7 @@ import (
 	"k8s.io/apiserver/pkg/authentication/user"
 )
 
-var(
+var (
 	authenticatePasswordCounter = metrics.NewCounterVec(
 		&metrics.CounterOpts{
 			Name: "passwordfile_authentication_attempts_total",
@@ -48,8 +47,8 @@ type PasswordAuthenticator struct {
 }
 
 type userPasswordInfo struct {
-	info     *user.DefaultInfo
-	password string
+	info            *user.DefaultInfo
+	passwordChecker passwordChecker
 }
 
 func init() {
@@ -64,7 +63,6 @@ func NewCSV(path string) (*PasswordAuthenticator, error) {
 		return nil, err
 	}
 	defer file.Close()
-
 	recordNum := 0
 	users := make(map[string]*userPasswordInfo)
 	reader := csv.NewReader(file)
@@ -81,8 +79,11 @@ func NewCSV(path string) (*PasswordAuthenticator, error) {
 			return nil, fmt.Errorf("password file '%s' must have at least 3 columns (password, user name, user uid), found %d", path, len(record))
 		}
 		obj := &userPasswordInfo{
-			info:     &user.DefaultInfo{Name: record[1], UID: record[2]},
-			password: record[0],
+			info: &user.DefaultInfo{Name: record[1], UID: record[2]},
+		}
+		obj.passwordChecker, err = newArgon2IDChecker(record[0])
+		if err != nil {
+			return nil, err
 		}
 		if len(record) >= 4 {
 			obj.info.Groups = strings.Split(record[3], ",")
@@ -93,7 +94,6 @@ func NewCSV(path string) (*PasswordAuthenticator, error) {
 		}
 		users[obj.info.Name] = obj
 	}
-
 	return &PasswordAuthenticator{users}, nil
 }
 
@@ -103,7 +103,7 @@ func (a *PasswordAuthenticator) AuthenticatePassword(ctx context.Context, userna
 		authenticatePasswordCounter.WithLabelValues("user_not_found").Inc()
 		return nil, false, nil
 	}
-	if subtle.ConstantTimeCompare([]byte(user.password), []byte(password)) == 0 {
+	if user.passwordChecker.checkPassword(password) != nil {
 		authenticatePasswordCounter.WithLabelValues("failure").Inc()
 		return nil, false, nil
 	}

@@ -482,7 +482,7 @@ function append_or_replace_prefixed_line {
   local -r tmpfile="$(mktemp -t filtered.XXXX --tmpdir=${dirname})"
 
   touch "${file}"
-  awk "substr(\$0,0,length(\"${prefix}\")) != \"${prefix}\" { print }" "${file}" > "${tmpfile}"
+  awk -v pfx="${prefix}" 'substr($0,0,length(pfx)) != pfx { print }' "${file}" > "${tmpfile}"
   echo "${prefix}${suffix}" >> "${tmpfile}"
   mv "${tmpfile}" "${file}"
 }
@@ -645,7 +645,7 @@ function create-master-auth {
       # append_or_replace_prefixed_line.
       rm "${basic_auth_csv}"
     fi
-    append_or_replace_prefixed_line "${basic_auth_csv}" "${KUBE_PASSWORD},${KUBE_USER},"      "admin,system:masters"
+    append_or_replace_prefixed_line "${basic_auth_csv}" "\"${KUBE_PASSWORD}\",${KUBE_USER},"      "admin,system:masters"
   fi
 
   local -r known_tokens_csv="${auth_dir}/known_tokens.csv"
