@@ -83,6 +83,7 @@ func TestServingCert(t *testing.T) {
 		&nullCAContent{name: "client-ca"},
 		defaultCertProvider,
 		sniCerts,
+		nil,
 		nil, // TODO see how to plumb an event recorder down in here. For now this results in simply klog messages.
 	)
 	if err := dynamicCertificateController.RunOnce(); err != nil {
