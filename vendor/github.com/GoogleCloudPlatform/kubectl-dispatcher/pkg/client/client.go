@@ -17,6 +17,7 @@ limitations under the License.
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"runtime"
@@ -78,7 +79,7 @@ func (c *ServerVersionClient) ServerVersion() (*version.Info, error) {
 	if err != nil {
 		return nil, err
 	}
-	body, err := request.DoRaw()
+	body, err := request.DoRaw(context.TODO())
 	if err != nil {
 		return nil, err
 	}
