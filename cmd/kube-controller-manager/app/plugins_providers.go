@@ -20,7 +20,6 @@ package app
 
 import (
 	"k8s.io/kubernetes/pkg/volume"
-	"k8s.io/kubernetes/pkg/volume/awsebs"
 	"k8s.io/kubernetes/pkg/volume/azure_dd"
 	"k8s.io/kubernetes/pkg/volume/azure_file"
 	"k8s.io/kubernetes/pkg/volume/cinder"
@@ -29,7 +28,6 @@ import (
 )
 
 func appendAttachableLegacyProviderVolumes(allPlugins []volume.VolumePlugin) []volume.VolumePlugin {
-	allPlugins = append(allPlugins, awsebs.ProbeVolumePlugins()...)
 	allPlugins = append(allPlugins, azure_dd.ProbeVolumePlugins()...)
 	allPlugins = append(allPlugins, cinder.ProbeVolumePlugins()...)
 	allPlugins = append(allPlugins, gcepd.ProbeVolumePlugins()...)
@@ -42,7 +40,6 @@ func appendExpandableLegacyProviderVolumes(allPlugins []volume.VolumePlugin) []v
 }
 
 func appendLegacyProviderVolumes(allPlugins []volume.VolumePlugin) []volume.VolumePlugin {
-	allPlugins = append(allPlugins, awsebs.ProbeVolumePlugins()...)
 	allPlugins = append(allPlugins, azure_dd.ProbeVolumePlugins()...)
 	allPlugins = append(allPlugins, azure_file.ProbeVolumePlugins()...)
 	allPlugins = append(allPlugins, cinder.ProbeVolumePlugins()...)
