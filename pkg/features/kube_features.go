@@ -377,6 +377,7 @@ const (
 
 	// owner: @davidz627
 	// alpha: v1.17
+	// beta: v1.20
 	//
 	// Disables the GCE PD in-tree driver.
 	// Expects GCE PD CSI Driver to be installed and configured on all nodes.
@@ -391,6 +392,7 @@ const (
 
 	// owner: @leakingtapan
 	// alpha: v1.17
+	// beta: v1.20
 	//
 	// Disables the AWS EBS in-tree driver.
 	// Expects AWS EBS CSI Driver to be installed and configured on all nodes.
@@ -405,6 +407,7 @@ const (
 
 	// owner: @andyzhangx
 	// alpha: v1.17
+	// beta: v1.20
 	//
 	// Disables the Azure Disk in-tree driver.
 	// Expects Azure Disk CSI Driver to be installed and configured on all nodes.
@@ -479,6 +482,7 @@ const (
 
 	// owner: @adisky
 	// alpha: v1.17
+	// beta: v1.20
 	//
 	// Disables the OpenStack Cinder in-tree driver.
 	// Expects the OpenStack Cinder CSI Driver to be installed and configured on all nodes.
@@ -706,19 +710,19 @@ var defaultKubernetesFeatureGates = map[featuregate.Feature]featuregate.FeatureS
 	ServiceAccountIssuerDiscovery:  {Default: true, PreRelease: featuregate.Beta},
 	CRIContainerLogRotation:        {Default: true, PreRelease: featuregate.Beta},
 	CSIMigration:                   {Default: true, PreRelease: featuregate.Beta},
-	CSIMigrationGCE:                {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires GCE PD CSI Driver)
-	CSIMigrationGCEComplete:        {Default: false, PreRelease: featuregate.Alpha},
+	CSIMigrationGCE:                {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires GCE PD CSI driver)
+	CSIMigrationGCEComplete:        {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires GCE PD CSI driver)
 	CSIMigrationAWS:                {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires AWS EBS CSI driver)
-	CSIMigrationAWSComplete:        {Default: false, PreRelease: featuregate.Alpha},
+	CSIMigrationAWSComplete:        {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires AWS EBS CSI driver)
 	CSIMigrationAzureDisk:          {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires Azure Disk CSI driver)
-	CSIMigrationAzureDiskComplete:  {Default: false, PreRelease: featuregate.Alpha},
+	CSIMigrationAzureDiskComplete:  {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires Azure Disk CSI driver)
 	CSIMigrationAzureFile:          {Default: false, PreRelease: featuregate.Alpha},
 	CSIMigrationAzureFileComplete:  {Default: false, PreRelease: featuregate.Alpha},
 	CSIMigrationvSphere:            {Default: false, PreRelease: featuregate.Beta},
 	CSIMigrationvSphereComplete:    {Default: false, PreRelease: featuregate.Beta},
 	RunAsGroup:                     {Default: true, PreRelease: featuregate.Beta},
 	CSIMigrationOpenStack:          {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires OpenStack Cinder CSI driver)
-	CSIMigrationOpenStackComplete:  {Default: false, PreRelease: featuregate.Alpha},
+	CSIMigrationOpenStackComplete:  {Default: false, PreRelease: featuregate.Beta}, // Off by default (requires OpenStack Cinder CSI driver)
 	VolumeSubpath:                  {Default: true, PreRelease: featuregate.GA},
 	ConfigurableFSGroupPolicy:      {Default: false, PreRelease: featuregate.Alpha},
 	BalanceAttachedNodeVolumes:     {Default: false, PreRelease: featuregate.Alpha},
